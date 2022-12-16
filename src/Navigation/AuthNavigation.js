@@ -4,6 +4,7 @@ import styles from './styles';
 
 import Signup from '../Screens/SignupScreen';
 import Signin from '../Screens/SigninScreen';
+import Splash from '../Screens/SplashScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -12,6 +13,11 @@ const AuthNavigation = () => {
   return (
 
     <Stack.Navigator>
+             <Stack.Screen
+          name="splash_screen"
+          component={Splash}
+        //   options={styles.splashStyle}
+        />
       <Stack.Screen
         name="Signin_screen"
         component={Signin}
