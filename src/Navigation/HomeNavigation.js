@@ -9,11 +9,7 @@ const Stack = createNativeStackNavigator();
 const HomeNavigation = () => {
   return (
       <Stack.Navigator>
-        {/* <Stack.Screen
-          name="splash_screen"
-          component={Splash}
-        //   options={styles.splashStyle}
-        /> */}
+ 
        <Stack.Screen
           name="intro_screen"
           component={Introduction}
