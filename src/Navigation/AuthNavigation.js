@@ -4,20 +4,18 @@ import styles from './styles';
 
 import Signup from '../Screens/SignupScreen';
 import Signin from '../Screens/SigninScreen';
-import Splash from '../Screens/SplashScreen';
 
 
 const Stack = createNativeStackNavigator();
 
 const AuthNavigation = () => {
+  const options = {
+    headerShown: false,
+  };
+  
   return (
 
-    <Stack.Navigator>
-             <Stack.Screen
-          name="splash_screen"
-          component={Splash}
-        //   options={styles.splashStyle}
-        />
+    <Stack.Navigator screenOptions={options}> 
       <Stack.Screen
         name="Signin_screen"
         component={Signin}
@@ -28,6 +26,7 @@ const AuthNavigation = () => {
         component={Signup}
         // options={styles.splashStyle}
       />
+      
     </Stack.Navigator>
   );
 };
