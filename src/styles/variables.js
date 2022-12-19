@@ -76,6 +76,7 @@ const colors = {
   semipurple:'#EBE5FD',
   lightpurple:'#F8F6FF',
   purple:'#7654D3',
+  mintgreen:"#45B08C",
   green2:'#E1F7DE',
   shadowpink:'#FFE8E8',
   shadowgreen:'#D5F7EA',

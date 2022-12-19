@@ -9,7 +9,7 @@ const MainNavigation = () => {
 const user ="";
     return (
         <NavigationContainer>
-            {user ? <HomeNavigation/> : <AuthNavigation/>}
+            {user ? <AuthNavigation/> : <HomeNavigation/>}
         </NavigationContainer>
     )
 }
