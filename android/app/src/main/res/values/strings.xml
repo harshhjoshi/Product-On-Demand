@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ProductOnDemand</string>
+
+    <string name="facebook_app_id"> 742953837458654</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">470390799070ce46f6be186878caf108</string>
+
+
 </resources>

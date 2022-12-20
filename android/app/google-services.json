@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "332937348569",
+    "firebase_url": "https://productondemand-c62bf-default-rtdb.firebaseio.com",
     "project_id": "productondemand-c62bf",
     "storage_bucket": "productondemand-c62bf.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "332937348569-ks0fajf8r2fmo2o05jhrsr4v0a66kh0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.productondemand",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "332937348569-0dq0bifplk1j75kg79eu0v54cs101f0u.apps.googleusercontent.com",
           "client_type": 3
