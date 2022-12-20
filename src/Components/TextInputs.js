@@ -5,7 +5,7 @@ import {borderRadius, colors, fontFamily} from '../styles/variables';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {responsiveWidth, responsiveHeight} from '../styles/variables';
 
-const TextInputs = ({label, value, secureTextEntry,keyboardType,style}) => {
+const TextInputs = ({label, value, secureTextEntry,keyboardType,style,onChangeText}) => {
   const [secureText, setSecureText] = useState(true);
 
   return (
@@ -20,12 +20,14 @@ const TextInputs = ({label, value, secureTextEntry,keyboardType,style}) => {
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         mode="outlined"
-        outlineColor="#FFFFFF50"
-        placeholderTextColor={'#FFFFFF'}
-        activeOutlineColor={colors.halfwhite}        
+        onChangeText={onChangeText}
+        // outlineColor="black"
+        placeholderTextColor={'black'}
+        activeOutlineColor={colors.black}        
         theme={{
-          colors: {text: '#E1DDDD', placeholder: '#FFFFFF50'},
+          colors: {text: 'black', placeholder: 'black'},
           fonts: {text:fontFamily.bold,placeholder:fontFamily.regular},
+ 
           roundness: borderRadius.large,
           
           

@@ -251,7 +251,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-
+    implementation 'com.facebook.android:facebook-android-sdk:10.1.0'
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 implementation platform('com.google.firebase:firebase-bom:31.1.1')
@@ -312,3 +312,6 @@ def isNewArchitectureEnabled() {
     // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
     return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
 }
+    //   googlePlayServicesAuthVersion = "19.2.0" // <--- use this version or newer
+
+

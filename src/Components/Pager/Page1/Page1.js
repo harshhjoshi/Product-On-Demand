@@ -2,9 +2,9 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { spaceVertical } from "../../../styles/variables";
 import { styles } from "../PageStyles";
-
-
+import Button from "../../Button";
 const Page1 = ({navigation}) => {
+    
     return (
         <>
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
@@ -21,6 +21,7 @@ const Page1 = ({navigation}) => {
                     <Text style={styles.subTitle}>We have the best in class individuals {'\n'} working just for you. They are well {'\n'} trained and capable of handling {'\n'} anything you need.</Text>
 
                 </View>
+            
             </View>
         </>
     )

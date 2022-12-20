@@ -1,48 +1,88 @@
 import {StyleSheet} from 'react-native';
-import { borderRadius, colors, darkColors,spaceVertical, marginHorizontal, responsiveHeight, responsiveWidth,fontSize ,fontFamily} from '../../styles/variables';
+import {
+  borderRadius,
+  colors,
+  darkColors,
+  spaceVertical,
+  marginHorizontal,
+  responsiveHeight,
+  responsiveWidth,
+  fontSize,
+  fontFamily,
+} from '../../styles/variables';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   logoContainer: {
-    flex: 1,
-
+    flex: 0.8,
   },
   logo: {
-    width:responsiveWidth(100),
-    height:responsiveHeight(55),  
-    resizeMode:"cover",
+    width: responsiveWidth(100),
+    height: responsiveHeight(47),
+    resizeMode: 'cover',
   },
   textContainer: {
     flex: 1,
-    paddingHorizontal:marginHorizontal.xsmall,
-    paddingVertical:spaceVertical.semiSmall,
-    borderTopLeftRadius:borderRadius.bigboxradius,
-    borderTopRightRadius:borderRadius.bigboxradius,
-    backgroundColor:colors.grayline,
-    justifyContent:"space-between",
-    alignContent:"space-between",
+    paddingHorizontal: marginHorizontal.xsmall,
+    paddingVertical: spaceVertical.semiSmall,
+    borderTopLeftRadius: borderRadius.bigboxradius,
+    borderTopRightRadius: borderRadius.bigboxradius,
+    backgroundColor: colors.grayline,
+   
   },
+
+  title: {
+    fontSize: fontSize.semiLarge,
+    fontFamily: fontFamily.bold,
+
+    color: colors.black,
+  },
+  fgPass: {
+    textAlign: 'right',
+    color: colors.blue,
+    fontSize: fontSize.normal,
+    fontFamily: fontFamily.medium,
+    marginTop: spaceVertical.small,
+  },
+  subTitleBottom: {
+    textAlign: 'center',
+    marginTop: spaceVertical.tiny,
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.normal,
+  },
+  subTitleRight: {
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.normal,
+    color: colors.blue,
+  },
+  txt: {
+    fontSize: fontSize.small,
+    fontFamily: fontFamily.semiBold,
+
+    color: colors.graytext,
+  },
+  textinput: {
+    width: responsiveWidth(90),
+    marginTop: spaceVertical.tiny,
+  },
+  bottomstyles: {
+    flexDirection: 'row',
+  justifyContent:"center",
+  
+    marginTop: spaceVertical.tiny,
+  },
+  bottomstylesicon: {
+    flexDirection: 'row',
+justifyContent:'space-around',
+  
+    marginTop: spaceVertical.small,
+  },
+  icons:{
+    height:responsiveWidth(10),
+    width:responsiveWidth(10),
+    marginLeft:marginHorizontal.large
  
-  title:{
-    fontSize:fontSize.semiLarge,
-    fontFamily:fontFamily.bold,
-    fontWeight:"bold",
-    color:colors.black
-  },
-  fgPass:{
-    textAlign:"right",
-  color:colors.blue,
-  },
-  subTitleBottom:{
-    textAlign:"center",
-    marginVertical:spaceVertical.extraSmall,
-  },
-  subTitleRight:{
-    fontFamily:fontFamily.bold,
-    fontWeight:"bold",
-    color:colors.black,
-    top:5,
   }
 });
 export default styles;
