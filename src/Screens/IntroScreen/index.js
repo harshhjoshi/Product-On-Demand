@@ -36,7 +36,7 @@ const Introduction = ({ navigation }) => {
     const {getStarted}  = React.useContext(AuthContext)
 
     const Submit = () => {
-        navigation.navigate('AuthNavigation', { screen: 'Signin_screen' });
+        navigation.navigate('Signin_screen' );
     }
 
     return (

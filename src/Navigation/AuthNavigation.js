@@ -18,15 +18,8 @@ const AuthNavigation = () => {
   return (
 
       <Stack.Navigator screenOptions={options}> 
-        <Stack.Screen
-          name="Signin_screen"
-          component={Signin}
-        />
-        <Stack.Screen
-          name="signup_screen"
-          component={Signup}
-        />
-             <Stack.Screen
+     
+         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
         />
