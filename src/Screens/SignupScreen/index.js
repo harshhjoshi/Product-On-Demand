@@ -3,17 +3,16 @@ import React, { useState } from 'react'
 import styles from './styles';
 import TextInputs from '../../Components/TextInputs';
 import Button from '../../Components/Button';
-import CheckBox from '@react-native-community/checkbox';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import auth from "@react-native-firebase/auth";
 import {db} from '../../Firebase/config';
 import {child, database, ref,set} from "@firebase/database";
 import {launchImageLibrary} from 'react-native-image-picker';
+import { colors, responsiveWidth, spaceVertical } from '../../styles/variables';
 
 const Signup = ({navigation}) => {
   const dummyUri="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/768px-Circle-icons-profile.svg.png"
   const [galleryphoto,setUploadImage]=useState(dummyUri);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ userName, setUserName ]= useState()
   const [ email, setEmail ] = useState()
   const [ password, setPassword ] = useState()
@@ -70,53 +69,51 @@ const storeData =(id)=>{
       
       <View style={styles.cameraLogo}>
       <Pressable onPress={()=>OPENPICKER()} >
-      <IonIcon name="camera-outline" size={35}></IonIcon>
+      <IonIcon name="camera-outline" size={35} ></IonIcon>
       </Pressable>
       
       
         </View>
-        <View style={styles.Logo}>
+
         <Image
         style={styles.profileLogo}
         source={{
           uri:galleryphoto,
         }}/>
-        </View>
+
         
         <View>
-        <Text style={styles.title}>Create account!</Text>
-        <Text style={styles.subtitle}>Quickly create account.</Text>
+        <Text style={styles.title}>Create Account!</Text>
+        <Text style={styles.subtitle}>Quickly create an account.</Text>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
 
 
       <View>
-      <TextInputs label="Name" value={userName}  onChangeText={(e)=>setUserName(e)}/>
+      <TextInputs label="Name" value={userName}    onChangeText={(e)=>setUserName(e)}/>
       <TextInputs label="Email" value={email}  onChangeText={(e)=>setEmail(e)}/>
       <TextInputs label="Password"  value={password} onChangeText={(e)=>setPassword(e)} />  
       <TextInputs label="Confirm password"/>  
       <TextInputs label="Location"/>  
       <TextInputs label="Phone no"/> 
       <View style={styles.checkStyle}>
-      <CheckBox
-    disabled={false}
-    value={toggleCheckBox}
-    onValueChange={(newValue) => setToggleCheckBox(newValue)}
-  />
-  <Text style={styles.subTitleRight}>Signup as sellar</Text>
+
       </View> 
     
       </View>
-      <View>
-          <Button name="Signup" color="green" onPress={()=> signUp(email,password)}/>
+    
+          <Button name="Signup" color={colors.projectgreen} marginTop={spaceVertical.small} onPress={()=> signUp(email,password)}/>
+          <View style={{flexDirection:'row',alignSelf:'center'}}>
           <Text style={styles.subTitleBottom}>
            Already have an account?
-            <Pressable onPress={() => navigation.navigate('Signin_screen')}>
-              <Text style={styles.subTitleRight}> Signin</Text>
-            </Pressable>
+        
           </Text>
-        </View>
+          <Pressable onPress={() => navigation.navigate('Signin_screen')}>
+              <Text style={[styles.subTitleRight ,{marginTop:5}]}> Signin</Text>
+            </Pressable>
+            </View>
+
       </ScrollView>
     </View>
   )

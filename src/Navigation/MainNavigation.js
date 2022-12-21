@@ -6,6 +6,7 @@ import HomeNavigation from './HomeNavigation';
 import AuthNavigation from './AuthNavigation';
 import auth from '@react-native-firebase/auth';
 import Splash from '../Screens/SplashScreen';
+import UserNavigation from './UserNavigation';
 const MainNavigation = () => {
 
 const [initializing, setInitializing] = useState(true);
@@ -39,7 +40,7 @@ const Stack = createNativeStackNavigator();
         </Stack.Navigator> */}
 
 
-            {user ? <AuthNavigation/> : <HomeNavigation/>}
+            {user ? <UserNavigation/> : <HomeNavigation/>}
         </NavigationContainer>
     )
 }

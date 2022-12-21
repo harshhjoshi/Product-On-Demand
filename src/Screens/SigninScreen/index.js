@@ -19,10 +19,13 @@ import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import {colors, marginHorizontal, spaceVertical} from '../../styles/variables';
 import {db} from '../../Firebase/config';
 import {ref,set} from "@firebase/database";
+import CheckBox from '@react-native-community/checkbox';
+
 
 const Signin = ({navigation}) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   GoogleSignin.configure({
     webClientId:"332937348569-0dq0bifplk1j75kg79eu0v54cs101f0u.apps.googleusercontent.com"
@@ -37,7 +40,8 @@ const Signin = ({navigation}) => {
       const userCredential = await auth().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
     } catch (err) {
-      return Alert.alert(err.code, err.message);
+      // return Alert.alert(err.code, err.message);
+      console.log("error",err.message)
     }
   }
 
@@ -54,7 +58,7 @@ const Signin = ({navigation}) => {
   if(user){
     console.log("user..........",user.user.uid);
     storeData(user);
-    navigation.navigate('Dashboard')
+    // navigation.navigate('Dashboard')
   }
   console.log("ugogle",user.user);
  }).catch((error)=>{
@@ -115,12 +119,15 @@ const Signin = ({navigation}) => {
           <Text style={styles.title}>Welcome back!</Text>
           <Text style={styles.txt}>Sign in to your account.</Text>
         </View>
-        <View style={{alignSelf: 'center', alignItems: 'center'}}>
+        <View >
           <TextInputs label="Email" style={styles.textinput} value={email}  onChangeText={(e)=>setEmail(e)} />
           <TextInputs label="Password" style={styles.textinput} value={password} onChangeText={(e)=>setPassword(e)}/>
         </View>
         <Text style={styles.fgPass}>Forgot Password? </Text>
 
+        <View style={{flexDirection:'row'}}>
+        
+  </View>
         <Button
           onPress={() => signIn(email, password)}
           name="Login"

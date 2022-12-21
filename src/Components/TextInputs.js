@@ -26,8 +26,8 @@ const TextInputs = ({label, value, secureTextEntry,keyboardType,style,onChangeTe
         activeOutlineColor={colors.black}        
         theme={{
           colors: {text: 'black', placeholder: 'black'},
-          fonts: {text:fontFamily.bold,placeholder:fontFamily.regular},
- 
+          fonts: {text:fontFamily.bold,placeholder:fontFamily.medium},
+       
           roundness: borderRadius.large,
           
           
