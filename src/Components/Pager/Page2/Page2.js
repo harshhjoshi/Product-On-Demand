@@ -12,7 +12,7 @@ const Page2 = ({navigation}) => {
                     <Image source={require('../../../Assests/Images/seller.png')} style={[styles.img, { overflow: 'visible' }]} resizeMode='cover'></Image>
                 </View>
 
-                <TouchableOpacity style={styles.skipButton} onPress={()=> navigation.navigate("SignUp")}>
+                <TouchableOpacity style={styles.skipButton} onPress={()=> navigation.navigate( 'Signin_screen' )}>
                     <Text style={styles.skipText}>Skip</Text>
                 </TouchableOpacity>
 

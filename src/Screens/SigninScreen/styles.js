@@ -13,8 +13,10 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:colors.lightblue
   },
   logoContainer: {
+    backgroundColor:colors.lightblue,
     flex: 0.8,
   },
   logo: {
@@ -23,12 +25,13 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   textContainer: {
+    backgroundColor:colors.lightblue,
     flex: 1,
     paddingHorizontal: marginHorizontal.xsmall,
     paddingVertical: spaceVertical.semiSmall,
     borderTopLeftRadius: borderRadius.bigboxradius,
     borderTopRightRadius: borderRadius.bigboxradius,
-    backgroundColor: colors.grayline,
+    backgroundColor: colors.lightblue,
    
   },
 

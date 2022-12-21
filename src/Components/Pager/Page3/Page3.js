@@ -21,9 +21,6 @@ const Page3 = ({navigation}) => {
                     <Image source={require('../../../Assests/Images/location.png')} style={[styles.img,{overflow: 'visible'}]} resizeMode='cover'></Image>
                 </View>
 
-                <TouchableOpacity style={styles.skipButton} onPress={()=> navigation.navigate("SignUp")}>
-                    <Text style={styles.skipText}>Skip</Text>
-                </TouchableOpacity>
 
                 <View  style={{marginTop:spaceVertical.semiSmall}}>
                     <Text style={styles.title}>Delivery on Your Location</Text>

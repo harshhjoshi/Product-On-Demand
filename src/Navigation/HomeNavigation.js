@@ -30,11 +30,7 @@ const HomeNavigation = () => {
           name="signup_screen"
           component={Signup}
         />
-         <Stack.Screen
-          name="AuthNavigation"
-          component={AuthNavigation}
-
-        />
+ 
       </Stack.Navigator>
   );
 };
