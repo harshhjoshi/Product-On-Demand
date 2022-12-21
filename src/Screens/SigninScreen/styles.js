@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   bottomstylesicon: {
     flexDirection: 'row',
-justifyContent:'space-around',
+marginLeft:responsiveWidth(20),
   
     marginTop: spaceVertical.small,
   },

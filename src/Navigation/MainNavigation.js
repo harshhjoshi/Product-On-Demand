@@ -5,6 +5,7 @@ import styles from './styles';
 import HomeNavigation from './HomeNavigation';
 import AuthNavigation from './AuthNavigation';
 import auth from '@react-native-firebase/auth';
+import Splash from '../Screens/SplashScreen';
 const MainNavigation = () => {
 
 const [initializing, setInitializing] = useState(true);
@@ -21,10 +22,24 @@ const [initializing, setInitializing] = useState(true);
 
      if (initializing) return null;
      console.log("usermm", user);
-    return (
-        <NavigationContainer>
+     const options = {
+        headerShown: false,
+      };
+const Stack = createNativeStackNavigator();
 
-            {!user ? <AuthNavigation/> : <HomeNavigation/>}
+    return (
+  
+        <NavigationContainer>
+      {/* <Stack.Navigator screenOptions={options}> 
+      <Stack.Screen
+          name="splash_screen"
+          component={Splash}
+   
+        />
+        </Stack.Navigator> */}
+
+
+            {user ? <AuthNavigation/> : <HomeNavigation/>}
         </NavigationContainer>
     )
 }

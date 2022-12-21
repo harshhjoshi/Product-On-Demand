@@ -15,35 +15,15 @@ import TextInputs from '../../Components/TextInputs';
 import Button from '../../Components/Button';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import { LoginButton, AccessToken } from 'react-native-fbsdk-next';
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import {colors, marginHorizontal, spaceVertical} from '../../styles/variables';
 import {db} from '../../Firebase/config';
 import {ref,set} from "@firebase/database";
 
 const Signin = ({navigation}) => {
-  const [authenticated, setAutheticated] = useState(false);
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  // async function onGoogleButtonPress() {
-  //   // const {idToken} = await GoogleSignin.signIn();
-  //   console.log('token', idToken);
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  //   console.log('googleCredential', googleCredential);
 
-  //   return auth().signInWithCredential(googleCredential);
-  // }
-  // // const user = auth().currentUser;
-
-  // auth().onAuthStateChanged(user => {
-  //   console.log('user', user);
-  //   if (user) {
-  //     setAutheticated(true);
-  //   }
-  // });
-
-  // if (authenticated) {
-  //   navigation.navigate('signup_screen');
-  // }
   GoogleSignin.configure({
     webClientId:"332937348569-0dq0bifplk1j75kg79eu0v54cs101f0u.apps.googleusercontent.com"
     
@@ -94,6 +74,28 @@ const Signin = ({navigation}) => {
   })
   }
 
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
 
 
   return (
@@ -141,23 +143,13 @@ const Signin = ({navigation}) => {
               source={require('../../Assests/Images/google.png')}
             />
           </TouchableOpacity>
-          <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    console.log(data.accessToken.toString())
-                  }
-                )
-              }
-            }
-          }
-          onLogoutFinished={() => console.log("logout.")}/>
+          <TouchableOpacity onPress={onFacebookButtonPress}>
+            <Image
+              style={styles.icons}
+              source={require('../../Assests/Images/facebook.png')}
+            />
+          </TouchableOpacity>
+          
         </View>
       </ScrollView>
     </View>
