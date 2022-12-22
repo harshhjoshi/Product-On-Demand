@@ -48,7 +48,6 @@ const Signup = ({navigation}) => {
       return createUserInDb(uid_1, email);
     } catch (err) {
       console.log("err messgae",err.message)
-      return Alert.alert(err.code, err.message);
     }
 }
 
@@ -57,6 +56,7 @@ const storeData =(id)=>{
     userName:userName,
     email:email,
     photoURL:galleryphoto,
+    role:"",
   }).then (()=>{
   console.log("data update")
 }).catch((error)=>{
@@ -103,7 +103,8 @@ const storeData =(id)=>{
     
       </View>
     
-          <Button name="Signup" color={colors.projectgreen} marginTop={spaceVertical.small} onPress={()=> signUp(email,password)}/>
+          <Button name="Signup" color={colors.projectgreen} marginTop={spaceVertical.small}
+           onPress={()=> signUp(email,password)}/>
           <View style={{flexDirection:'row',alignSelf:'center'}}>
           <Text style={styles.subTitleBottom}>
            Already have an account?
