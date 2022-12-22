@@ -9,7 +9,7 @@ import {
   responsiveHeight,
   responsiveWidth,
   spaceVertical
-} from '../../styles/variables';
+} from '../../../styles/variables';
 
 const styles = StyleSheet.create({
 
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   searchbarview: {
     flexDirection: 'row',
     width: responsiveWidth(93),
-    backgroundColor:colors.white,
     borderWidth: 1.5,
     paddingStart:10,
     borderColor: "#bbb",

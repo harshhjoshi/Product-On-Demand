@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Image, Text} from 'react-native';
 import Button from '../../Components/Button';
 import {
@@ -10,10 +10,37 @@ import {
   responsiveWidth,
   spaceVertical,
 } from '../../styles/variables';
+import {db} from '../../Firebase/config';
+import {ref,update} from "@firebase/database";
 import {Picker} from '@react-native-picker/picker';
-const UserSelection = ({navigation}) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  console.log(selectedLanguage)
+import auth from '@react-native-firebase/auth';
+
+const UserSelection = ({navigation,route}) => {
+  const [userrole, setUserRole] = useState();
+  const [user, setUser] = useState("");
+
+  // ** update data //
+    function onAuthStateChanged(user) {
+        setUser(user);
+    }
+    useEffect(() => { 
+     auth().onAuthStateChanged(onAuthStateChanged);
+    },[user]);
+
+  const updateData = ()=>{
+ if(user){
+  console.log("user ....userselction", user );
+  update(ref(db,'users/'+ user.uid ),{
+    role:userrole
+   }).then (()=>{
+   console.log("data update succesfully")
+ }).catch((error)=>{
+   console.log("error")
+ })
+ }  
+  }
+
+  // update data **//
   return (
     <View style={{flex: 1, backgroundColor: colors.white,justifyContent:'center'}}>
       <Image
@@ -45,9 +72,9 @@ const UserSelection = ({navigation}) => {
             borderWidth: 0.5,
             borderColor: colors.grayline,
           }}
-          selectedValue={selectedLanguage}
+          selectedValue={userrole}
           onValueChange={(itemValue, itemIndex) =>
-            setSelectedLanguage(itemValue)
+            setUserRole(itemValue)
           }
         >
           <Picker.Item label="Choose Role" value="Role" />
@@ -60,7 +87,7 @@ const UserSelection = ({navigation}) => {
         name="Save"
         color={colors.bluebtn}
         marginTop={spaceVertical.small}
-        onPress={()=>selectedLanguage==='User'?navigation.navigate('AuthNavigation'):null}
+          onPress={()=>updateData()}
       ></Button>
     </View>
   );
