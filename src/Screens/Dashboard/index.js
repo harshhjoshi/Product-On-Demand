@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View,Text,Image, TouchableOpacity,TextInput } from "react-native";
 import auth from "@react-native-firebase/auth";
-import {ref,update} from '@firebase/database';
+import {ref,update,onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import Buyer from "./componnet/Buyer";
 import Vendor from "./componnet/Vendor";
-
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
-import {marginHorizontal} from '../styles/variables';
+
 import {
   borderRadius,
   colors,
@@ -21,8 +20,19 @@ import {
 
 const Dashboard=({navigation})=>{
     const [user, setUser] = useState("");
-    const [tab, setTab] = useState(true);
+    const [rolevalue,setRoleValue]= useState("User")
 
+
+
+    useEffect(() => {
+        auth().onAuthStateChanged(u =>{
+         const dbRef = ref(db, 'users/' + u.uid);
+         onValue(dbRef, snapshot => {
+         var snapVal = snapshot.val()
+         setRoleValue(snapVal.role)
+        })
+        });
+        }, [user]);
 
     function onAuthStateChanged(user) {
         setUser(user);
@@ -44,7 +54,7 @@ const Dashboard=({navigation})=>{
       
       
     }
-    
+    console.log("rolevalue", rolevalue);
     return(
     
         <View style={{flex:1,backgroundColor:colors.white}}> 
@@ -76,7 +86,7 @@ const Dashboard=({navigation})=>{
               color: colors.projectgreen,
               textAlign: 'center',
             }}>
-            Available Products
+           {rolevalue}
           </Text>
         </View>
         <TouchableOpacity activeOpacity={0.5}>
@@ -106,13 +116,7 @@ const Dashboard=({navigation})=>{
             source={require('../../Assests/Images/search.png')}></Image>
         </TouchableOpacity>
       </View>
-        {tab?(<Buyer/>):<Vendor/>}
-        
-       
-        {/* <TouchableOpacity onPress={()=>signOut()} >
-            <Image style={{height:50,width:50,alignSelf:'center',marginTop:spaceVertical.XXlarge}} source={require('../../Assests/Images/google.png')}/>
-            <Text style={{alignSelf:'center'}}>Sign Out</Text>
-            </TouchableOpacity> */}
+        {rolevalue == "User" ?<Buyer/>:<Vendor/>}
         </View>
     )
 }
