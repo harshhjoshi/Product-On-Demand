@@ -57,6 +57,7 @@ const storeData =(id)=>{
     email:email,
     photoURL:galleryphoto,
     role:"",
+    products:"",
   }).then (()=>{
   console.log("data update")
 }).catch((error)=>{

@@ -1,24 +1,34 @@
-import {View, Text, StatusBar, Image, TouchableOpacity, ScrollView} from 'react-native';
-import React,{useState} from 'react';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {colors} from '../../../styles/variables';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {
-  borderRadius,
-  fontFamily,
-  fontSize,
-  responsiveHeight,
-  responsiveWidth,
-  spaceVertical,
-} from '../../../styles/variables';
+import {spaceVertical} from '../../../styles/variables';
 import TextInputs from '../../../Components/TextInputs';
 import Button from '../../../Components/Button';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {db} from '../../../Firebase/config';
+import {ref, update, onValue} from '@firebase/database';
+import auth from '@react-native-firebase/auth';
+import {styles} from './styles';
 const Vendor = ({navigation}) => {
-  const dummyUri="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/768px-Circle-icons-profile.svg.png"
-  const [galleryphoto,setUploadImage]=useState(dummyUri);
+  const dummyUri =
+    'http://knttraining.co.uk/wp-content/uploads/2018/11/how-to-add-a-png-to-a-photo.png';
+  const [galleryphoto, setUploadImage] = useState(dummyUri);
+  const [user, setUser] = useState('');
+  const [productName, setProductName] = useState();
+  const [details, setdetails] = useState();
+  const [price, setPrice] = useState();
+  const [productfiled, setProductFiled] = useState('');
+
   const OPENPICKER = () => {
-    console.log("ndbvjkbhdfvj");
     var options = {
       title: 'Select Avatar',
       storageOptions: {
@@ -32,87 +42,100 @@ const Vendor = ({navigation}) => {
       }
     });
   };
+
+  useEffect(() => {
+    auth().onAuthStateChanged(u => {
+      setUser(u);
+      const dbRef = ref(db, 'users/' + u.uid);
+      onValue(dbRef, snapshot => {
+        var snapVal = snapshot.val();
+        console.log('snapVal', snapVal);
+        setProductFiled(snapVal.products);
+      });
+    });
+  }, []);
+
+  const newProductList = [];
+  const sellerSubmite = async (productName, details, price) => {
+    console.log('sub', productfiled);
+    if (!productfiled) {
+      let obj = {
+        productName: productName,
+        details: details,
+        price: price,
+      };
+      newProductList.push(obj);
+      update(ref(db, 'users/' + user.uid), {
+        products: newProductList,
+      })
+        .then(() => {
+          console.log('data update');
+        })
+        .catch(error => {
+          console.log('error');
+        });
+    } else {
+      let obj2 = {
+        productName: productName,
+        details: details,
+        price: price,
+      };
+      productfiled.push(obj2);
+      update(ref(db, 'users/' + 'Xd1A6fROIKUbE5Oo1H3AJKIU8BU2'), {
+        products: productfiled,
+      })
+        .then(() => {
+          console.log('data update');
+        })
+        .catch(error => {
+          console.log('error');
+        });
+    }
+  };
   return (
-    <View>
+    <ScrollView>
       <StatusBar
         backgroundColor={colors.HARD_WHITE}
         barStyle="dark-content"
         hidden={false}
         translucent={true}
       />
-      <ScrollView
-        style={{
-          backgroundColor: colors.white,
-          elevation: 5,
-          borderRadius: borderRadius.medium,
-          width: responsiveWidth(90),
-          alignSelf: 'center',
-          marginTop: spaceVertical.semiSmall,
-          paddingBottom: spaceVertical.normal,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: fontFamily.bold,
-            fontSize: fontSize.medium,
-            color: colors.projectgreen,
-            textAlign: 'center',
-            marginTop: spaceVertical.semiSmall,
-          }}
+      <View style={styles.headerview}>
+        <Text style={styles.headertext}>Upload Image</Text>
+        <TouchableOpacity
+          onPress={() => OPENPICKER()}
+          style={styles.imgselection}
         >
-          Upload Image
-        </Text>
-        <TouchableOpacity onPress={()=>OPENPICKER()}
-          style={{
-            borderStyle: 'dashed',
-            borderRadius: borderRadius.circle,
-            height: responsiveHeight(10),
-            width: responsiveHeight(10),
-            borderWidth: 1,
-            borderColor: colors.HARD_BLACK,
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'center',
-            elevation: 0.5,
-            backgroundColor: colors.white,
-            marginTop: spaceVertical.small,
-          }}
-        >
-          <Image
-            style={{height: responsiveHeight(9), width: responsiveWidth(10),borderRadius:borderRadius.circle}}
-            source={{uri:galleryphoto,}}
-          />
+          <Image style={styles.img} source={{uri: galleryphoto}} />
         </TouchableOpacity>
         <TextInputs
           label={'Add Product Name'}
-          style={{
-            width: responsiveWidth(80),
-            alignSelf: 'center',
-            marginTop: spaceVertical.semiSmall,backgroundColor:colors.HARD_WHITE
-          }}
+          value={productName}
+          onChangeText={e => setProductName(e)}
+          style={styles.TextInputs}
         />
         <TextInputs
           label={'Add Product Details'}
-          style={{
-            width: responsiveWidth(80),
-            alignSelf: 'center',
-            marginTop: spaceVertical.small,backgroundColor:colors.HARD_WHITE
-          }}
+          value={details}
+          onChangeText={e => setdetails(e)}
+          style={styles.TextInputs}
         />
 
         <TextInputs
           label={' Add Price'}
-          keyboardType='Numeric'
-
-          style={{
-            width: responsiveWidth(80),
-            alignSelf: 'center',
-            marginTop: spaceVertical.small,backgroundColor:colors.HARD_WHITE,
-          }}
+          value={price}
+          onChangeText={e => setPrice(e)}
+          keyboardType="Numeric"
+          style={styles.TextInputs}
         />
-        <Button name={"Submit"} color={colors.projectgreen} marginTop={spaceVertical.semiSmall}></Button>
-      </ScrollView>
-    </View>
+        <Button
+          name={'Submit'}
+          onPress={() => sellerSubmite(productName, details, price)}
+          color={colors.projectgreen}
+          marginTop={spaceVertical.semiSmall}
+        ></Button>
+      </View>
+    </ScrollView>
   );
 };
 

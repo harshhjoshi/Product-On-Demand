@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -12,9 +12,8 @@ import Button from '../../../Components/Button';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {marginHorizontal} from '../../../styles/variables';
-import auth from "@react-native-firebase/auth";
-import {ref,update} from '@firebase/database';
 import {db} from '../../../Firebase/config';
+import {ref, onValue} from '@firebase/database';
 import {
   borderRadius,
   colors,
@@ -25,6 +24,7 @@ import {
   spaceVertical,
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
+
 const DATA = [
   {
     id: 1,
@@ -139,106 +139,75 @@ const DATA = [
     image: require('../../../Assests/Images/google.png'),
   },
 ];
+
 const Buyer = ({navigation}) => {
+  const [newData, setNewData] = useState([]);
 
-    const [user, setUser] = useState("");
-    // const [tab, setTab] = useState(true);
+  const dbRef = ref(db, 'users/');
 
+  useEffect(() => {
+    onValue(dbRef, snapshot => {
+      let records = [];
+      snapshot.forEach(childSnapshot => {
+        let keyName = childSnapshot.key;
+        let data = childSnapshot.val();
+        records.push({key: keyName, data: data.products});
+      });
+      var nameArray = records.map(function (el) {
+        return el.data;
+      });
 
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
-    const signOut = () => {
-        auth().onAuthStateChanged(onAuthStateChanged);
-       
-        if(user){
-            console.log(user.uid);
-            update(ref(db,'users/'+ user.uid ),{
-                role:""
-               }).then (()=>{
-               console.log("data update succesfully")
-               auth().signOut()
-             }).catch((error)=>{
-               console.log("error")
-             })
-        }
-      
-      
-    }
-  const renderItem = ({item, index}) => (
-    <View
-      style={{
-        width: responsiveWidth(90),
-        height: responsiveHeight(20),
-        backgroundColor: colors.white,
-        alignSelf: 'center',
-        borderRadius: borderRadius.medium,
-        elevation: 2,
-        marginTop: spaceVertical.semiSmall,
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}>
-      <Image
-        style={{
-          height: responsiveHeight(10),
-          width: responsiveHeight(10),
-          marginLeft: marginHorizontal.flatlistmargin,
-        }}
-        source={item.image}
-      />
+      var newArray2 = nameArray.filter(function (el) {
+        return el !== undefined;
+      });
+      console.log('newArray2===', newArray2);
+
+      const flattened = newArray2.flat();
+
+      console.log('flattened===', flattened);
+
+      //  let data = newArray2;
+      //  for(let i=0;i<data.length;i++){
+      //   console.log("particular",data[i]);
+      //   data.push(data[i]);
+      //  }
+      //  setNewData([...data]);
+
+      //  let data = newArray2;
+      //  data.reduce((a, b) => [...a, ...b], []);
+    });
+  }, []);
+
+  const renderItem = ({item}) => (
+    <View style={styles.productlistview}>
+      <Image style={styles.productimg} source={item.image} />
       <View style={{marginLeft: marginHorizontal.normal}}>
+        <Text style={styles.productname}>{item.name}</Text>
         <Text
-          style={{
-            color: colors.purple,
-            fontFamily: fontFamily.bold,
-            fontSize: fontSize.normal,
-          }}>
-          {item.name}
-        </Text>
-        <Text
-          style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold}}>
+          style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold}}
+        >
           {item.vendor}
         </Text>
         <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
           {item.price}
         </Text>
-        <TouchableOpacity
-          style={{
-            height: responsiveHeight(4),
-            width: responsiveWidth(20),
-            backgroundColor: colors.projectgreen,
-            borderRadius: borderRadius.normal,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold}}>
-            Add
-          </Text>
+        <TouchableOpacity style={styles.buyeradd}>
+          <Text style={styles.buyerbtntext}>Add</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.white,
-        marginTop: spaceVertical.semiSmall,
-      }}>
+    <View style={styles.buyercontainer}>
       <StatusBar
         backgroundColor={colors.HARD_WHITE}
         barStyle="dark-content"
         hidden={false}
         translucent={true}
       />
-     
-      <View
-        style={{
-          backgroundColor: colors.lightgreen,
-          borderTopLeftRadius: borderRadius.XLarge,
-          borderTopRightRadius: borderRadius.XLarge,
-        }}>
+
+      <View style={styles.listview}>
         <FlatList
           data={DATA}
           renderItem={renderItem}
