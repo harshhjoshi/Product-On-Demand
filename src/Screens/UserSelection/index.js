@@ -79,8 +79,8 @@ const UserSelection = ({navigation,route}) => {
         >
           <Picker.Item label="Choose Role" value="Role" />
 
-          <Picker.Item label="User" value="User" />
-          <Picker.Item label="Vendor" value="Venndor" />
+          <Picker.Item label="Buyer" value="Buyer" />
+          <Picker.Item label="Seller" value="Seller" />
         </Picker>
       </View>
       <Button

@@ -5,13 +5,20 @@ import {db} from '../Firebase/config';
 import {ref,onValue} from "@firebase/database";
 import HomeNavigation from './HomeNavigation';
 import UserNavigation from './UserNavigation';
+import { ActivityIndicator } from 'react-native-paper';
 
 const MainNavigation = () => {
+  const [loading, setloading] = useState(true)
   const [user, setUser] = useState("");
   const [rolefiled, setRoleFiled]= useState("");
 
+
+
   useEffect(() => {
-  auth().onAuthStateChanged(u =>{
+    setTimeout(() =>{
+      setloading(false)
+    },5000)
+  auth().onAuthStateChanged(u => {
       setUser(u)
   });
   if(user){
@@ -22,13 +29,22 @@ const MainNavigation = () => {
    setRoleFiled(snapVal.role)
   })
 }
-  }, [user]);
+
+  }, [user,loading]);
 
   console.log('main navigation screen user:-', user);
   console.log('main navigation screen RoleFild:-', rolefiled );
   return ( 
     <NavigationContainer>
-      {user  && rolefiled ? <UserNavigation/>:<HomeNavigation />}
+      {
+        loading ? <ActivityIndicator animating={true} color="green"  style={{flex:1,alignContent:"center" }}/>:
+        <>
+         {user  && rolefiled ? <UserNavigation/>:<HomeNavigation />}
+        </>
+       
+
+      }
+     
     </NavigationContainer>
   );
 };
