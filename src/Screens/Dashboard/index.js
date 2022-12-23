@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { View,Text,Image, TouchableOpacity,TextInput } from "react-native";
-import auth from "@react-native-firebase/auth";
-import {ref,update,onValue} from '@firebase/database';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import {ref, update, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
-import Buyer from "./componnet/Buyer";
-import Vendor from "./componnet/Vendor";
+import Buyer from './componnet/Buyer';
+import Vendor from './componnet/Vendor';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 
@@ -18,47 +18,38 @@ import {
   spaceVertical,
 } from '../../styles/variables';
 
-const Dashboard=({navigation})=>{
-    const [user, setUser] = useState("");
-    const [rolevalue,setRoleValue]= useState("User")
 
+const Dashboard = ({navigation}) => {
+  const [rolevalue, setRoleValue] = useState('Buyer');
 
+  useEffect(() => {
+    auth().onAuthStateChanged(u => {
+     const dbRef = ref(db, 'users/' + u.uid);
+     onValue(dbRef, snapshot => {
+     var snapVal = snapshot.val()
+     setRoleValue(snapVal.role)
+    })
+    });
+    },[]);
 
-    useEffect(() => {
-        auth().onAuthStateChanged(u =>{
-         const dbRef = ref(db, 'users/' + u.uid);
-         onValue(dbRef, snapshot => {
-         var snapVal = snapshot.val()
-         setRoleValue(snapVal.role)
+  const signOut = () => {
+    auth().onAuthStateChanged(i => {
+      update(ref(db, 'users/' + i.uid), {
+        role: '',
+      })
+        .then(() => {
+          console.log('data update succesfully');
+          auth().signOut();
         })
+        .catch(error => {
+          console.log('error', error.meassage);
         });
-        }, [user]);
+    });
+  };
 
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
-    const signOut = () => {
-        auth().onAuthStateChanged(onAuthStateChanged);
-       
-        if(user){
-            console.log(user.uid);
-            update(ref(db,'users/'+ user.uid ),{
-                role:""
-               }).then (()=>{
-               console.log("data update succesfully")
-               auth().signOut()
-             }).catch((error)=>{
-               console.log("error")
-             })
-        }
-      
-      
-    }
-    console.log("rolevalue", rolevalue);
-    return(
-    
-        <View style={{flex:1,backgroundColor:colors.white}}> 
-            <View
+  return (
+    <View style={{flex: 1, backgroundColor: colors.white}}>
+      <View
         style={{
           marginTop: spaceVertical.large,
           backgroundColor: colors.white,
@@ -67,7 +58,8 @@ const Dashboard=({navigation})=>{
           flexDirection: 'row',
         }}>
         <TouchableOpacity>
-          <IonIcon onPress={signOut}
+          <IonIcon
+            onPress={signOut}
             color={colors.black}
             name="log-out-outline"
             size={35}></IonIcon>
@@ -86,12 +78,12 @@ const Dashboard=({navigation})=>{
               color: colors.projectgreen,
               textAlign: 'center',
             }}>
-           {rolevalue}
+            {rolevalue}
           </Text>
         </View>
         <TouchableOpacity activeOpacity={0.5}>
           <IonIcon
-          onPress={()=>navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('Profile')}
             color={colors.projectgreen}
             name="person-circle-outline"
             size={35}></IonIcon>
@@ -116,8 +108,8 @@ const Dashboard=({navigation})=>{
             source={require('../../Assests/Images/search.png')}></Image>
         </TouchableOpacity>
       </View>
-        {rolevalue == "User" ?<Buyer/>:<Vendor/>}
-        </View>
-    )
-}
+      {rolevalue == 'Buyer' ? <Buyer /> : <Vendor />}
+    </View>
+  );
+};
 export default Dashboard;
