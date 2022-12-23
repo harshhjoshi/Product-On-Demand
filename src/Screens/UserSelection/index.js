@@ -19,23 +19,19 @@ const UserSelection = ({navigation,route}) => {
   const [userrole, setUserRole] = useState();
   const [user, setUser] = useState("");
 
-  // ** update data //
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
     useEffect(() => { 
-     auth().onAuthStateChanged(onAuthStateChanged);
+    setUser(auth().currentUser)
     },[user]);
 
   const updateData = ()=>{
  if(user){
-  console.log("user ....userselction", user );
-  update(ref(db,'users/'+ user.uid ),{
-    role:userrole
+  console.log("user ....userselction", user.uid );
+  update(ref(db,'users/'+ user.uid),{
+    role:userrole,
    }).then (()=>{
    console.log("data update succesfully")
  }).catch((error)=>{
-   console.log("error")
+   console.log("error",error.meassage)
  })
  }  
   }

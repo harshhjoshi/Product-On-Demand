@@ -12,14 +12,37 @@ import {
 } from '../../styles/variables';
 
 const styles = StyleSheet.create({
-
-
+container:{flex: 1, backgroundColor: colors.white},
+header:{
+  marginTop: spaceVertical.large,
+  backgroundColor: colors.white,
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  flexDirection: 'row',
+},
+headertextview:{
+  backgroundColor: colors.white,
+  elevation: 5,
+  borderRadius: borderRadius.medium,
+  width: responsiveWidth(56),
+},
+headertext:{
+  fontFamily: fontFamily.bold,
+  fontSize: fontSize.medium,
+  color: colors.projectgreen,
+  textAlign: 'center',
+},
   searchicon: {
     height: responsiveHeight(2.5),
     width: responsiveWidth(5),
     marginLeft: marginHorizontal.extraSmall,
   },
-
+searchinput:{
+  height: responsiveHeight(6),
+  width: responsiveWidth(80),
+  fontFamily: fontFamily.regular,
+  borderRadius: borderRadius.semiLarge,
+},
 
   verticleLine: {
     height: '50%',
