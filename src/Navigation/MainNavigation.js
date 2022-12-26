@@ -11,9 +11,6 @@ const MainNavigation = () => {
   const [loading, setloading] = useState(true)
   const [user, setUser] = useState("");
   const [rolefiled, setRoleFiled]= useState("");
-
-
-
   useEffect(() => {
     setTimeout(() =>{
       setloading(false)
@@ -28,9 +25,8 @@ const MainNavigation = () => {
    var snapVal = snapshot.val()
    setRoleFiled(snapVal.role)
   })
-}
-
-  }, [user,loading]);
+  }
+}, [user,loading]);
 
   console.log('main navigation screen user:-', user);
   console.log('main navigation screen RoleFild:-', rolefiled );

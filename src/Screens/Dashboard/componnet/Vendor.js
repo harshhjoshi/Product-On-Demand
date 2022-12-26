@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors} from '../../../styles/variables';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-
 import {spaceVertical} from '../../../styles/variables';
 import TextInputs from '../../../Components/TextInputs';
 import Button from '../../../Components/Button';
@@ -23,11 +21,11 @@ const Vendor = ({navigation}) => {
     'http://knttraining.co.uk/wp-content/uploads/2018/11/how-to-add-a-png-to-a-photo.png';
   const [galleryphoto, setUploadImage] = useState(dummyUri);
   const [user, setUser] = useState('');
-  const [productName, setProductName] = useState();
-  const [details, setdetails] = useState();
-  const [price, setPrice] = useState();
+  const [productName, setProductName] = useState('');
+  const [details, setdetails] = useState('');
+  const [price, setPrice] = useState('');
   const [productfiled, setProductFiled] = useState('');
-
+console.log("ggalleryphotoa", galleryphoto);
   const OPENPICKER = () => {
     var options = {
       title: 'Select Avatar',
@@ -56,13 +54,17 @@ const Vendor = ({navigation}) => {
   }, []);
 
   const newProductList = [];
-  const sellerSubmite = async (productName, details, price) => {
+  const sellerSubmite = async (productName, details, price,galleryphoto) => {
     console.log('sub', productfiled);
+    setPrice('')
+    setProductName('')
+    setdetails('')
     if (!productfiled) {
       let obj = {
         productName: productName,
         details: details,
         price: price,
+        avatar:galleryphoto,
       };
       newProductList.push(obj);
       update(ref(db, 'users/' + user.uid), {
@@ -79,13 +81,14 @@ const Vendor = ({navigation}) => {
         productName: productName,
         details: details,
         price: price,
+        avatar:galleryphoto,
       };
       productfiled.push(obj2);
-      update(ref(db, 'users/' + 'Xd1A6fROIKUbE5Oo1H3AJKIU8BU2'), {
+      update(ref(db, 'users/' + user.uid), {
         products: productfiled,
       })
         .then(() => {
-          console.log('data update');
+          console.log('data update..');
         })
         .catch(error => {
           console.log('error');
@@ -130,7 +133,7 @@ const Vendor = ({navigation}) => {
         />
         <Button
           name={'Submit'}
-          onPress={() => sellerSubmite(productName, details, price)}
+          onPress={() => sellerSubmite(productName, details, price,galleryphoto)}
           color={colors.projectgreen}
           marginTop={spaceVertical.semiSmall}
         ></Button>

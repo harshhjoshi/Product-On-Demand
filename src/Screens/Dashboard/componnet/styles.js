@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightgreen,
     borderTopLeftRadius: borderRadius.XLarge,
     borderTopRightRadius: borderRadius.XLarge,
+    alignItems:'center'
   },
   buyercontainer:{
     flex: 1,
@@ -57,8 +58,9 @@ const styles = StyleSheet.create({
   },
   productlistview:{
     width: responsiveWidth(90),
-    height: responsiveHeight(20),
+    // height: responsiveHeight(20),
     backgroundColor: colors.white,
+    padding:20,
     alignSelf: 'center',
     borderRadius: borderRadius.medium,
     elevation: 2,
