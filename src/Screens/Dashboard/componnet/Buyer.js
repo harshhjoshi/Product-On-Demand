@@ -8,8 +8,6 @@ import {
   StatusBar,
   TextInput,
 } from 'react-native';
-import Button from '../../../Components/Button';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {marginHorizontal} from '../../../styles/variables';
 import {db} from '../../../Firebase/config';
@@ -141,7 +139,7 @@ const DATA = [
 ];
 
 const Buyer = ({navigation}) => {
-  const [newData, setNewData] = useState([]);
+  const [productList, setProductList] = useState([]);
 
   const dbRef = ref(db, 'users/');
 
@@ -161,35 +159,22 @@ const Buyer = ({navigation}) => {
         return el !== undefined;
       });
       console.log('newArray2===', newArray2);
-
-      const flattened = newArray2.flat();
-
-      console.log('flattened===', flattened);
-
-      //  let data = newArray2;
-      //  for(let i=0;i<data.length;i++){
-      //   console.log("particular",data[i]);
-      //   data.push(data[i]);
-      //  }
-      //  setNewData([...data]);
-
-      //  let data = newArray2;
-      //  data.reduce((a, b) => [...a, ...b], []);
+      setProductList(newArray2.flat());
     });
   }, []);
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
-      <Image style={styles.productimg} source={item.image} />
+      {/* <Image style={styles.productimg} source={item.image} /> */}
       <View style={{marginLeft: marginHorizontal.normal}}>
-        <Text style={styles.productname}>{item.name}</Text>
+        <Text style={styles.productname}>{item.productName}</Text>
         <Text
           style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold}}
         >
-          {item.vendor}
+          {item.details}
         </Text>
         <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
-          {item.price}
+          {item.price} $
         </Text>
         <TouchableOpacity style={styles.buyeradd}>
           <Text style={styles.buyerbtntext}>Add</Text>
@@ -198,6 +183,7 @@ const Buyer = ({navigation}) => {
     </View>
   );
 
+  console.log("newData", productList);
   return (
     <View style={styles.buyercontainer}>
       <StatusBar
@@ -209,7 +195,7 @@ const Buyer = ({navigation}) => {
 
       <View style={styles.listview}>
         <FlatList
-          data={DATA}
+          data={productList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={{paddingBottom: spaceVertical.semiSmall}}
