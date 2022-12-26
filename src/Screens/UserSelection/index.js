@@ -25,18 +25,16 @@ const UserSelection = ({navigation,route}) => {
 
   const updateData = ()=>{
  if(user){
-  console.log("user ....userselction", user.uid );
   update(ref(db,'users/'+ user.uid),{
     role:userrole,
    }).then (()=>{
-   console.log("data update succesfully")
+   console.log("data update")
  }).catch((error)=>{
    console.log("error",error.meassage)
  })
  }  
   }
 
-  // update data **//
   return (
     <View style={{flex: 1, backgroundColor: colors.white,justifyContent:'center'}}>
       <Image
