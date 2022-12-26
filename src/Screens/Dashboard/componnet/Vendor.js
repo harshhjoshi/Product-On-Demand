@@ -66,6 +66,10 @@ const Vendor = ({navigation}) => {
   const productClothesList = [];
 
   const sellerSubmite = category => {
+    setUploadImage('')
+    setPrice('')
+    setProductName('')
+    setdetails('')
     const obj = {
       productName: productName,
       details: details,
