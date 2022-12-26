@@ -27,7 +27,7 @@ const Signin = ({navigation}) => {
   const signIn = async (email, password) => {
     
     if (!email || !password) {
-      console.log('Error', 'Please enter all email and password fields');
+      console.log('Error', 'Please enter email and password');
     }
     try {
       const userCredential = await auth().signInWithEmailAndPassword(
@@ -35,14 +35,13 @@ const Signin = ({navigation}) => {
         password,
       );
       if(userCredential.user){
-        navigation.navigate('UserSelection',{
-          email:email,
-          password:password})
+        navigation.navigate('UserSelection')
       }
     } catch (err) {
       console.log('error', err.message);
     }
   };
+
   GoogleSignin.configure({
     webClientId:
       '332937348569-0dq0bifplk1j75kg79eu0v54cs101f0u.apps.googleusercontent.com',

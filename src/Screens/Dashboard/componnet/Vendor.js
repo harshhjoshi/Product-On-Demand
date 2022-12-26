@@ -13,19 +13,21 @@ import TextInputs from '../../../Components/TextInputs';
 import Button from '../../../Components/Button';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {db} from '../../../Firebase/config';
-import {ref, update, onValue} from '@firebase/database';
-import auth from '@react-native-firebase/auth';
+import {ref, update, set, onValue} from '@firebase/database';
+import {Picker} from '@react-native-picker/picker';
 import {styles} from './styles';
+import auth from '@react-native-firebase/auth';
+
 const Vendor = ({navigation}) => {
   const dummyUri =
     'http://knttraining.co.uk/wp-content/uploads/2018/11/how-to-add-a-png-to-a-photo.png';
   const [galleryphoto, setUploadImage] = useState(dummyUri);
-  const [user, setUser] = useState('');
+  const [category, setCategory] = useState();
   const [productName, setProductName] = useState('');
   const [details, setdetails] = useState('');
   const [price, setPrice] = useState('');
   const [productfiled, setProductFiled] = useState('');
-console.log("ggalleryphotoa", galleryphoto);
+  const [user, setUser] = useState("");
   const OPENPICKER = () => {
     var options = {
       title: 'Select Avatar',
@@ -41,60 +43,69 @@ console.log("ggalleryphotoa", galleryphoto);
     });
   };
 
+  useEffect(() => { 
+    setUser(auth().currentUser)
+    },[user]);
+
   useEffect(() => {
-    auth().onAuthStateChanged(u => {
-      setUser(u);
-      const dbRef = ref(db, 'users/' + u.uid);
-      onValue(dbRef, snapshot => {
-        var snapVal = snapshot.val();
-        console.log('snapVal', snapVal);
-        setProductFiled(snapVal.products);
-      });
+    const dbRef = ref(db, 'categoryLists/');
+    onValue(dbRef, snapshot => {
+      var snapVal = snapshot.val();
+      setProductFiled(snapVal);
+      if (!snapVal) {
+        console.log('hello no');
+        set(ref(db, 'categoryLists/'), {
+          grocery: '',
+          clothes: '',
+        });
+      }
     });
   }, []);
 
-  const newProductList = [];
-  const sellerSubmite = async (productName, details, price,galleryphoto) => {
-    console.log('sub', productfiled);
-    setPrice('')
-    setProductName('')
-    setdetails('')
-    if (!productfiled) {
-      let obj = {
-        productName: productName,
-        details: details,
-        price: price,
-        avatar:galleryphoto,
-      };
-      newProductList.push(obj);
-      update(ref(db, 'users/' + user.uid), {
-        products: newProductList,
-      })
-        .then(() => {
-          console.log('data update');
-        })
-        .catch(error => {
-          console.log('error');
-        });
-    } else {
-      let obj2 = {
-        productName: productName,
-        details: details,
-        price: price,
-        avatar:galleryphoto,
-      };
-      productfiled.push(obj2);
-      update(ref(db, 'users/' + user.uid), {
-        products: productfiled,
-      })
-        .then(() => {
-          console.log('data update..');
-        })
-        .catch(error => {
-          console.log('error');
-        });
+  const productGroceryList = [];
+  const productClothesList = [];
+
+  const sellerSubmite = category => {
+    const obj = {
+      productName: productName,
+      details: details,
+      price:price,
+      avatar:galleryphoto,
+      id:user.email
+    };
+    switch (category) {
+      case 'grocery':
+        if (productfiled.grocery) {
+          productfiled.grocery.push(obj);
+          update(ref(db, 'categoryLists'), {
+            grocery: productfiled.grocery,
+          });
+        } else {
+          productGroceryList.push(obj);
+          update(ref(db, 'categoryLists'), {
+            grocery: productGroceryList,
+          });
+        }
+        break;
+
+      case 'clothes':
+        if (productfiled.clothes) {
+          productfiled.clothes.push(obj);
+          update(ref(db, 'categoryLists'), {
+            clothes: productfiled.clothes,
+          });
+        } else {
+          productClothesList.push(obj);
+          update(ref(db, 'categoryLists'), {
+            clothes: productClothesList,
+          });
+        }
+        break;
+      default:
+        break;
     }
   };
+
   return (
     <ScrollView>
       <StatusBar
@@ -107,8 +118,7 @@ console.log("ggalleryphotoa", galleryphoto);
         <Text style={styles.headertext}>Upload Image</Text>
         <TouchableOpacity
           onPress={() => OPENPICKER()}
-          style={styles.imgselection}
-        >
+          style={styles.imgselection}>
           <Image style={styles.img} source={{uri: galleryphoto}} />
         </TouchableOpacity>
         <TextInputs
@@ -131,12 +141,21 @@ console.log("ggalleryphotoa", galleryphoto);
           keyboardType="Numeric"
           style={styles.TextInputs}
         />
+        <View>
+          <Picker
+            selectedValue={category}
+            onValueChange={itemValue => setCategory(itemValue)}>
+            <Picker.Item label="Choose category" value="category" />
+            <Picker.Item label="grocery" value="grocery" />
+            <Picker.Item label="clothes" value="clothes" />
+          </Picker>
+        </View>
+
         <Button
           name={'Submit'}
-          onPress={() => sellerSubmite(productName, details, price,galleryphoto)}
+          onPress={() => sellerSubmite(category)}
           color={colors.projectgreen}
-          marginTop={spaceVertical.semiSmall}
-        ></Button>
+          marginTop={spaceVertical.semiSmall}></Button>
       </View>
     </ScrollView>
   );
