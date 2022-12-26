@@ -6,7 +6,7 @@ import Button from '../../Components/Button';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import auth from "@react-native-firebase/auth";
 import {db} from '../../Firebase/config';
-import {child, database, ref,set} from "@firebase/database";
+import {ref,set} from "@firebase/database";
 import {launchImageLibrary} from 'react-native-image-picker';
 import { colors, responsiveWidth, spaceVertical } from '../../styles/variables';
 
@@ -44,7 +44,6 @@ const Signup = ({navigation}) => {
       if(uid_1){
         storeData(uid_1);
       }
-      console.log("uid_1 ", uid_1 );
       return createUserInDb(uid_1, email);
     } catch (err) {
       console.log("err messgae",err.message)
@@ -59,9 +58,9 @@ const storeData =(id)=>{
     role:"",
     products:"",
   }).then (()=>{
-  console.log("data update")
+  navigation.navigate('Signin_screen')
 }).catch((error)=>{
-  console.log("error")
+  console.log("error",error.message)
 })
 }
   return (

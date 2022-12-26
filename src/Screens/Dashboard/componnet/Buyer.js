@@ -23,120 +23,7 @@ import {
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
 
-const DATA = [
-  {
-    id: 1,
-    name: 'Amul Gold Milk',
-    vendor: 'Amul Milk center',
-    price: '30 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 2,
-    name: 'Amul shakti Milk',
-    vendor: 'Amul Milk center',
-    price: '28 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 3,
-    name: 'Amul Moti Milk',
-    vendor: 'Amul Milk center',
-    price: '20 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 4,
-    name: 'Amul Slim Milk',
-    vendor: 'Amul Milk center',
-    price: '25 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 5,
-    name: 'Amul Gold Milk',
-    vendor: 'Amul Milk center',
-    price: '30 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 6,
-    name: 'Amul shakti Milk',
-    vendor: 'Amul Milk center',
-    price: '28 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 7,
-    name: 'Amul Moti Milk',
-    vendor: 'Amul Milk center',
-    price: '20 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 8,
-    name: 'Amul Slim Milk',
-    vendor: 'Amul Milk center',
-    price: '25 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 9,
-    name: 'Amul Gold Milk',
-    vendor: 'Amul Milk center',
-    price: '30 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 10,
-    name: 'Amul shakti Milk',
-    vendor: 'Amul Milk center',
-    price: '28 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 11,
-    name: 'Amul Moti Milk',
-    vendor: 'Amul Milk center',
-    price: '20 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 12,
-    name: 'Amul Slim Milk',
-    vendor: 'Amul Milk center',
-    price: '25 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 13,
-    name: 'Amul Gold Milk',
-    vendor: 'Amul Milk center',
-    price: '30 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 14,
-    name: 'Amul shakti Milk',
-    vendor: 'Amul Milk center',
-    price: '28 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 15,
-    name: 'Amul Moti Milk',
-    vendor: 'Amul Milk center',
-    price: '20 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-  {
-    id: 16,
-    name: 'Amul Slim Milk',
-    vendor: 'Amul Milk center',
-    price: '25 $',
-    image: require('../../../Assests/Images/google.png'),
-  },
-];
+
 
 const Buyer = ({navigation}) => {
   const [productList, setProductList] = useState([]);
@@ -165,11 +52,11 @@ const Buyer = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
-      {/* <Image style={styles.productimg} source={item.image} /> */}
+      <Image style={styles.productimg} source={{uri: `${item.avatar}`}}/>
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
         <Text
-          style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold}}
+          style={{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold, width:responsiveWidth(50)}}
         >
           {item.details}
         </Text>
@@ -194,6 +81,17 @@ const Buyer = ({navigation}) => {
       />
 
       <View style={styles.listview}>
+      {productList.length <= 0 ? (
+          <Text
+            style={{
+              fontFamily: fontFamily.bold,
+              marginTop: spaceVertical.normal,
+              fontSize: fontSize.large,
+            }}
+          >
+            No products available
+          </Text>
+        ) : (
         <FlatList
           data={productList}
           renderItem={renderItem}
@@ -201,6 +99,7 @@ const Buyer = ({navigation}) => {
           contentContainerStyle={{paddingBottom: spaceVertical.semiSmall}}
           showsVerticalScrollIndicator={false}
         />
+        )}
       </View>
     </View>
   );
