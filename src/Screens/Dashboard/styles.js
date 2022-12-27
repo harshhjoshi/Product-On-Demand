@@ -37,13 +37,23 @@ headertext:{
     width: responsiveWidth(5),
     marginLeft: marginHorizontal.extraSmall,
   },
-searchinput:{
-  height: responsiveHeight(6),
-  width: responsiveWidth(80),
-  fontFamily: fontFamily.regular,
-  borderRadius: borderRadius.semiLarge,
-},
 
+verticleLine: {
+  height: '50%',
+  width: 1,
+  backgroundColor: colors.nocolor,
+},
+searchbarview: {
+  flexDirection: 'row',
+  width: responsiveWidth(93),
+  borderWidth: 1.5,
+  paddingStart:10,
+  borderColor: "#bbb",
+  alignSelf: 'center',
+  alignItems: 'center',
+  marginTop: spaceVertical.small,
+  borderRadius: borderRadius.large
+},
   verticleLine: {
     height: '50%',
     width: 1,
@@ -51,7 +61,7 @@ searchinput:{
   },
   searchbarview: {
     flexDirection: 'row',
-    width: responsiveWidth(93),
+    width: responsiveWidth(65),
     backgroundColor:colors.white,
     borderWidth: 1.5,
     paddingStart:10,

@@ -26,7 +26,7 @@ const MainNavigation = () => {
    setRoleFiled(snapVal.role)
   })
   }
-}, [user,loading]);
+}, [user,loading,rolefiled]);
 
   console.log('main navigation screen user:-', user);
   console.log('main navigation screen RoleFild:-', rolefiled );
