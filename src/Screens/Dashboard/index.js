@@ -7,36 +7,40 @@ import Buyer from './componnet/Buyer';
 import Vendor from './componnet/Vendor';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
+import {Picker} from '@react-native-picker/picker';
 
 import {colors} from '../../styles/variables';
 
 const Dashboard = ({navigation}) => {
   const [rolevalue, setRoleValue] = useState('Buyer');
 
-  useEffect(() => {
-    auth().onAuthStateChanged(u => {
-      const dbRef = ref(db, 'users/' + u.uid);
+  const[user,setUser]=useState("");
+
+  useEffect(() => { 
+    setUser(auth().currentUser)
+    if(user){
+      const dbRef = ref(db, 'users/' + user.uid);
       onValue(dbRef, snapshot => {
         var snapVal = snapshot.val();
         setRoleValue(snapVal.role);
       });
-    });
-  }, []);
+    }
+
+    },[user]);
 
   const signOut = () => {
-    console.log("ok");
-    auth().onAuthStateChanged(i => {
-      update(ref(db, 'users/' + i.uid), {
+    if(user){
+      update(ref(db, 'users/' + user.uid), {
         role: '',
       })
         .then(() => {
-          console.log('data update succesfully');
+          console.log(' signout succesfully');
           auth().signOut();
         })
         .catch(error => {
           console.log('error', error.meassage);
         });
-    });
+    }
   };
 
   return (
@@ -62,22 +66,7 @@ const Dashboard = ({navigation}) => {
           ></IonIcon>
         </TouchableOpacity>
       </View>
-      <View style={styles.searchbarview}>
-        <TextInput
-          style={styles.searchinput}
-          placeholder="Search Here"
-          placeholderTextColor={'gray'}
-        ></TextInput>
-
-        <View style={styles.verticleLine}></View>
-        <TouchableOpacity>
-          <Image
-            resizeMode="contain"
-            style={styles.searchicon}
-            source={require('../../Assests/Images/search.png')}
-          ></Image>
-        </TouchableOpacity>
-      </View>
+     
       {rolevalue == 'Buyer' ? <Buyer /> : <Vendor />}
     </View>
   );

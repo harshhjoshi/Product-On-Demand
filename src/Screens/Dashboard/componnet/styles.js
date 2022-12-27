@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(90),
     alignSelf: 'center',
     marginTop: spaceVertical.semiSmall,
-    paddingBottom: spaceVertical.normal,
+
   },
   headertext:{
     fontFamily: fontFamily.bold,
@@ -104,22 +104,19 @@ const styles = StyleSheet.create({
     width: responsiveWidth(5),
     marginLeft: marginHorizontal.extraSmall,
   },
-
-  searchicon: {
-    height: responsiveHeight(2.5),
-    width: responsiveWidth(5),
-    marginLeft: marginHorizontal.extraSmall,
+  searchinput:{
+    height: responsiveHeight(6),
+    width: responsiveWidth(40),
+    fontFamily: fontFamily.regular,
+    borderRadius: borderRadius.semiLarge,
   },
 
 
-  verticleLine: {
-    height: '50%',
-    width: 1,
-    backgroundColor: colors.nocolor,
-  },
+
+ 
   searchbarview: {
     flexDirection: 'row',
-    width: responsiveWidth(93),
+    width: responsiveWidth(55),
     borderWidth: 1.5,
     paddingStart:10,
     borderColor: "#bbb",
