@@ -28,14 +28,11 @@ import {Picker} from '@react-native-picker/picker';
 const Buyer = ({navigation}) => {
 
   const [productList, setProductList] = useState([]);
+  const [category, setCategory] = useState();
 
   useEffect(() => {
     
     const dbRef = ref(db,'categoryLists/');
-    // onValue(dbRef, snapshot => {
-    //   var snapVal = snapshot.val();
-    //   setProductList(snapVal);
-    // })
     onValue(dbRef, snapshot => {
       let records = [];
       snapshot.forEach(childSnapshot => {
@@ -46,20 +43,10 @@ const Buyer = ({navigation}) => {
       const arra1= records[0].data
       const arra2 = records[1].data
       setProductList(arra1.concat(arra2));
-          // setProductList(records[0].data);
-      
-      // var nameArray = records.map(function (el) {
-      //   return el.data;
-      // });
-
-      // var newArray2 = nameArray.filter(function (el) {
-      //   return el !== undefined;
-      // });
-      // console.log('newArray2===', newArray2);
-      // setProductList(newArray2.flat());
     });
   }, []);
-  console.log("productList", productList);
+  console.log("productList..........", productList);
+
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
       <Image style={styles.productimg} source={{uri: `${item.avatar}`}}/>
@@ -79,8 +66,7 @@ const Buyer = ({navigation}) => {
       </View>
     </View>
   );
-  // console.log("productList...", productList);
-
+ 
   return (
     <View style={styles.buyercontainer}>
       <StatusBar
@@ -89,7 +75,6 @@ const Buyer = ({navigation}) => {
         hidden={false}
         translucent={true}
       />
-
       <View style={styles.listview}>
       {productList.length <= 0 ? (
           <Text

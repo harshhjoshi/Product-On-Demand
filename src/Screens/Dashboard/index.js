@@ -24,6 +24,7 @@ const Dashboard = ({navigation}) => {
   }, []);
 
   const signOut = () => {
+    console.log("ok");
     auth().onAuthStateChanged(i => {
       update(ref(db, 'users/' + i.uid), {
         role: '',

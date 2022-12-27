@@ -75,7 +75,7 @@ const Vendor = ({navigation}) => {
       details: details,
       price:price,
       avatar:galleryphoto,
-      id:user.email
+      email:user.email
     };
     switch (category) {
       case 'grocery':
