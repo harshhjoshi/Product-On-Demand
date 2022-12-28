@@ -9,14 +9,13 @@ import {db} from '../../Firebase/config';
 import {ref, set} from '@firebase/database';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {colors, responsiveWidth, spaceVertical} from '../../styles/variables';
+import * as yup from 'yup';
+import {Formik} from 'formik';
 
 const Signup = ({navigation}) => {
   const dummyUri =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/768px-Circle-icons-profile.svg.png';
   const [galleryphoto, setUploadImage] = useState(dummyUri);
-  const [userName, setUserName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
 
   const OPENPICKER = () => {
     console.log('ndbvjkbhdfvj');
@@ -34,36 +33,29 @@ const Signup = ({navigation}) => {
     });
   };
 
-  const signUp = async (email, password) => {
-    if (!email || !password) {
-      console.log('Error', 'Please enter all fields');
-    }
+  const signUp = async (email, password,userName) => {
+    console.log('e,p', email, password);
     try {
       const cred = await auth().createUserWithEmailAndPassword(email, password);
       console.log(cred.user);
       if (cred.user.uid) {
-        storeData(cred.user.uid);
+        set(ref(db, 'users/' + cred.user.uid), {
+          userName: userName,
+          email: email,
+          photoURL: galleryphoto,
+          role:'',
+        })
+          .then(() => {
+            navigation.navigate('Signin_screen');
+          })
+          .catch(error => {
+            console.log('error', error.message);
+          });
       }
     } catch (error) {
       console.log('error', error.message);
     }
   };
-
-  const storeData = id => {
-    set(ref(db, 'users/' + id), {
-      userName: userName,
-      email: email,
-      photoURL: galleryphoto,
-      role: '',
-    })
-      .then(() => {
-        navigation.navigate('Signin_screen');
-      })
-      .catch(error => {
-        console.log('error', error.message);
-      });
-  };
-  
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
@@ -86,34 +78,104 @@ const Signup = ({navigation}) => {
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <TextInputs
-            label="Name"
-            value={userName}
-            onChangeText={e => setUserName(e)}
-          />
-          <TextInputs
-            label="Email"
-            value={email}
-            onChangeText={e => setEmail(e)}
-          />
-          <TextInputs
-            label="Password"
-            value={password}
-            onChangeText={e => setPassword(e)}
-          />
-          <TextInputs label="Confirm password" />
-          <TextInputs label="Location" />
-          <TextInputs label="Phone no" />
-          <View style={styles.checkStyle}></View>
-        </View>
+        <Formik
+          initialValues={{
+            name: '',
+            email: '',
+            password: '',
+            confrompassword: '',
+          }}
+          onSubmit={values => {
+            console.log('values', values);
+            signUp(values.email,values.password,values.name)
+          }}
+          validationSchema={yup.object().shape({
+            name: yup.string().required('Please, provide your name!'),
+            email: yup.string().email().required('Email is required'),
+            password: yup
+              .string()
+              .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+              .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+              .matches(/\d/, 'Password must have a number')
+              .matches(
+                /[!@#$%^&*()\-_"=+{}; :,<.>]/,
+                'Password must have a special character',
+              )
+              .min(8, ({min}) => `Passowrd must be at least ${min} characters`)
+              .required('Password is required'),
+            confrompassword: yup
+              .string()
+              .oneOf([yup.ref('password')], 'Passwords do not match')
+              .required('Confirm password is required'),
+          })}>
+          {({
+            values,
+            handleChange,
+            errors,
+            setFieldTouched,
+            touched,
+            isValid,
+            handleSubmit,
+          }) => (
+            <View>
+              <TextInputs
+                label="Name"
+                value={values.name}
+                onChangeText={handleChange('name')}
+                onBlur={() => setFieldTouched('name')}
+              />
+              {touched.name && errors.name && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.name}
+                </Text>
+              )}
+              <TextInputs
+                label="Email"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={() => setFieldTouched('email')}
+              />
+              {touched.email && errors.email && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.email}
+                </Text>
+              )}
+              <TextInputs
+                label="Password"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={() => setFieldTouched('password')}
+                secureTextEntry={true}
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.password}
+                </Text>
+              )}
+              <TextInputs
+                label="Conform Password"
+                value={values.confrompassword}
+                onChangeText={handleChange('confrompassword')}
+                onBlur={() => setFieldTouched('confrompassword')}
+                secureTextEntry={true}
+              />
+              {touched.confrompassword && errors.confrompassword && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.confrompassword}
+                </Text>
+              )}
 
-        <Button
-          name="Signup"
-          color={colors.projectgreen}
-          marginTop={spaceVertical.small}
-          onPress={() => signUp(email, password)}
-        />
+              <Button
+                name="Signup"
+                color={isValid ? colors.projectgreen : colors.shadowgreen}
+                marginTop={spaceVertical.small}
+                disableTrue={!isValid}
+                onPress={handleSubmit}
+
+              />
+            </View>
+          )}
+        </Formik>
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <Text style={styles.subTitleBottom}>Already have an account?</Text>
           <Pressable onPress={() => navigation.navigate('Signin_screen')}>
