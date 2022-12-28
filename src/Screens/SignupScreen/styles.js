@@ -65,5 +65,10 @@ const styles = StyleSheet.create({
     color: colors.blue,
     top: 5,
   },
+  inputvalidStyle:{
+    fontSize: 12,
+    color:colors.red,
+    fontFamily:fontFamily.medium
+  },
 });
 export default styles;

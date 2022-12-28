@@ -19,25 +19,25 @@ import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {colors, marginHorizontal, spaceVertical} from '../../styles/variables';
 import {db} from '../../Firebase/config';
 import {ref, set} from '@firebase/database';
+import * as yup from 'yup';
+import {Formik} from 'formik';
 
 const Signin = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
+  const [errorfb,setErrorFB]=useState("");
   const signIn = async (email, password) => {
-    
-    if (!email || !password) {
-      console.log('Error', 'Please enter email and password');
-    }
     try {
       const userCredential = await auth().signInWithEmailAndPassword(
         email,
         password,
       );
       if(userCredential.user){
-        navigation.navigate('UserSelection')
+        setErrorFB("")
+        setTimeout(() =>{
+          navigation.navigate('UserSelection')
+        },1000)
       }
     } catch (err) {
+      setErrorFB(err.message)
       console.log('error', err.message);
     }
   };
@@ -122,29 +122,79 @@ const Signin = ({navigation}) => {
           <Text style={styles.title}>Welcome back!</Text>
           <Text style={styles.txt}>Sign in to your account.</Text>
         </View>
-        <View>
-          <TextInputs
-            label="Email"
-            style={styles.textinput}
-            value={email}
-            onChangeText={e => setEmail(e)}
-          />
-          <TextInputs
-            label="Password"
-            style={styles.textinput}
-            value={password}
-            onChangeText={e => setPassword(e)}
-          />
-        </View>
-        <Text style={styles.fgPass}>Forgot Password? </Text>
+        {/*  */}
 
-        <View style={{flexDirection: 'row'}}></View>
-        <Button
-          onPress={() => signIn(email, password)}
-          name="Login"
-          color={colors.projectgreen}
-          marginTop={spaceVertical.tiny}
-        />
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={values => {
+            console.log('values', values);
+            signIn(values.email,values.password)
+          }}
+          validationSchema={yup.object().shape({
+            email: yup.string().email().required('Email is required'),
+            password: yup
+              .string()
+              .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+              .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+              .matches(/\d/, 'Password must have a number')
+              .matches(
+                /[!@#$%^&*()\-_"=+{}; :,<.>]/,
+                'Password must have a special character',
+              )
+              .min(8, ({min}) => `Passowrd must be at least ${min} characters`)
+              .required('Password is required'),
+          })}>
+          {({
+            values,
+            handleChange,
+            errors,
+            setFieldTouched,
+            touched,
+            isValid,
+            handleSubmit,
+          }) => (
+            <View>
+              <TextInputs
+                label="Email"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={() => setFieldTouched('email')}
+              />
+              {touched.email && errors.email && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.email}
+                </Text>
+              )}
+              <TextInputs
+                label="Password"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={() => setFieldTouched('password')}
+                secureTextEntry={true}
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.inputvalidStyle}>
+                  {errors.password}
+                </Text>
+              )}
+
+              {errorfb &&<Text style={styles.inputvalidStyle}>{errorfb}</Text>}
+              <Button
+                name="Login"
+                color={isValid? colors.projectgreen : colors.shadowgreen}
+                marginTop={spaceVertical.small}
+                disableTrue={!isValid}
+                onPress={handleSubmit}
+              />
+
+            </View>
+          )}
+        </Formik>
+
+        {/*  */}
         <View style={styles.bottomstyles}>
           <Text style={styles.subTitleBottom}>Don't have an account?</Text>
           <TouchableOpacity

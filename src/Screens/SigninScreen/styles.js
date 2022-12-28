@@ -86,6 +86,11 @@ marginLeft:responsiveWidth(20),
     width:responsiveWidth(10),
     marginLeft:marginHorizontal.large
  
-  }
+  },
+  inputvalidStyle:{
+    fontSize: 12,
+    color:colors.red,
+    fontFamily:fontFamily.medium
+  },
 });
 export default styles;
