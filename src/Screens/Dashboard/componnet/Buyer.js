@@ -23,9 +23,11 @@ import {
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
 import {ActivityIndicator} from 'react-native-paper';
-
+import SearchInput, { createFilter } from 'react-native-search-filter';
+const KEYS_TO_FILTERS = ['productName'];
 const Buyer = ({navigation}) => {
   const [productList, setProductList] = useState([]);
+  const[filter,setFilter]=useState('');
   const [categoryFilter, setCategory] = useState('all');
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
@@ -75,7 +77,8 @@ const Buyer = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
-      <Image style={styles.productimg} source={{uri: `${item.avatar}`}} />
+     
+      <Image style={styles.productimg} source={{uri: `${item.avatar}`?`${item.avatar}`:null}} />
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
         <Text
@@ -98,6 +101,7 @@ const Buyer = ({navigation}) => {
   );
 
   console.log('product', productList);
+  const filteredData = productList.filter(createFilter(filter, KEYS_TO_FILTERS))
   return (
     <View style={styles.buyercontainer}>
       <StatusBar
@@ -114,6 +118,7 @@ const Buyer = ({navigation}) => {
               style={styles.searchinput}
               placeholder="Search Here"
               placeholderTextColor={'gray'}
+              onChangeText={(term) => { setFilter(term) }} 
             ></TextInput>
 
             <TouchableOpacity>
@@ -179,7 +184,7 @@ const Buyer = ({navigation}) => {
               </Text>
             ) : (
               <FlatList
-                data={productList}
+                data={filteredData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
