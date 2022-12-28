@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {
   borderRadius,
@@ -8,12 +8,11 @@ import {
   marginHorizontal,
   responsiveHeight,
   responsiveWidth,
-  spaceVertical
+  spaceVertical,
 } from '../../../styles/variables';
 
 const styles = StyleSheet.create({
-  imgselection:{
-   
+  imgselection: {
     borderRadius: borderRadius.circle,
     height: responsiveHeight(18),
     width: responsiveHeight(18),
@@ -26,24 +25,41 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: spaceVertical.small,
   },
-  listview:{
+  listview: {
     backgroundColor: colors.lightgreen,
     borderTopLeftRadius: borderRadius.XLarge,
     borderTopRightRadius: borderRadius.XLarge,
-    alignItems:'center'
+    borderRadius:borderRadius.XLarge,
+    alignItems: 'center',
   },
-  buyercontainer:{
+  modalView: {
+    height: responsiveHeight(30),
+    width: responsiveWidth(70),
+    backgroundColor: colors.white,
+    elevation: 5,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: responsiveHeight(30),
+    borderRadius: borderRadius.boxRadius,
+  },
+  modalText: {
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.large,
+    color: colors.HARD_BLACK,
+  },
+  buyercontainer: {
     flex: 1,
     backgroundColor: colors.white,
     marginTop: spaceVertical.semiSmall,
   },
-  pricetext:{color: colors.green, fontFamily: fontFamily.medium},
-  productname:{
+  pricetext: {color: colors.green, fontFamily: fontFamily.medium},
+  productname: {
     color: colors.purple,
     fontFamily: fontFamily.bold,
     fontSize: fontSize.normal,
   },
-  buyeradd:{
+  buyeradd: {
     height: responsiveHeight(4),
     width: responsiveWidth(20),
     backgroundColor: colors.projectgreen,
@@ -51,16 +67,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  productimg:{
+  productimg: {
     height: responsiveHeight(10),
     width: responsiveHeight(10),
     marginLeft: marginHorizontal.flatlistmargin,
+    borderRadius:borderRadius.medium
   },
-  productlistview:{
+  productlistview: {
     width: responsiveWidth(90),
     // height: responsiveHeight(20),
     backgroundColor: colors.white,
-    padding:20,
+    padding: 20,
     alignSelf: 'center',
     borderRadius: borderRadius.medium,
     elevation: 2,
@@ -68,30 +85,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  buyerbtntext:{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold},
-  vendortext:{color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold},
-  img:{
+  buyerbtntext: {color: colors.HARD_WHITE, fontFamily: fontFamily.semiBold},
+  vendortext: {color: colors.HARD_BLACK, fontFamily: fontFamily.semiBold},
+  img: {
     height: responsiveHeight(17),
     width: responsiveWidth(36),
     borderRadius: borderRadius.circle,
   },
-  TextInputs:{
+  TextInputs: {
     width: responsiveWidth(80),
     alignSelf: 'center',
     marginTop: spaceVertical.small,
     backgroundColor: colors.HARD_WHITE,
   },
 
-  headerview:{
+  headerview: {
     backgroundColor: colors.white,
     elevation: 5,
     borderRadius: borderRadius.medium,
     width: responsiveWidth(90),
     alignSelf: 'center',
     marginTop: spaceVertical.semiSmall,
-
+    paddingBottom: spaceVertical.semiSmall,
   },
-  headertext:{
+  headertext: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.medium,
     color: colors.projectgreen,
@@ -104,30 +121,24 @@ const styles = StyleSheet.create({
     width: responsiveWidth(5),
     marginLeft: marginHorizontal.extraSmall,
   },
-  searchinput:{
+  searchinput: {
     height: responsiveHeight(6),
     width: responsiveWidth(40),
     fontFamily: fontFamily.regular,
     borderRadius: borderRadius.semiLarge,
   },
 
-
-
- 
   searchbarview: {
     flexDirection: 'row',
     width: responsiveWidth(55),
     borderWidth: 1.5,
-    paddingStart:10,
-    borderColor: "#bbb",
+    paddingStart: 10,
+    borderColor: '#bbb',
     alignSelf: 'center',
     alignItems: 'center',
     marginTop: spaceVertical.small,
-    borderRadius: borderRadius.large
+    borderRadius: borderRadius.large,
   },
-
 });
 
-export { styles };
-
-
+export {styles};

@@ -5,6 +5,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
+import { colors, fontFamily } from '../../styles/variables';
 
 const data = [
   {
@@ -50,7 +51,7 @@ const Profile = ({navigation}) => {
   const [newdata, setdata] = useState(data);
 
   function onAuthStateChanged(user) {
-    setUser(user.uid);
+    setUser(user);
   }
   useEffect(() => {
     auth().onAuthStateChanged(onAuthStateChanged);
@@ -64,7 +65,7 @@ const Profile = ({navigation}) => {
           records.push({key: keyName, data: data});
         });
         console.log('records', user);
-        var singleData = records.filter(i => i.key == user);
+        var singleData = records.filter(i => i.key == user.uid);
         console.log('singleData...', singleData);
         setFiredata(singleData[0].data);
       });
@@ -75,27 +76,27 @@ const Profile = ({navigation}) => {
     <TouchableOpacity style={styles.userInfoStyle}>
      {/*<IonIcon name={item.icon} size={25}></IonIcon> */}
       <Text style={styles.ml}>{item.label}</Text>
-      <IonIcon name="caret-forward-outline" size={25}></IonIcon>
+      <IonIcon name="caret-forward-outline" size={25} color={colors.black}></IonIcon>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <IonIcon name="arrow-back" size={30} color="black"></IonIcon>
-        </View>
-        <Text style={styles.profilealign}>Profile</Text>
-        <TouchableOpacity>
-          <IonIcon name="log-out" size={30} color="black"></IonIcon>
+        <TouchableOpacity onPress={()=>navigation.navigate('Dashboard')} style={{alignSelf:'center',left:10}}>
+          <IonIcon name="arrow-back" size={30} color="black" ></IonIcon>
         </TouchableOpacity>
+        <Text style={styles.profilealign}>Profile</Text>
+        {/* <TouchableOpacity>
+          <IonIcon name="log-out" size={30} color="black"></IonIcon>
+        </TouchableOpacity> */}
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.row}>
           <Image source={{uri: `${Firedata.photoURL}`}} style={styles.logo} />
           <View style={styles.usernameInfo}>
             <Text style={styles.title}>{Firedata.userName}</Text>
-            <Text>Seller</Text>
+            <Text style={{fontFamily:fontFamily.medium}}>Seller</Text>
           </View>
         </View>
 

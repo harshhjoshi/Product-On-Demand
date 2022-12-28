@@ -7,6 +7,8 @@ import {
   marginHorizontal,
   fontSize,
   fontFamily,
+  responsiveWidth,
+  responsiveHeight,
 } from '../../styles/variables';
 const styles = StyleSheet.create({
   container: {
@@ -15,9 +17,8 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: spaceVertical.small,
-    paddingHorizontal: marginHorizontal.xsmall,
+  // alignSelf:'center',
+  marginTop:spaceVertical.large
   },
   mainContainer: {
     flex: 1,
@@ -25,9 +26,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: borderRadius.XLarge,
     borderTopRightRadius: borderRadius.XLarge - 5,
     paddingHorizontal: marginHorizontal.xsmall,
-    paddingVertical: spaceVertical.small,
+    paddingVertical: spaceVertical.small,marginTop:spaceVertical.semiSmall
   },
-  row: {
+    row: {
     flexDirection: 'row',
   },
   abc: {
@@ -35,17 +36,17 @@ const styles = StyleSheet.create({
   },
   profilealign: {
     fontSize: fontSize.medium + 2,
-    fontFamily: fontFamily.medium,
-    color: colors.black,
+    fontFamily: fontFamily.bold,
+    color: colors.black,marginLeft:responsiveWidth(34)
   },
   userEmailStyle: {
     flexDirection: 'row',
     marginVertical: spaceVertical.small,
   },
   logo: {
-    height: 80,
-    width: 80,
-    borderRadius: 50,
+    height: responsiveHeight(10),
+    width: responsiveWidth(20),
+    borderRadius:borderRadius.circle,
   },
   emailTitle: {
     fontFamily: fontFamily.semiBold,
