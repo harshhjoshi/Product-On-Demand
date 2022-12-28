@@ -22,32 +22,43 @@ import {
   spaceVertical,
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
-import { ActivityIndicator } from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 
 const Buyer = ({navigation}) => {
   const [productList, setProductList] = useState([]);
-  const [categoryFilter, setCategory] = useState("all");
+  const [categoryFilter, setCategory] = useState('all');
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(true);
+  const dbRef = ref(db, 'categoryLists/');
 
   useEffect(() => {
-    console.log("hello i am new");
-    const dbRef = ref(db, 'categoryLists/');
-    onValue(dbRef, snapshot => {
-      if(snapshot){
-        let records = [];
-        snapshot.forEach(childSnapshot => {
-          let data = childSnapshot.val();
-          records.push({data});
-          // setloading(false)
-        });
-        setClothesList(records[0].data);
-        setGroceryList(records[1].data);
-        setProductList([...records[0].data,...records[1].data])
-      }
-    });
-  }, []);
+    const getData = async () => {
+      console.log('hello i am new');
+      let records = [];
+     await onValue(dbRef, async snapshot => {
+      
+        if (snapshot) {
+          snapshot.forEach(childSnapshot => {
+            let data = childSnapshot.val();
+
+            records.push({data});
+            // setloading(false)
+          });
+          await setClothesList(records[0].data);
+         await setGroceryList(records[1].data);
+         await setProductList([...records[0].data, ...records[1].data]);
+
+          console.log('productList i am new 2', productList);
+          console.log('grocerylist i am new 2', grocerylist);
+          console.log('clotheslist i am new 2', clotheslist);
+        }
+      });
+    };
+
+    getData();
+
+  }, [db]);
 
   useEffect(() => {
     switch (categoryFilter) {
@@ -58,7 +69,7 @@ const Buyer = ({navigation}) => {
         setProductList(clotheslist);
         break;
       default:
-        setProductList([...grocerylist,...clotheslist])
+        setProductList([...grocerylist, ...clotheslist]);
     }
   }, [categoryFilter]);
 
@@ -72,7 +83,8 @@ const Buyer = ({navigation}) => {
             color: colors.HARD_BLACK,
             fontFamily: fontFamily.semiBold,
             width: responsiveWidth(50),
-          }}>
+          }}
+        >
           {item.details}
         </Text>
         <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
@@ -85,7 +97,7 @@ const Buyer = ({navigation}) => {
     </View>
   );
 
-  console.log("product", productList);
+  console.log('product', productList);
   return (
     <View style={styles.buyercontainer}>
       <StatusBar
@@ -101,13 +113,15 @@ const Buyer = ({navigation}) => {
             <TextInput
               style={styles.searchinput}
               placeholder="Search Here"
-              placeholderTextColor={'gray'}></TextInput>
+              placeholderTextColor={'gray'}
+            ></TextInput>
 
             <TouchableOpacity>
               <Image
                 resizeMode="contain"
                 style={styles.searchicon}
-                source={require('../../../Assests/Images/search.png')}></Image>
+                source={require('../../../Assests/Images/search.png')}
+              ></Image>
             </TouchableOpacity>
           </View>
           <View
@@ -120,7 +134,8 @@ const Buyer = ({navigation}) => {
               height: responsiveHeight(6),
               top: 9,
               marginLeft: marginHorizontal.semiSmall,
-            }}>
+            }}
+          >
             <Picker
               style={{
                 width: responsiveWidth(30),
@@ -131,7 +146,8 @@ const Buyer = ({navigation}) => {
                 borderColor: colors.grayline,
               }}
               selectedValue={categoryFilter}
-              onValueChange={itemValue => setCategory(itemValue)}>
+              onValueChange={itemValue => setCategory(itemValue)}
+            >
               <Picker.Item label="All" value="all" />
               <Picker.Item label="Grocery" value="grocery" />
               <Picker.Item label="Clothes" value="clothes" />
@@ -139,28 +155,41 @@ const Buyer = ({navigation}) => {
           </View>
         </View>
 
-        {!loading ? <ActivityIndicator animating={true} color="green"  style={{alignContent:"center",justifyContent:"center",height:responsiveHeight(80)}}/>:
- <>
- {productList.length == 0 ? (
-   <Text
-     style={{
-       fontFamily: fontFamily.bold,
-       marginTop: spaceVertical.normal,
-       fontSize: fontSize.large,
-     }}>
-     No products available
-   </Text>
- ) : (
-   <FlatList
-     data={productList}
-     renderItem={renderItem}
-     keyExtractor={item => item.id}
-     contentContainerStyle={{paddingBottom: spaceVertical.extraLarge}}
-     showsVerticalScrollIndicator={false}
-   />
- )}
- </>
-        }
+        {!loading ? (
+          <ActivityIndicator
+            animating={true}
+            color="green"
+            style={{
+              alignContent: 'center',
+              justifyContent: 'center',
+              height: responsiveHeight(80),
+            }}
+          />
+        ) : (
+          <>
+            {productList.length == 0 ? (
+              <Text
+                style={{
+                  fontFamily: fontFamily.bold,
+                  marginTop: spaceVertical.normal,
+                  fontSize: fontSize.large,
+                }}
+              >
+                No products available
+              </Text>
+            ) : (
+              <FlatList
+                data={productList}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                contentContainerStyle={{
+                  paddingBottom: spaceVertical.extraLarge,
+                }}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
+          </>
+        )}
       </View>
     </View>
   );
