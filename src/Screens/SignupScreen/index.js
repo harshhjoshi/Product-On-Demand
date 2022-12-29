@@ -115,6 +115,7 @@ const Signup = ({navigation}) => {
             setFieldTouched,
             touched,
             isValid,
+            dirty,
             handleSubmit,
           }) => (
             <View>
@@ -167,9 +168,9 @@ const Signup = ({navigation}) => {
 
               <Button
                 name="Signup"
-                color={isValid ? colors.projectgreen : colors.shadowgreen}
+                color={isValid && dirty  ? colors.projectgreen : colors.shadowgreen}
                 marginTop={spaceVertical.small}
-                disableTrue={!isValid}
+                disableTrue={!(isValid && dirty) }
                 onPress={handleSubmit}
 
               />
