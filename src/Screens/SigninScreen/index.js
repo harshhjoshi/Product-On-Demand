@@ -154,7 +154,9 @@ const Signin = ({navigation}) => {
             setFieldTouched,
             touched,
             isValid,
+            dirty,
             handleSubmit,
+            
           }) => (
             <View>
               <TextInputs
@@ -184,9 +186,9 @@ const Signin = ({navigation}) => {
               {errorfb &&<Text style={styles.inputvalidStyle}>{errorfb}</Text>}
               <Button
                 name="Login"
-                color={isValid? colors.projectgreen : colors.shadowgreen}
+                color={isValid && dirty ? colors.projectgreen : colors.shadowgreen}
                 marginTop={spaceVertical.small}
-                disableTrue={!isValid}
+                disableTrue={!(isValid && dirty) }
                 onPress={handleSubmit}
               />
 
