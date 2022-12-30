@@ -36,7 +36,7 @@ const Introduction = ({ navigation }) => {
     const {getStarted}  = React.useContext(AuthContext)
 
     const Submit = () => {
-        navigation.navigate('Signin_screen' );
+        navigation.navigate('Tabs' );
     }
 
     return (

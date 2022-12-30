@@ -88,6 +88,8 @@ const Vendor = ({navigation}) => {
       price: price,
       avatar: galleryphoto,
       email: user.email,
+      fav:false,
+      productid:Math.floor(Math.random() * 100)
     };
 
     if(!obj.productName || !obj.details || !obj.price || !obj.avatar || !category){
@@ -148,7 +150,7 @@ const Vendor = ({navigation}) => {
         hidden={false}
         translucent={true}
       />
-      <View style={styles.headerview}>
+      {user ?      <View style={styles.headerview}>
         <Text style={styles.headertext}>Upload Image</Text>
         <TouchableOpacity
           onPress={() => OPENPICKER()}
@@ -213,7 +215,8 @@ const Vendor = ({navigation}) => {
           color={colors.projectgreen}
           marginTop={spaceVertical.semiSmall}
         ></Button>
-      </View>
+      </View>:<Text> please login </Text>}
+ 
     </ScrollView>
   );
 };

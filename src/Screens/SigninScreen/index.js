@@ -33,7 +33,7 @@ const Signin = ({navigation}) => {
       if(userCredential.user){
         setErrorFB("")
         setTimeout(() =>{
-          navigation.navigate('UserSelection')
+          navigation.navigate('Tabs')
         },1000)
       }
     } catch (err) {
@@ -71,7 +71,7 @@ const Signin = ({navigation}) => {
     })
       .then(() => {
         console.log('data update');
-        navigation.navigate('UserSelection')
+        navigation.navigate('Tabs')
       })
       .catch(error => {
         console.log('error');
