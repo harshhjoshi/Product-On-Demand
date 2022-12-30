@@ -17,7 +17,7 @@ header:{
   marginTop: spaceVertical.normal,
   backgroundColor: colors.white,
 flexDirection:"row",
-justifyContent:'space-between',
+justifyContent:'space-around',
 
 
 },
@@ -40,7 +40,7 @@ headertext:{
 img:{
   height: responsiveHeight(5),
     width: responsiveWidth(11),
-    // alignSelf:'flex-end',left:80
+    
 },
 verticleLine: {
   height: '50%',

@@ -53,7 +53,7 @@ const Dashboard = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.header}>
       <TouchableOpacity onPress={Login} activeOpacity={0.5}>
-         <Image style={styles.img} source={require('../../Assests/Images/power-off.png')}/>
+         <Image style={styles.img} source={require('../../Assests/Images/login.png')}/>
         </TouchableOpacity>
     <Text style={styles.headertext}>Dashboard</Text>
      

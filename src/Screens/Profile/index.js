@@ -51,8 +51,14 @@ const Profile = ({navigation}) => {
   const [newdata, setdata] = useState(data);
   const signOut = () => {
 
-      auth().signOut();
-      navigation.navigate('Signin_screen')
+    auth().signOut().then(()=>{
+      console.log("sucess");
+      navigation.navigate("intro_screen")
+    }).catch((err)=>{
+     console.log(err);
+     navigation.navigate("Signin_screen")
+     
+    })
       
   };
   function onAuthStateChanged(user) {
