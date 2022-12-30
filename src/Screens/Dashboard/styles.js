@@ -14,17 +14,17 @@ import {
 const styles = StyleSheet.create({
 container:{flex: 1, backgroundColor: colors.white},
 header:{
-  marginTop: spaceVertical.large,
+  marginTop: spaceVertical.normal,
   backgroundColor: colors.white,
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  flexDirection: 'row',
+flexDirection:"row",
+justifyContent:'space-between',
+
+
 },
-headertextview:{
-  backgroundColor: colors.white,
-  elevation: 5,
-  borderRadius: borderRadius.medium,
-  width: responsiveWidth(56),
+img:{
+  height: responsiveHeight(5),
+    width: responsiveWidth(11),
+    // alignSelf:'flex-end',left:80
 },
 headertext:{
   fontFamily: fontFamily.bold,
@@ -37,7 +37,11 @@ headertext:{
     width: responsiveWidth(5),
     marginLeft: marginHorizontal.extraSmall,
   },
-
+img:{
+  height: responsiveHeight(5),
+    width: responsiveWidth(11),
+    // alignSelf:'flex-end',left:80
+},
 verticleLine: {
   height: '50%',
   width: 1,

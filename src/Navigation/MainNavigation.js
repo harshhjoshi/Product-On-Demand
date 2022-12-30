@@ -32,14 +32,13 @@ const MainNavigation = () => {
   console.log('main navigation screen RoleFild:-', rolefiled );
   return ( 
     <NavigationContainer>
-      {
-        loading ? <ActivityIndicator animating={true} color="green"  style={{flex:1,alignContent:"center" }}/>:
-        <>
-         {user  && rolefiled ? <UserNavigation/>:<HomeNavigation />}
-        </>
-       
+      
+        
+         {<HomeNavigation />}
+        
+      
 
-      }
+      
      
     </NavigationContainer>
   );

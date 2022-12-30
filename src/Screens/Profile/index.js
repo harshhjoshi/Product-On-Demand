@@ -49,7 +49,12 @@ const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
   const [newdata, setdata] = useState(data);
+  const signOut = () => {
 
+      auth().signOut();
+      navigation.navigate('Signin_screen')
+      
+  };
   function onAuthStateChanged(user) {
     setUser(user);
   }
@@ -87,9 +92,9 @@ const Profile = ({navigation}) => {
           <IonIcon name="arrow-back" size={30} color="black" ></IonIcon>
         </TouchableOpacity>
         <Text style={styles.profilealign}>Profile</Text>
-        {/* <TouchableOpacity>
-          <IonIcon name="log-out" size={30} color="black"></IonIcon>
-        </TouchableOpacity> */}
+        <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
+         <Image style={styles.img} source={require('../../Assests/Images/power-off.png')}/>
+        </TouchableOpacity>
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.row}>

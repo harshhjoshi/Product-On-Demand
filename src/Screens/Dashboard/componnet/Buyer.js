@@ -5,13 +5,14 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  StatusBar,
   TextInput,
 } from 'react-native';
 import {styles} from './styles';
 import {marginHorizontal} from '../../../styles/variables';
 import {db} from '../../../Firebase/config';
-import {ref, onValue} from '@firebase/database';
+import auth from '@react-native-firebase/auth';
+import {ref, onValue, update, set, } from '@firebase/database';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import {
   borderRadius,
   colors,
@@ -22,45 +23,51 @@ import {
   spaceVertical,
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
-import {ActivityIndicator} from 'react-native-paper';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 const KEYS_TO_FILTERS = ['productName'];
+
 const Buyer = ({navigation}) => {
   const [productList, setProductList] = useState([]);
   const[filter,setFilter]=useState('');
   const [categoryFilter, setCategory] = useState('all');
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
-  const [loading, setloading] = useState(true);
-  const dbRef = ref(db, 'categoryLists/');
+  const [user, setUser] = useState('');
+  const [addProducts, setAddproduct] = useState([]);
+
+  useEffect(() => {
+    setUser(auth().currentUser);
+  }, [user]);
+
 
   useEffect(() => {
     const getData = async () => {
-      console.log('hello i am new');
       let records = [];
-     await onValue(dbRef, async snapshot => {
-      
+     await onValue(ref(db, 'categoryLists/'), async snapshot => {
         if (snapshot) {
           snapshot.forEach(childSnapshot => {
             let data = childSnapshot.val();
-
             records.push({data});
-            // setloading(false)
           });
           await setClothesList(records[0].data);
          await setGroceryList(records[1].data);
          await setProductList([...records[0].data, ...records[1].data]);
-
-          console.log('productList i am new 2', productList);
-          console.log('grocerylist i am new 2', grocerylist);
-          console.log('clotheslist i am new 2', clotheslist);
         }
       });
-    };
+    }
+getData();
 
-    getData();
+  }, []);
 
-  }, [db]);
+  const addProduct = item => {
+
+
+    addProducts.push(item);
+ set(ref(db, 'addedProduct/'),{
+        addproductlist:addProducts
+        })
+    console.log('newarray', addProducts);
+  };
 
   useEffect(() => {
     switch (categoryFilter) {
@@ -75,9 +82,10 @@ const Buyer = ({navigation}) => {
     }
   }, [categoryFilter]);
 
+  
   const renderItem = ({item}) => (
-    <View style={styles.productlistview}>
-     
+    <TouchableOpacity style={styles.productlistview}>
+    
       <Image style={styles.productimg} source={{uri: `${item.avatar}`?`${item.avatar}`:null}} />
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
@@ -93,24 +101,46 @@ const Buyer = ({navigation}) => {
         <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
           {item.price} $
         </Text>
-        <TouchableOpacity style={styles.buyeradd}>
+        <View style={styles.row}>
+        <TouchableOpacity       onPress={() => addProduct(item)} style={styles.buyeradd}>
           <Text style={styles.buyerbtntext}>Add</Text>
         </TouchableOpacity>
-      </View>
-    </View>
-  );
 
-  console.log('product', productList);
+        <TouchableOpacity onPress={()=>favPress(item)}>
+          <IonIcon
+            color={item.fav?colors.red: colors.black }
+            name="heart-outline"
+            size={30}
+            style={{left:15,}}
+
+            
+          >
+          </IonIcon>
+        </TouchableOpacity>
+        </View>
+       
+      </View>
+    </TouchableOpacity>
+
+  );
   const filteredData = productList.filter(createFilter(filter, KEYS_TO_FILTERS))
+
+
+  
+  const favPress = (item)=>{
+    const updateFavList = productList.map(e=>{
+      return e.productid === item.productid ? {...e, fav:!e.fav} : e; 
+    })
+    if(user){
+      set(ref(db, 'FavouritesLists/' + user.uid),{
+        favList:updateFavList,
+      })
+    }
+   setProductList(updateFavList);
+  }
+
   return (
     <View style={styles.buyercontainer}>
-      <StatusBar
-        backgroundColor={colors.HARD_WHITE}
-        barStyle="dark-content"
-        hidden={false}
-        translucent={true}
-      />
-
       <View style={styles.listview}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={styles.searchbarview}>
@@ -120,7 +150,6 @@ const Buyer = ({navigation}) => {
               placeholderTextColor={'gray'}
               onChangeText={(term) => { setFilter(term) }} 
             ></TextInput>
-
             <TouchableOpacity>
               <Image
                 resizeMode="contain"
@@ -159,19 +188,6 @@ const Buyer = ({navigation}) => {
             </Picker>
           </View>
         </View>
-
-        {!loading ? (
-          <ActivityIndicator
-            animating={true}
-            color="green"
-            style={{
-              alignContent: 'center',
-              justifyContent: 'center',
-              height: responsiveHeight(80),
-            }}
-          />
-        ) : (
-          <>
             {productList.length == 0 ? (
               <Text
                 style={{
@@ -186,15 +202,13 @@ const Buyer = ({navigation}) => {
               <FlatList
                 data={filteredData}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => index.toString()} 
                 contentContainerStyle={{
                   paddingBottom: spaceVertical.extraLarge,
                 }}
                 showsVerticalScrollIndicator={false}
               />
             )}
-          </>
-        )}
       </View>
     </View>
   );

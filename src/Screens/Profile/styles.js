@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
   // alignSelf:'center',
+  justifyContent:'space-between',
   marginTop:spaceVertical.large
   },
   mainContainer: {
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   profilealign: {
     fontSize: fontSize.medium + 2,
     fontFamily: fontFamily.bold,
-    color: colors.black,marginLeft:responsiveWidth(34)
+    color: colors.black
   },
   userEmailStyle: {
     flexDirection: 'row',
@@ -47,6 +48,9 @@ const styles = StyleSheet.create({
     height: responsiveHeight(10),
     width: responsiveWidth(20),
     borderRadius:borderRadius.circle,
+  },
+  img:{
+height:responsiveHeight(5),width:responsiveWidth(10)
   },
   emailTitle: {
     fontFamily: fontFamily.semiBold,

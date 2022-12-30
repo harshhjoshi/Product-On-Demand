@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: spaceVertical.small,
   },
+  row:{
+    flexDirection:'row'
+  },
   listview: {
     backgroundColor: colors.lightgreen,
     borderTopLeftRadius: borderRadius.XLarge,
