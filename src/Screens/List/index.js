@@ -17,8 +17,6 @@ import {
 const List = () => {
     const [productList, setProductList] = useState([]);
     const [user,setUser]=useState("");
-
-  useEffect(() => {
     const getData = async () => {
       setUser(auth().currentUser)
       let records = [];
@@ -35,6 +33,8 @@ const List = () => {
         }
       });
     };
+  useEffect(() => {
+   
 
     getData();
 

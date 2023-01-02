@@ -11,6 +11,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {
   colors,
+  fontSize,
   responsiveHeight,
   responsiveWidth,
 } from '../../../styles/variables';
@@ -62,7 +63,7 @@ const Vendor = ({navigation}) => {
       var snapVal = snapshot.val();
       setProductFiled(snapVal);
       if (!snapVal) {
-        console.log('hello no');
+    
         set(ref(db, 'categoryLists/'), {
           grocery: '',
           clothes: '',
@@ -85,14 +86,15 @@ const Vendor = ({navigation}) => {
     const obj = {
       productName: productName,
       details: details,
-      price: price,
+      price: price,   
       avatar: galleryphoto,
       email: user.email,
       fav:false,
+      qty:1,
       productid:Math.floor(Math.random() * 100)
     };
 
-    if(!obj.productName || !obj.details || !obj.price || !obj.avatar || !category){
+    if(!obj.productName || !obj.details || !obj.price || obj.avatar==dummyUri || !category){
       Snackbar.show({
         text: 'Please Fill All The Fields',
         duration: Snackbar.LENGTH_SHORT,
@@ -215,7 +217,7 @@ const Vendor = ({navigation}) => {
           color={colors.projectgreen}
           marginTop={spaceVertical.semiSmall}
         ></Button>
-      </View>:<Text> please login </Text>}
+      </View>:<Text style={{alignSelf:'center',fontFamily:fontFamily.semiBold,fontSize:fontSize.Xlarge,color:colors.projectgreen,top:spaceVertical.normal}}> please login </Text>}
  
     </ScrollView>
   );

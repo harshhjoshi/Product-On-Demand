@@ -95,6 +95,10 @@ const styles = StyleSheet.create({
     width: responsiveWidth(36),
     borderRadius: borderRadius.circle,
   },
+  heart:{
+    height: responsiveHeight(5),
+    width: responsiveWidth(11),left:10
+  },
   TextInputs: {
     width: responsiveWidth(80),
     alignSelf: 'center',

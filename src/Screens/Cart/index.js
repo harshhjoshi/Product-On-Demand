@@ -6,23 +6,26 @@ import auth from '@react-native-firebase/auth';
 import {styles} from '../List/styles';
 import {marginHorizontal, spaceVertical} from '../../styles/variables';
 
-const Favorites = () => {
-  const [favMyList, setFavList] = useState('');
+const Cart = () => {
+  const [addedproduct, setAddList] = useState('');
   const [user, setUser] = useState('');
 
   useEffect(() => {
+    setUser(auth().currentUser);
     const getData = async () => {
-      setUser(auth().currentUser);
-      await onValue(ref(db, 'FavouritesLists/' + user.uid), snapshot => {
+   
+      await onValue(ref(db, 'addedProduct/' + user.uid), snapshot => {
         if (snapshot.val()) {
-          const list = snapshot.val().favList;
-          const result = list.filter(i => i.fav == true);
-          setFavList(result);
+          const addedproduct = snapshot.val().addproductlist
+         console.log("list",addedproduct)
+          setAddList(addedproduct);
+        }else{
+            console.log("error")
         }
       });
     };
     getData();
-  }, [user]);
+  }, []);
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
@@ -33,17 +36,18 @@ const Favorites = () => {
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
         <Text style={styles.productprice}>{item.price} $</Text>
+
       </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      {favMyList.length == 0 ? (
+      {addedproduct.length == 0 ? (
         <Text style={styles.titleStyle}>No Favourite product available</Text>
       ) : (
         <FlatList
-          data={favMyList}
+          data={addedproduct}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{
@@ -56,4 +60,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default Cart;
