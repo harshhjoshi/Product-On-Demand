@@ -11,7 +11,7 @@ import {styles} from './styles';
 import {marginHorizontal} from '../../../styles/variables';
 import {db} from '../../../Firebase/config';
 import auth from '@react-native-firebase/auth';
-import {ref, onValue, update, set, } from '@firebase/database';
+import {ref, onValue, set,update} from '@firebase/database';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {
   borderRadius,
@@ -23,51 +23,69 @@ import {
   spaceVertical,
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
-import SearchInput, { createFilter } from 'react-native-search-filter';
+import SearchInput, {createFilter} from 'react-native-search-filter';
+
 const KEYS_TO_FILTERS = ['productName'];
 
-const Buyer = ({navigation}) => {
+const Buyer = ({navigation,parentToChild}) => {
   const [productList, setProductList] = useState([]);
-  const[filter,setFilter]=useState('');
+  const [filter, setFilter] = useState('');
   const [categoryFilter, setCategory] = useState('all');
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
   const [user, setUser] = useState('');
   const [addProducts, setAddproduct] = useState([]);
+  const [ouradddlist,setAdddList]= useState('');
 
   useEffect(() => {
     setUser(auth().currentUser);
   }, [user]);
 
+  const data=()=>{
+    let records = [];
+     onValue(ref(db, 'categoryLists/'), async snapshot => {
+      if (snapshot) {
+        snapshot.forEach(childSnapshot => {
+          let data = childSnapshot.val();
+          records.push({data});
+        });
+        await setClothesList(records[0].data);
+        await setGroceryList(records[1].data);
+
+        await onValue(ref(db, 'FavouritesLists/' + user.uid), async snapshot => {
+          if (snapshot.val()) {
+            const list = snapshot.val();
+            const result = list.favList.filter(i => i.fav == true);
+            const listfav_product = [...records[0].data, ...records[1].data].map(i => {
+              let otherSubject = result.find(e => e.productid === i.productid);
+              return {...i, ...otherSubject};
+            });
+            await setProductList(listfav_product);
+          }else{
+           setProductList([...records[0].data, ...records[1].data]);
+          }
+        });
+        await onValue(ref(db, 'addLists/' + user.uid), async snapshot => {   
+          if (snapshot.val()) {
+            const add_list_fb = snapshot.val().addList;
+           setAdddList(add_list_fb)
+          }
+        });
+      }
+    });
+
+  }
 
   useEffect(() => {
-    const getData = async () => {
-      let records = [];
-     await onValue(ref(db, 'categoryLists/'), async snapshot => {
-        if (snapshot) {
-          snapshot.forEach(childSnapshot => {
-            let data = childSnapshot.val();
-            records.push({data});
-          });
-          await setClothesList(records[0].data);
-         await setGroceryList(records[1].data);
-         await setProductList([...records[0].data, ...records[1].data]);
-        }
-      });
+   
+    {
+      parentToChild == 0
+        ? data()
+        : null;
     }
-getData();
-
   }, []);
 
-  const addProduct = item => {
 
-
-    addProducts.push(item);
- set(ref(db, 'addedProduct/'),{
-        addproductlist:addProducts
-        })
-    console.log('newarray', addProducts);
-  };
 
   useEffect(() => {
     switch (categoryFilter) {
@@ -82,11 +100,44 @@ getData();
     }
   }, [categoryFilter]);
 
+  const addProduct = item => {
+   if(user){
+    if(ouradddlist){
+      const updateAddList = ouradddlist.map(e => {
+         return e.productid === item.productid ? {...e, qty:e.qty+1}:e
+      });
   
+      set(ref(db, 'addLists/' + user.uid), {
+        addList:updateAddList,
+      });
+
+    }else{
+      const addItemList=[] 
+      addItemList.push(item)
+      set(ref(db, 'addLists/' + user.uid), {
+      addList:addItemList,
+    });
+    } 
+  }
+  };
+  
+  const favPress = item => {
+    const updateFavList = productList.map(e => {
+      return e.productid === item.productid ? {...e, fav: !e.fav} : e;
+    });
+    if (user) {
+      set(ref(db, 'FavouritesLists/' + user.uid), {
+        favList: updateFavList,
+      });
+    }
+    setProductList(updateFavList);
+  };
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.productlistview}>
-    
-      <Image style={styles.productimg} source={{uri: `${item.avatar}`?`${item.avatar}`:null}} />
+      <Image
+        style={styles.productimg}
+        source={{uri: `${item.avatar}` ? `${item.avatar}` : null}}
+      />
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
         <Text
@@ -94,51 +145,35 @@ getData();
             color: colors.HARD_BLACK,
             fontFamily: fontFamily.semiBold,
             width: responsiveWidth(50),
-          }}
-        >
+          }}>
           {item.details}
         </Text>
         <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
           {item.price} $
         </Text>
         <View style={styles.row}>
-        <TouchableOpacity       onPress={() => addProduct(item)} style={styles.buyeradd}>
-          <Text style={styles.buyerbtntext}>Add</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => addProduct(item)}
+            style={styles.buyeradd}>
+            <Text style={styles.buyerbtntext}>Add</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>favPress(item)}>
-          <IonIcon
-            color={item.fav?colors.red: colors.black }
-            name="heart-outline"
-            size={30}
-            style={{left:15,}}
-
-            
-          >
-          </IonIcon>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => favPress(item)}>
+            <IonIcon
+              color={item.fav ? colors.red : colors.black}
+              name="heart-outline"
+              size={30}
+              style={{left: 15}}></IonIcon>
+          </TouchableOpacity>
         </View>
-       
       </View>
     </TouchableOpacity>
-
   );
-  const filteredData = productList.filter(createFilter(filter, KEYS_TO_FILTERS))
-
+  const filteredData = productList.filter(
+    createFilter(filter, KEYS_TO_FILTERS),
+  );
 
   
-  const favPress = (item)=>{
-    const updateFavList = productList.map(e=>{
-      return e.productid === item.productid ? {...e, fav:!e.fav} : e; 
-    })
-    if(user){
-      set(ref(db, 'FavouritesLists/' + user.uid),{
-        favList:updateFavList,
-      })
-    }
-   setProductList(updateFavList);
-  }
-
   return (
     <View style={styles.buyercontainer}>
       <View style={styles.listview}>
@@ -148,14 +183,14 @@ getData();
               style={styles.searchinput}
               placeholder="Search Here"
               placeholderTextColor={'gray'}
-              onChangeText={(term) => { setFilter(term) }} 
-            ></TextInput>
+              onChangeText={term => {
+                setFilter(term);
+              }}></TextInput>
             <TouchableOpacity>
               <Image
                 resizeMode="contain"
                 style={styles.searchicon}
-                source={require('../../../Assests/Images/search.png')}
-              ></Image>
+                source={require('../../../Assests/Images/search.png')}></Image>
             </TouchableOpacity>
           </View>
           <View
@@ -168,8 +203,7 @@ getData();
               height: responsiveHeight(6),
               top: 9,
               marginLeft: marginHorizontal.semiSmall,
-            }}
-          >
+            }}>
             <Picker
               style={{
                 width: responsiveWidth(30),
@@ -180,35 +214,33 @@ getData();
                 borderColor: colors.grayline,
               }}
               selectedValue={categoryFilter}
-              onValueChange={itemValue => setCategory(itemValue)}
-            >
+              onValueChange={itemValue => setCategory(itemValue)}>
               <Picker.Item label="All" value="all" />
               <Picker.Item label="Grocery" value="grocery" />
               <Picker.Item label="Clothes" value="clothes" />
             </Picker>
           </View>
         </View>
-            {productList.length == 0 ? (
-              <Text
-                style={{
-                  fontFamily: fontFamily.bold,
-                  marginTop: spaceVertical.normal,
-                  fontSize: fontSize.large,
-                }}
-              >
-                No products available
-              </Text>
-            ) : (
-              <FlatList
-                data={filteredData}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()} 
-                contentContainerStyle={{
-                  paddingBottom: spaceVertical.extraLarge,
-                }}
-                showsVerticalScrollIndicator={false}
-              />
-            )}
+        {productList.length == 0 ? (
+          <Text
+            style={{
+              fontFamily: fontFamily.bold,
+              marginTop: spaceVertical.normal,
+              fontSize: fontSize.large,
+            }}>
+            No products available
+          </Text>
+        ) : (
+          <FlatList
+            data={filteredData}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={{
+              paddingBottom: spaceVertical.extraLarge,
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </View>
   );

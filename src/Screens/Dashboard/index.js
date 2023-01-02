@@ -10,19 +10,8 @@ import {styles} from './styles';
 import {Picker} from '@react-native-picker/picker';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import {colors} from '../../styles/variables';
-const FirstRoute = () => (
-<Buyer/>
-);
 
-const SecondRoute = () => (
-  <Vendor/>
-);
-
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-});
-const Dashboard = ({navigation}) => {
+const Dashboard = ({navigation,}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [rolevalue, setRoleValue] = useState('Buyer');
@@ -31,7 +20,18 @@ const Dashboard = ({navigation}) => {
     { key: 'second', title: 'Add Products' },
   ]);
   const[user,setUser]=useState("");
-
+  const FirstRoute = () => (
+    <Buyer  parentToChild={index}/>
+    );
+    
+    const SecondRoute = () => (
+      <Vendor/>
+    );
+    
+    const renderScene = SceneMap({
+      first: FirstRoute,
+      second: SecondRoute,
+    });
   useEffect(() => { 
     setUser(auth().currentUser)
     if(user){
