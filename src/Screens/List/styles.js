@@ -15,11 +15,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: spaceVertical.large,
+    backgroundColor:colors.lightgreen
   },
   titleStyle: {
     fontFamily: fontFamily.bold,
-    marginTop: spaceVertical.normal,
-    fontSize: fontSize.large,
+    marginTop: spaceVertical.large,
+    fontSize: fontSize.semiLarge,
+    color:colors.projectgreen,alignSelf:'center',width:responsiveWidth(99),justifyContent:'center',textAlign:'center'
+  },
+  productname:{
+    fontSize:fontSize.medium,fontFamily:fontFamily.semiBold,color:colors.purple
+  },
+  productprice:{
+    fontSize:fontSize.medium,fontFamily:fontFamily.semiBold,color:colors.projectgreen
   },
   productlistview: {
     width: responsiveWidth(90),

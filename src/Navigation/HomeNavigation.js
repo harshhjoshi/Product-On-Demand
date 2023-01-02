@@ -9,6 +9,7 @@ import Dashboard from '../Screens/Dashboard';
 import Profile from '../Screens/Profile';
 import List from '../Screens/List';
 import Favorite from '../Screens/FavoriteScreen';
+import Cart from '../Screens/Cart';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const HomeNavigation = () => {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="intro_screen" component={Introduction} />
       <Stack.Screen name="Tabs" component={Tabs} />
+      <Stack.Screen name='Cart' component={Cart}/>
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="List" component={List} />
       <Stack.Screen name="Favorite" component={Favorite} />
