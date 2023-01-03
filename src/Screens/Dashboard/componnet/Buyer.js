@@ -34,7 +34,7 @@ const Buyer = ({navigation, parentToChild}) => {
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
   const [user, setUser] = useState('');
-  const [ouradddlist, setAdddList] = useState([]);
+  const [ouradddlist, setAdddList] = useState('');
 
   useEffect(() => {
     setUser(auth().currentUser);
@@ -50,52 +50,49 @@ const Buyer = ({navigation, parentToChild}) => {
         });
         await setClothesList(records[0].data);
         await setGroceryList(records[1].data);
-        
-        if(user){
-          await onValue(ref(db, 'FavouritesLists/' + user.uid),
-          async snapshot => {
+        console.log('user', user);
+        if (user) {
+          console.log('hello_user');
+          await onValue(ref(db, 'addLists/' + user.uid), async snapshot => {
             if (snapshot.val()) {
-              const list = snapshot.val();
-              const result = list.favList.filter(i => i.fav == true);
-              const listfav_product = [
-                ...records[0].data,
-                ...records[1].data,
-              ].map(i => {
-                let otherSubject = result.find(
-                  e => e.productid === i.productid,
-                );
-                return {...i, ...otherSubject};
-              });
-              await setProductList(listfav_product);
-              await addproduct_get();
-            } else {
-              setProductList([...records[0].data, ...records[1].data]);
+              console.log('hello');
+              await setAdddList(snapshot.val().addList);
             }
-          },
-        );
-        }else{
+          });
+
+          await onValue(
+            ref(db, 'FavouritesLists/' + user.uid),
+            async snapshot => {
+              if (snapshot.val()) {
+                const list = snapshot.val();
+                const result = list.favList.filter(i => i.fav == true);
+                const listfav_product = [
+                  ...records[0].data,
+                  ...records[1].data,
+                ].map(i => {
+                  let otherSubject = result.find(
+                    e => e.productid === i.productid,
+                  );
+                  return {...i, ...otherSubject};
+                });
+                await setProductList(listfav_product);
+              } else {
+                setProductList([...records[0].data, ...records[1].data]);
+              }
+            },
+          );
+        } else {
           setProductList([...records[0].data, ...records[1].data]);
         }
-        
       }
     });
   };
 
-  
-
   useEffect(() => {
     {
-      parentToChild == 0 ? data() : null;
+      parentToChild == 0 ? data() : console.log('hello..');
     }
-
-    
-  }, []);
-
-  const addproduct_get = async ()=>{
-   await onValue(ref(db, 'addLists/' + user.uid),snapshot => {
-       setAdddList(snapshot.val().addList)
-   });
- }
+  }, [user]);
 
   useEffect(() => {
     switch (categoryFilter) {
@@ -110,16 +107,11 @@ const Buyer = ({navigation, parentToChild}) => {
     }
   }, [categoryFilter]);
 
-  console.log("outside",ouradddlist );
-
-  const addProduct = async (item,ouradddlist) => {
-    console.log("ouradddlist>>>>>>>",ouradddlist)
-   
-    
+  const addProduct = async item => {
     if (user) {
-      await addproduct_get()
-      if (ouradddlist.length > 0) {
-        console.log("inside  allready one product");
+      console.log('ouradddlist>>>>>>>', ouradddlist);
+      if (ouradddlist) {
+        console.log('inside  allready one product');
         const updateAddList = ouradddlist.map(e => {
           return e.productid === item.productid ? {...e, qty: e.qty + 1} : e;
         });
@@ -131,12 +123,12 @@ const Buyer = ({navigation, parentToChild}) => {
           updateAddList.push(item);
         }
 
-      console.log("inside update");
+        console.log('inside update');
         update(ref(db, 'addLists/' + user.uid), {
           addList: updateAddList,
         });
       } else {
-        console.log("first time");
+        console.log('first time');
         const addItemList = [];
         addItemList.push(item);
         set(ref(db, 'addLists/' + user.uid), {
@@ -159,47 +151,52 @@ const Buyer = ({navigation, parentToChild}) => {
   };
 
   const renderItem = ({item}) => {
-  return(
-    <TouchableOpacity style={styles.productlistview}>
-      <Image
-        style={styles.productimg}
-        source={{uri: `${item.avatar}` ? `${item.avatar}` : null}}
-      />
-      <View style={{marginLeft: marginHorizontal.normal}}>
-        <Text style={styles.productname}>{item.productName}</Text>
-        <Text
-          style={{
-            color: colors.HARD_BLACK,
-            fontFamily: fontFamily.semiBold,
-            width: responsiveWidth(50),
-          }}>
-          {item.details}
-        </Text>
-        <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
-          {item.price} $
-        </Text>
-        <View style={styles.row}>
-          <TouchableOpacity
-            onPress={() => addProduct(item,ouradddlist)}
-            style={styles.buyeradd}>
-            <Text style={styles.buyerbtntext}>Add</Text>
-          </TouchableOpacity>
+    return (
+      <TouchableOpacity style={styles.productlistview}>
+        <Image
+          style={styles.productimg}
+          source={{uri: `${item.avatar}` ? `${item.avatar}` : null}}
+        />
+        <View style={{marginLeft: marginHorizontal.normal}}>
+          <Text style={styles.productname}>{item.productName}</Text>
+          <Text
+            style={{
+              color: colors.HARD_BLACK,
+              fontFamily: fontFamily.semiBold,
+              width: responsiveWidth(50),
+            }}
+          >
+            {item.details}
+          </Text>
+          <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
+            {item.price} $
+          </Text>
+          <View style={styles.row}>
+            <TouchableOpacity
+              onPress={() => addProduct(item)}
+              style={styles.buyeradd}
+            >
+              <Text style={styles.buyerbtntext}>Add</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => favPress(item)}>
-            <IonIcon
-              color={item.fav ? colors.red : colors.black}
-              name="heart-circle-outline"
-              size={30}
-              style={{left: 15}}></IonIcon>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => favPress(item)}>
+              <IonIcon
+                color={item.fav ? colors.red : colors.black}
+                name="heart-circle-outline"
+                size={30}
+                style={{left: 15}}
+              ></IonIcon>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  )};
+      </TouchableOpacity>
+    );
+  };
 
   const filteredData = productList.filter(
     createFilter(filter, KEYS_TO_FILTERS),
   );
+  console.log('ouradddlist_out', ouradddlist);
   return (
     <View style={styles.buyercontainer}>
       <View style={styles.listview}>
@@ -211,12 +208,14 @@ const Buyer = ({navigation, parentToChild}) => {
               placeholderTextColor={'gray'}
               onChangeText={term => {
                 setFilter(term);
-              }}></TextInput>
+              }}
+            ></TextInput>
             <TouchableOpacity>
               <Image
                 resizeMode="contain"
                 style={styles.searchicon}
-                source={require('../../../Assests/Images/search.png')}></Image>
+                source={require('../../../Assests/Images/search.png')}
+              ></Image>
             </TouchableOpacity>
           </View>
           <View
@@ -229,7 +228,8 @@ const Buyer = ({navigation, parentToChild}) => {
               height: responsiveHeight(6),
               top: 9,
               marginLeft: marginHorizontal.semiSmall,
-            }}>
+            }}
+          >
             <Picker
               style={{
                 width: responsiveWidth(30),
@@ -240,7 +240,8 @@ const Buyer = ({navigation, parentToChild}) => {
                 borderColor: colors.grayline,
               }}
               selectedValue={categoryFilter}
-              onValueChange={itemValue => setCategory(itemValue)}>
+              onValueChange={itemValue => setCategory(itemValue)}
+            >
               <Picker.Item label="All" value="all" />
               <Picker.Item label="Grocery" value="grocery" />
               <Picker.Item label="Clothes" value="clothes" />
@@ -253,7 +254,8 @@ const Buyer = ({navigation, parentToChild}) => {
               fontFamily: fontFamily.bold,
               marginTop: spaceVertical.normal,
               fontSize: fontSize.large,
-            }}>
+            }}
+          >
             No products available
           </Text>
         ) : (
