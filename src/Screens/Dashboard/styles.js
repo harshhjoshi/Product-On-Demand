@@ -74,8 +74,20 @@ searchbarview: {
     alignItems: 'center',
     marginTop: spaceVertical.small,
     borderRadius: borderRadius.large
-  },
 
+  },
+  pill:{
+    backgroundColor:colors.projectgreen,
+    height:23,
+    width:25,
+    borderRadius: borderRadius.large,
+    position:'absolute',
+    top:6,
+  },
+  textpill:{
+    textAlign:"center",
+    color:colors.white,
+  }
 });
 
 export { styles };
