@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     marginTop: spaceVertical.small,
     borderRadius: borderRadius.large,
   },
+
 });
 
 export {styles};
