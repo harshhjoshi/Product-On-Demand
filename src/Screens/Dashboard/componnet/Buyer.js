@@ -34,7 +34,7 @@ const Buyer = ({navigation, parentToChild}) => {
   const [clotheslist, setClothesList] = useState('');
   const [grocerylist, setGroceryList] = useState('');
   const [user, setUser] = useState('');
-  const [ouradddlist, setAdddList] = useState('');
+  const [ouradddlist, setAdddList] = useState([]);
 
   useEffect(() => {
     setUser(auth().currentUser);
@@ -50,9 +50,9 @@ const Buyer = ({navigation, parentToChild}) => {
         });
         await setClothesList(records[0].data);
         await setGroceryList(records[1].data);
-
-        await onValue(
-          ref(db, 'FavouritesLists/' + user.uid),
+        
+        if(user){
+          await onValue(ref(db, 'FavouritesLists/' + user.uid),
           async snapshot => {
             if (snapshot.val()) {
               const list = snapshot.val();
@@ -67,26 +67,35 @@ const Buyer = ({navigation, parentToChild}) => {
                 return {...i, ...otherSubject};
               });
               await setProductList(listfav_product);
+              await addproduct_get();
             } else {
               setProductList([...records[0].data, ...records[1].data]);
             }
           },
         );
-        await onValue(ref(db, 'addLists/' + user.uid), async snapshot => {
-          if (snapshot.val()) {
-            const add_list_fb = snapshot.val().addList;
-            setAdddList(add_list_fb);
-          }
-        });
+        }else{
+          setProductList([...records[0].data, ...records[1].data]);
+        }
+        
       }
     });
   };
+
+  
 
   useEffect(() => {
     {
       parentToChild == 0 ? data() : null;
     }
+
+    
   }, []);
+
+  const addproduct_get = async ()=>{
+   await onValue(ref(db, 'addLists/' + user.uid),snapshot => {
+       setAdddList(snapshot.val().addList)
+   });
+ }
 
   useEffect(() => {
     switch (categoryFilter) {
@@ -101,9 +110,16 @@ const Buyer = ({navigation, parentToChild}) => {
     }
   }, [categoryFilter]);
 
-  const addProduct = item => {
+  console.log("outside",ouradddlist );
+
+  const addProduct = async (item,ouradddlist) => {
+    console.log("ouradddlist>>>>>>>",ouradddlist)
+   
+    
     if (user) {
-      if (ouradddlist) {
+      await addproduct_get()
+      if (ouradddlist.length > 0) {
+        console.log("inside  allready one product");
         const updateAddList = ouradddlist.map(e => {
           return e.productid === item.productid ? {...e, qty: e.qty + 1} : e;
         });
@@ -115,10 +131,12 @@ const Buyer = ({navigation, parentToChild}) => {
           updateAddList.push(item);
         }
 
+      console.log("inside update");
         update(ref(db, 'addLists/' + user.uid), {
           addList: updateAddList,
         });
       } else {
+        console.log("first time");
         const addItemList = [];
         addItemList.push(item);
         set(ref(db, 'addLists/' + user.uid), {
@@ -127,7 +145,6 @@ const Buyer = ({navigation, parentToChild}) => {
       }
     }
   };
-  console.log('ouradddlist:....', ouradddlist);
 
   const favPress = item => {
     const updateFavList = productList.map(e => {
@@ -140,7 +157,9 @@ const Buyer = ({navigation, parentToChild}) => {
     }
     setProductList(updateFavList);
   };
-  const renderItem = ({item}) => (
+
+  const renderItem = ({item}) => {
+  return(
     <TouchableOpacity style={styles.productlistview}>
       <Image
         style={styles.productimg}
@@ -161,7 +180,7 @@ const Buyer = ({navigation, parentToChild}) => {
         </Text>
         <View style={styles.row}>
           <TouchableOpacity
-            onPress={() => addProduct(item)}
+            onPress={() => addProduct(item,ouradddlist)}
             style={styles.buyeradd}>
             <Text style={styles.buyerbtntext}>Add</Text>
           </TouchableOpacity>
@@ -176,7 +195,8 @@ const Buyer = ({navigation, parentToChild}) => {
         </View>
       </View>
     </TouchableOpacity>
-  );
+  )};
+
   const filteredData = productList.filter(
     createFilter(filter, KEYS_TO_FILTERS),
   );
