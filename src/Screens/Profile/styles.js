@@ -17,10 +17,11 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-  // alignSelf:'center',
-  justifyContent:'center',
+  alignSelf:'center',
+  backgroundColor:colors.white,
+
     
-  marginTop:spaceVertical.large
+  marginTop:spaceVertical.normal
   },
   mainContainer: {
     flex: 1,
@@ -37,9 +38,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.projectgreen,
   },
   profilealign: {
-    fontSize: fontSize.medium + 2,
+    fontSize: fontSize.semiLarge,
     fontFamily: fontFamily.bold,
-    color: colors.black,alignSelf:'center',textAlign:'center'
+    color: colors.black,
+    textAlign:'center',left:10
   },
   userEmailStyle: {
     flexDirection: 'row',
@@ -82,7 +84,7 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     justifyContent: 'space-between',
     paddingVertical: spaceVertical.small,
     marginBottom: spaceVertical.extraSmall,
-    elevation: 1.5,
+    elevation:2,
   },
 });
 export default styles;

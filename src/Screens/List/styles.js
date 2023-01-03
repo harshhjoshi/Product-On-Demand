@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: spaceVertical.large,
-    backgroundColor:colors.lightgreen
+    backgroundColor:colors.lightgreen,
+    elevation:2,
+    borderRadius:borderRadius.bigboxradius
   },
   titleStyle: {
     fontFamily: fontFamily.bold,
