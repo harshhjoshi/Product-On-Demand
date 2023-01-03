@@ -6,23 +6,37 @@ import auth from '@react-native-firebase/auth';
 import {styles} from '../List/styles';
 import {marginHorizontal, spaceVertical} from '../../styles/variables';
 
-const Favorites = () => {
+const Favorites = ({navigation}) => {
   const [favMyList, setFavList] = useState('');
   const [user, setUser] = useState('');
 
+  const getData = async () => {
+    setUser(auth().currentUser);
+    await onValue(ref(db, 'FavouritesLists/' + user.uid), snapshot => {
+      if (snapshot.val()) {
+        const list = snapshot.val().favList;
+        const result = list.filter(i => i.fav == true);
+        setFavList(result);
+      }
+    });
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      setUser(auth().currentUser);
-      await onValue(ref(db, 'FavouritesLists/' + user.uid), snapshot => {
-        if (snapshot.val()) {
-          const list = snapshot.val().favList;
-          const result = list.filter(i => i.fav == true);
-          setFavList(result);
-        }
-      });
-    };
+   
     getData();
   }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed Data')
+      getData();
+
+      //Your refresh code gets here
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>

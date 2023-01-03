@@ -14,7 +14,7 @@ import {
   responsiveWidth,
   spaceVertical,
 } from '../../styles/variables';
-const List = () => {
+const List = ({navigation}) => {
     const [productList, setProductList] = useState([]);
     const [user,setUser]=useState("");
     const getData = async () => {
@@ -33,6 +33,19 @@ const List = () => {
         }
       });
     };
+
+    useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+        console.log('Refreshed Data')
+    getData();
+
+        //Your refresh code gets here
+      });
+      return () => {
+        unsubscribe();
+      };
+    }, [navigation]);
+
   useEffect(() => {
    
 
