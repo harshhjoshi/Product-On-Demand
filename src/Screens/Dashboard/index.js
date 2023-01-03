@@ -12,7 +12,7 @@ import {styles} from './styles';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
-import {TabView} from 'react-native-tab-view';
+import {TabView,SceneMap} from 'react-native-tab-view';
 
 const Dashboard = ({navigation}) => {
   const layout = useWindowDimensions();
@@ -40,16 +40,20 @@ const Dashboard = ({navigation}) => {
     {key: 'second', title: 'Add Products'},
   ]);
 
-  const renderScene = ({route}) => {
-    switch (route.key) {
-      case 'first':
-        return <Buyer parentToChild={index} />;
-      case 'second':
-        return <Vendor />;
-      default:
-        return null;
-    }
-  };
+  const FirstRoute = () => (
+    <Buyer parentToChild={index} />
+  );
+  
+  const SecondRoute = () => (
+    <Vendor  parentToChild={index}  />
+  );
+
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

@@ -49,9 +49,22 @@ const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
 
-  const UsersignOut = async () => {
-    console.log('Call Sign out');
+  useEffect(() => {
+    const getData = async () => {
+      setUser(auth().currentUser);
+      await onValue(ref(db,'users/' + user.uid),snapshot => {
+     if (snapshot.val()) {
+      setFiredata(snapshot.val())
+     }
+       });
+    };
+    getData();
+  }, [user]);
 
+
+
+
+  const UsersignOut = async () => {
      await auth()
       .signOut()
       .then(() => {
@@ -59,34 +72,11 @@ const Profile = ({navigation}) => {
         navigation.navigate('intro_screen');
       })
       .catch(() => {
-        console.log('Signin_screen');
-
         navigation.navigate('Signin_screen');
       });
   };
 
-  function onAuthStateChanged(user) {
-    setUser(user);
-  }
-  
-  useEffect(() => {
-    auth().onAuthStateChanged(onAuthStateChanged);
-    if (user) {
-      const dbRef = ref(db, 'users/');
-      onValue(dbRef, snapshot => {
-        let records = [];
-        snapshot.forEach(childSnapshot => {
-          let keyName = childSnapshot.key;
-          let data = childSnapshot.val();
-          records.push({key: keyName, data: data});
-        });
 
-        var singleData = records.filter(i => i.key == user.uid);
-
-        setFiredata(singleData[0].data);
-      });
-    }
-  }, [user]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.userInfoStyle}>
@@ -98,6 +88,7 @@ const Profile = ({navigation}) => {
       ></IonIcon>
     </TouchableOpacity>
   );
+
 
   return (
     <View style={styles.container}>
