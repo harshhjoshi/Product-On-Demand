@@ -44,14 +44,14 @@ const List = ({navigation}) => {
       return () => {
         unsubscribe();
       };
-    }, [navigation]);
+    }, [navigation,db,user]);
 
   useEffect(() => {
    
 
     getData();
 
-  }, [db,user]);
+  }, []);
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>
@@ -78,6 +78,7 @@ const List = ({navigation}) => {
   console.log("user..",user);
   console.log("productList",productList);
   return (
+    <View style={{backgroundColor:colors.white,flex:1}}>
     <View style={styles.container}>
      {productList.length == 0 ? (
               <Text
@@ -86,6 +87,18 @@ const List = ({navigation}) => {
                 No products available
               </Text>
             ) : (
+              <View>
+              <Text
+                style={{
+                  alignSelf: 'center',
+                  fontFamily: fontFamily.bold,
+                  fontSize: fontSize.Xlarge,
+                  color: colors.projectgreen,
+                  top: spaceVertical.semiSmall,
+                }}
+              >
+                Own Products
+              </Text>
               <FlatList
                 data={productList}
                 renderItem={renderItem}
@@ -96,8 +109,10 @@ const List = ({navigation}) => {
                 }}
                 showsVerticalScrollIndicator={false}
               />
+              </View>
             )}
       
+    </View>
     </View>
   )
 }

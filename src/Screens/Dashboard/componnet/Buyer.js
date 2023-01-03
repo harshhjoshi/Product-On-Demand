@@ -263,7 +263,7 @@ const Buyer = ({navigation, parentToChild}) => {
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
               contentContainerStyle={{
-                paddingBottom: spaceVertical.extraLarge,
+                paddingBottom: spaceVertical.XXlarge,
               }}
               showsVerticalScrollIndicator={false}
             />

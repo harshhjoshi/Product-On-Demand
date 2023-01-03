@@ -49,34 +49,44 @@ const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
 
+  const getData = async () => {
+    await setUser(auth().currentUser);
+    if (user) {
+      console.log('user come');
+      await onValue(ref(db, 'users/' + user.uid), snapshot => {
+        if (snapshot.val()) {
+          setFiredata(snapshot.val());
+        }
+      });
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      setUser(auth().currentUser);
-      await onValue(ref(db,'users/' + user.uid),snapshot => {
-     if (snapshot.val()) {
-      setFiredata(snapshot.val())
-     }
-       });
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed Data');
+      getData();
+
+      //Your refresh code gets here
+    });
+    return () => {
+      unsubscribe();
     };
+  }, [navigation]);
+  useEffect(() => {
+    console.log('frist useefect');
+
     getData();
   }, [user]);
 
-
-
-
   const UsersignOut = async () => {
-     await auth()
+    await auth()
       .signOut()
       .then(() => {
-        console.log('intro');
         navigation.navigate('intro_screen');
       })
       .catch(() => {
         navigation.navigate('Signin_screen');
       });
   };
-
-
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.userInfoStyle}>
@@ -89,21 +99,24 @@ const Profile = ({navigation}) => {
     </TouchableOpacity>
   );
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.profilealign}>Profile</Text>
         {user ? (
-          <TouchableOpacity style={{left:responsiveWidth(30)}} onPress={() => UsersignOut()}>
+          <TouchableOpacity
+            style={{left: responsiveWidth(25)}}
+            onPress={() => UsersignOut()}
+          >
             <Image
               style={styles.img}
               source={require('../../Assests/Images/power-off.png')}
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={{left:responsiveWidth(30)}}
-          onPress={() => navigation.navigate('Signin_screen')}
+          <TouchableOpacity
+            style={{left: responsiveWidth(30)}}
+            onPress={() => navigation.navigate('Signin_screen')}
             activeOpacity={0.5}
           >
             <Image
