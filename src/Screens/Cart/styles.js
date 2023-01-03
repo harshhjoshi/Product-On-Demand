@@ -14,24 +14,21 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: spaceVertical.large,
-    marginHorizontal:marginHorizontal.toosmall,
-    backgroundColor:colors.lightgreen
+
+ 
+    backgroundColor:colors.white
   },
-  header:{
-  backgroundColor: colors.white,
-  flexDirection:"row",
-  justifyContent:'space-between',
-  },
+
   img:{
     height: responsiveHeight(3),
-    width: responsiveWidth(3),
+    width: responsiveWidth(3),marginTop:spaceVertical.small
   },
   headertext:{
     fontFamily: fontFamily.bold,
-    fontSize: fontSize.medium,
+    fontSize: fontSize.large,
     color: colors.projectgreen,
     textAlign: 'center',
+    marginTop:spaceVertical.normal
   },
   
   
@@ -45,7 +42,7 @@ const styles = StyleSheet.create({
     fontSize:fontSize.medium,fontFamily:fontFamily.semiBold,color:colors.purple
   },
   productprice:{
-    fontSize:fontSize.medium,fontFamily:fontFamily.semiBold,color:colors.projectgreen
+    fontSize:fontSize.medium,fontFamily:fontFamily.semiBold,color:colors.projectgreen,left:5,top:2
   },
   productlistview: {
     width: responsiveWidth(90),

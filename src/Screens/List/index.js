@@ -17,6 +17,7 @@ import {
 const List = ({navigation}) => {
     const [productList, setProductList] = useState([]);
     const [user,setUser]=useState("");
+
     const getData = async () => {
       setUser(auth().currentUser)
       let records = [];
@@ -51,7 +52,7 @@ const List = ({navigation}) => {
 
     getData();
 
-  }, []);
+  }, [user]);
 
   const renderItem = ({item}) => (
     <View style={styles.productlistview}>

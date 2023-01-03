@@ -4,7 +4,7 @@ import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
 import {styles} from './styles';
-import {marginHorizontal, spaceVertical} from '../../styles/variables';
+import {borderRadius, colors, marginHorizontal, spaceVertical} from '../../styles/variables';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const Cart = ({navigation}) => {
@@ -36,44 +36,47 @@ const Cart = ({navigation}) => {
         <Text style={styles.productname}>{item.productName}</Text>
         <Text style={styles.productprice}>{item.price} $</Text>
         <View style={{flexDirection:"row"}}>
-        <IonIcon name="remove-outline" size={30}></IonIcon>
+        <IonIcon name="remove-outline" color={colors.HARD_BLACK} size={30}></IonIcon>
         <Text style={styles.productprice}>{item.qty}</Text>
-        <IonIcon name="add-outline" size={30}></IonIcon>
+        <IonIcon name="add-outline" color={colors.HARD_BLACK} size={30} style={{left:10}}></IonIcon>
         </View>
        
       </View>
     </View>
   );
-console.log("ouradddlist", ouradddlist);
+
   return (
     <View style={styles.container}>
-    <View style={styles.header}>
+   
 
-    <TouchableOpacity
+    {/* <TouchableOpacity
           onPress={() => navigation.navigate('Tabs')}
           activeOpacity={0.5}>
           <Image
             style={styles.img}
             source={require('../../Assests/Images/leftarrow.png')}
           />
-    </TouchableOpacity>
-    <View>
-    <Text style={styles.headertext}>My cart</Text></View>
-    <View></View>
-    </View>
+    </TouchableOpacity> */}
+  
+    <Text style={styles.headertext}>My cart</Text>
+    
+ 
+   
 
       {ouradddlist.length == 0 ? (
-        <Text style={styles.titleStyle}>No  any product add here </Text>
+        <Text style={styles.titleStyle}>No Product Added </Text>
       ) : (
+        <View style={{flex:1,backgroundColor:colors.lightgreen,borderRadius:borderRadius.bigboxradius}}>
         <FlatList
           data={ouradddlist}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{
-            paddingBottom: spaceVertical.extraLarge,
+            paddingBottom: spaceVertical.large,
           }}
           showsVerticalScrollIndicator={false}
         />
+        </View>
       )}
     </View>
   );

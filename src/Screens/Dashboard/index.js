@@ -16,24 +16,24 @@ import {TabView,SceneMap} from 'react-native-tab-view';
 
 const Dashboard = ({navigation}) => {
   const layout = useWindowDimensions();
-  const [ouradddlist, setAdddList] = useState('');
-  const [user, setUser] = useState('');
+  // const [ouradddlist, setAdddList] = useState('');
+  // const [user, setUser] = useState('');
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const getData = async () => {
-      setUser(auth().currentUser);
-      await onValue(ref(db, 'addLists/' + user.uid),snapshot => {
-        if (snapshot.val()) {
-          const add_list_fb = snapshot.val().addList;
-          setAdddList(add_list_fb);
-        }else{
-            console.log("error")
-        }
-      });
-    };
-    getData();
-  }, [user]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     setUser(auth().currentUser);
+  //     await onValue(ref(db, 'addLists/' + user.uid),snapshot => {
+  //       if (snapshot.val()) {
+  //         const add_list_fb = snapshot.val().addList;
+  //         setAdddList(add_list_fb);
+  //       }else{
+  //           console.log("error")
+  //       }
+  //     });
+  //   };
+  //   getData();
+  // }, [user]);
   
   const [routes] = useState([
     {key: 'first', title: 'Products'},
@@ -74,7 +74,7 @@ const Dashboard = ({navigation}) => {
             style={styles.img}
             source={require('../../Assests/Images/cartt.png')}
           />
-           <View style={styles.pill}><Text style={styles.textpill}>{ouradddlist.length}</Text></View>
+           {/* <View style={styles.pill}><Text style={styles.textpill}>{ouradddlist.length}</Text></View> */}
         </TouchableOpacity>
       </View>
 
