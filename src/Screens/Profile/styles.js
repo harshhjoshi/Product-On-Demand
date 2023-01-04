@@ -15,10 +15,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  container_dark: {
+    flex: 1,
+    backgroundColor: colors.black,
+  },
   header: {
     flexDirection: 'row',
   alignSelf:'center',
   backgroundColor:colors.white,
+
+    
+  marginTop:spaceVertical.normal
+  },
+  header_dark: {
+    flexDirection: 'row',
+  alignSelf:'center',
+  backgroundColor:colors.black,
 
     
   marginTop:spaceVertical.normal
@@ -31,16 +43,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: marginHorizontal.xsmall,
     paddingVertical: spaceVertical.small,marginTop:spaceVertical.semiSmall
   },
+  mainContainer_dark: {
+    flex: 1,
+    backgroundColor: colors.black,
+    borderTopLeftRadius: borderRadius.XLarge,
+    borderTopRightRadius: borderRadius.XLarge - 5,
+    paddingHorizontal: marginHorizontal.xsmall,
+    paddingVertical: spaceVertical.small,marginTop:spaceVertical.semiSmall
+  },
     row: {
     flexDirection: 'row',
   },
-  abc: {
-    backgroundColor: colors.projectgreen,
-  },
+ 
   profilealign: {
     fontSize: fontSize.semiLarge,
     fontFamily: fontFamily.bold,
     color: colors.black,
+    textAlign:'center',left:10
+  },
+  profilealign_dark: {
+    fontSize: fontSize.semiLarge,
+    fontFamily: fontFamily.bold,
+    color: colors.white,
     textAlign:'center',left:10
   },
   userEmailStyle: {
@@ -61,10 +85,27 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     color: colors.black,
     marginLeft: marginHorizontal.extraSmall,
   },
+  emailTitle_dark: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: fontSize.normal,
+    color: colors.white,
+    marginLeft: marginHorizontal.extraSmall,
+  },
+  emailTitle_dark: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: fontSize.normal,
+    color: colors.white,
+    marginLeft: marginHorizontal.extraSmall,
+  },
   ml: {
     marginLeft: marginHorizontal.extraSmall,
     fontFamily: fontFamily.medium,
     color: colors.black,
+  },
+  ml_dark: {
+    marginLeft: marginHorizontal.extraSmall,
+    fontFamily: fontFamily.medium,
+    color: colors.white,
   },
   usernameInfo: {
     justifyContent: 'center',
@@ -75,8 +116,16 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     fontFamily: fontFamily.bold,
     color: colors.black,
   },
+  title_dark: {
+    fontSize: fontSize.medium + 2,
+    fontFamily: fontFamily.bold,
+    color: colors.white,
+  },
   userRenderStyle: {
     backgroundColor: colors.lightgreen,
+  },
+  userRenderStyle_dark: {
+    backgroundColor: colors.black,
   },
 
   userInfoStyle: {
@@ -86,5 +135,6 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     marginBottom: spaceVertical.extraSmall,
     elevation:2,
   },
+
 });
 export default styles;

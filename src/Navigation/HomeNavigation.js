@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Introduction from '../Screens/IntroScreen';
 import Signin from '../Screens/SigninScreen';
@@ -9,10 +9,12 @@ import Profile from '../Screens/Profile';
 import List from '../Screens/List';
 import Favorite from '../Screens/FavoriteScreen';
 import Cart from '../Screens/Cart';
-
+import { ThemeContext } from '../ThemeContext';
 const Stack = createNativeStackNavigator();
 
 const HomeNavigation = () => {
+  const {theme,setTheme} = useContext(ThemeContext);
+
   const options = {
     headerShown: false,
   };

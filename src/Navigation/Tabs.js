@@ -1,28 +1,42 @@
-import React from 'react';
+import React ,{useContext}from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image} from 'react-native';
+import {Image,StatusBar, View} from 'react-native';
 import Dashboard from '../Screens/Dashboard';
 import Profile from '../Screens/Profile';
 import List from '../Screens/List';
 import Favorites from '../Screens/FavoriteScreen';
-
+import { colors } from '../styles/variables';
+import { ThemeContext } from '../ThemeContext';
 const Tab = createBottomTabNavigator();
 const Tabs = ({navigation}) => {
+  const {theme,setTheme} = useContext(ThemeContext);
+
   const screenOptions = {
     headerShown: false,
     tabBarActiveTintColor: '#58ceb2',
+  
     tabBarStyle: {
-      borderTopLeftRadius: 15,
-      borderTopRightRadius: 15,
+
       height: 60,
       paddingBottom: 5,
-    },
-  };
+      backgroundColor:theme=='light'?colors.white:colors.black,
 
+    },
+   
+  };
+  console.log('theme',theme)
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <View style={{flex:1}}>
+     <StatusBar
+        backgroundColor={colors.black}
+        barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
+        hidden={false}
+        translucent={true}
+      />
+    <Tab.Navigator screenOptions={  screenOptions}>
+        
       <Tab.Screen
-        name="Home"
+        name="Home" 
         component={Dashboard}
         options={{
           tabBarIcon: ({focused}) => (
@@ -74,6 +88,7 @@ const Tabs = ({navigation}) => {
         }}
       />
     </Tab.Navigator>
+    </View>
   );
 };
 export default Tabs;

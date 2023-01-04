@@ -1,9 +1,11 @@
-import {View, Text, FlatList, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image,StatusBar} from 'react-native';
+import React, {useEffect, useState,useContext} from 'react';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
 import {styles} from '../List/styles';
+import {ThemeContext} from '../../ThemeContext';
+
 import {
   colors,
   fontFamily,
@@ -15,6 +17,7 @@ import {
 const Favorites = ({navigation}) => {
   const [favMyList, setFavList] = useState('');
   const [user, setUser] = useState('');
+  const {theme, setTheme} = useContext(ThemeContext); 
 
   const getData = async () => {
     setUser(auth().currentUser);
@@ -33,7 +36,6 @@ const Favorites = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('Refreshed Data');
       getData();
 
       //Your refresh code gets here
@@ -58,9 +60,10 @@ const Favorites = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: colors.white, flex: 1}}>
-      <View style={styles.container}>
+         
+      <View style={theme=='light'?styles.container:styles.container_dark}>
         {favMyList.length == 0 ? (
-          <Text style={styles.titleStyle}>No Favourite Product available</Text>
+          <Text style={theme=='light'?styles.titleStyle:styles.titleStyle_dark}>No Favourite Product available</Text>
         ) : (
           <View>
             <Text
@@ -68,7 +71,7 @@ const Favorites = ({navigation}) => {
                 alignSelf: 'center',
                 fontFamily: fontFamily.bold,
                 fontSize: fontSize.extraLarge,
-                color: colors.projectgreen,
+                color:theme=='light'? colors.projectgreen:colors.white,
                 top: spaceVertical.semiSmall,
               }}
             >

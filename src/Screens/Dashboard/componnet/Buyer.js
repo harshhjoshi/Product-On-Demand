@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {
   View,
   Image,
@@ -24,6 +24,7 @@ import {
 } from '../../../styles/variables';
 import {Picker} from '@react-native-picker/picker';
 import SearchInput, {createFilter} from 'react-native-search-filter';
+import {ThemeContext} from '../../../ThemeContext';
 
 const KEYS_TO_FILTERS = ['productName'];
 
@@ -35,6 +36,7 @@ const Buyer = ({navigation, parentToChild}) => {
   const [grocerylist, setGroceryList] = useState('');
   const [user, setUser] = useState('');
   const [ouradddlist, setAdddList] = useState('');
+  const {theme,setTheme} = useContext(ThemeContext);
 
   useEffect(() => {
     setUser(auth().currentUser);
@@ -152,16 +154,20 @@ const Buyer = ({navigation, parentToChild}) => {
 
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity style={styles.productlistview}>
+      <TouchableOpacity style={theme=='light'?styles.productlistview:styles.productlistview_dark}>
         <Image
           style={styles.productimg}
-          source={{uri: `${item.avatar}` ? `${item.avatar}` : null}}
+          source={{
+            uri: !`${item.avatar}`
+              ? `${item.avatar}`
+              : 'https://www.freepnglogos.com/uploads/fruits-png/fruits-png-image-fruits-png-image-download-39.png',
+          }}        
         />
         <View style={{marginLeft: marginHorizontal.normal}}>
           <Text style={styles.productname}>{item.productName}</Text>
           <Text
             style={{
-              color: colors.HARD_BLACK,
+              color:theme=='light'? colors.HARD_BLACK:colors.white,
               fontFamily: fontFamily.semiBold,
               width: responsiveWidth(50),
             }}
@@ -181,7 +187,7 @@ const Buyer = ({navigation, parentToChild}) => {
 
             <TouchableOpacity onPress={() => favPress(item)}>
               <IonIcon
-                color={item.fav ? colors.red : colors.black}
+                color={item.fav ?  colors.red : colors.white}
                 name="heart-circle-outline"
                 size={30}
                 style={{left: 15}}
@@ -196,10 +202,10 @@ const Buyer = ({navigation, parentToChild}) => {
   const filteredData = productList.filter(
     createFilter(filter, KEYS_TO_FILTERS),
   );
-  console.log('ouradddlist_out', ouradddlist);
+
   return (
-    <View style={styles.buyercontainer}>
-      <View style={styles.listview}>
+    <View style={theme=="light"?styles.buyercontainer:styles.buyercontainer_dark}>
+      <View style={theme=="light"?styles.listview:styles.listview_dark}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={styles.searchbarview}>
             <TextInput
@@ -227,7 +233,7 @@ const Buyer = ({navigation, parentToChild}) => {
               justifyContent: 'center',
               height: responsiveHeight(6),
               top: 9,
-              marginLeft: marginHorizontal.semiSmall,
+              marginLeft: marginHorizontal.semiSmall,backgroundColor:colors.white
             }}
           >
             <Picker
@@ -238,8 +244,12 @@ const Buyer = ({navigation, parentToChild}) => {
                 alignSelf: 'center',
                 justifyContent: 'center',
                 borderColor: colors.grayline,
+                color:colors.black,
+                
               }}
               selectedValue={categoryFilter}
+            dropdownIconColor={colors.black}
+
               onValueChange={itemValue => setCategory(itemValue)}
             >
               <Picker.Item label="All" value="all" />
@@ -254,6 +264,7 @@ const Buyer = ({navigation, parentToChild}) => {
               fontFamily: fontFamily.bold,
               marginTop: spaceVertical.normal,
               fontSize: fontSize.large,
+              color:colors.projectgreen
             }}
           >
             No products available
