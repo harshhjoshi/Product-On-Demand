@@ -5,6 +5,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useTranslation } from 'react-i18next';
 
 import {ThemeContext} from '../../ThemeContext';
 import {
@@ -14,48 +16,50 @@ import {
   responsiveWidth,
 } from '../../styles/variables';
 
-const data = [
-  {
-    id: 1,
-    label: 'Your Favorites',
-    icon: 'heart',
-    flag: false,
-  },
-  {
-    id: 2,
-    label: 'Location',
-    icon: 'navigate',
-    flag: false,
-  },
-  {
-    id: 3,
-    label: 'Language',
-    icon: 'globe',
-    flag: false,
-  },
-  {
-    id: 4,
-    label: 'Tell your Friend',
-    icon: 'people',
-    flag: false,
-  },
-  {
-    id: 5,
-    label: 'About US',
-    icon: 'information-circle',
-    flag: false,
-  },
-  {
-    id: 6,
-    label: 'Terms and Policies',
-    icon: 'document',
-    flag: false,
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     label: 'Your Favorites',
+//     icon: 'heart',
+//     flag: false,
+//   },
+//   {
+//     id: 2,
+//     label: 'Location',
+//     icon: 'navigate',
+//     flag: false,
+//   },
+//   {
+//     id: 3,
+//     label: 'Language',
+//     icon: 'globe',
+//     flag: false,
+//   },
+//   {
+//     id: 4,
+//     label: 'Tell your Friend',
+//     icon: 'people',
+//     flag: false,
+//   },
+//   {
+//     id: 5,
+//     label: 'About US',
+//     icon: 'information-circle',
+//     flag: false,
+//   },
+//   {
+//     id: 6,
+//     label: 'Terms and Policies',
+//     icon: 'document',
+//     flag: false,
+//   },
+// ];
 const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
   const {theme, setTheme} = useContext(ThemeContext); 
+  const [language, setLanguage] = useState('');
+  const { t, i18n } = useTranslation();
 
   const handleThemeChange = () => {
     console.log('thmese is sos ', theme);
@@ -116,6 +120,11 @@ const Profile = ({navigation}) => {
       ></IonIcon>
     </TouchableOpacity>
   );
+  const languageData = [
+    { label: 'English', value: 'en' },
+    { label: 'Italian', value: 'it' },
+  ];
+
 
   return (
     <View style={theme == 'light' ? styles.container : styles.container_dark}>
@@ -182,7 +191,30 @@ const Profile = ({navigation}) => {
             </Text>
           </View>
         )}
-        <View
+             <Dropdown
+           
+           dropdownPosition="bottom"
+            data={languageData}
+         
+           maxHeight={300}
+           labelField="label"
+           valueField="value"
+           placeholder="Select item"
+           placeholderStyle={styles.langStyle}
+           // searchPlaceholder={t('search')}
+           value={i18n.language === "en" ? language : language}
+           onChange={item => {
+             if (item.value === 'en') {
+               i18n.changeLanguage('en');
+             } else {
+               i18n.changeLanguage('it');
+             }
+             setLanguage(item.value);
+           }}
+            
+         />
+          <Text style={styles.text}>{t("Welcome to React")}</Text>
+        {/* <View
           style={
             theme == 'light'
               ? styles.userRenderStyle
@@ -194,7 +226,7 @@ const Profile = ({navigation}) => {
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
-        </View>
+        </View> */}
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => handleThemeChange()}
