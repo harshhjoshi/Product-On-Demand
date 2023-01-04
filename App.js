@@ -6,6 +6,8 @@ import { Provider, useDispatch } from 'react-redux';
 import {ThemeProvider} from './src/ThemeContext';
 import { StatusBar, View } from 'react-native';
 import { ThemeContext } from './src/ThemeContext';
+import './src/localization/i18n';
+
 const App = () => {
   // const {theme, setTheme} = useContext(ThemeContext);
 
