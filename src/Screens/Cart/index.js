@@ -88,12 +88,12 @@ const Cart = ({navigation}) => {
 
   return (
     <View style={theme=="light"?styles.container:styles.container_dark}>
-      <StatusBar
+      {/* <StatusBar
         backgroundColor={theme == 'light' ? colors.white : colors.black}
         barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
         hidden={false}
         translucent={true}
-      />
+      /> */}
       <View
         style={{
           flexDirection: 'row',

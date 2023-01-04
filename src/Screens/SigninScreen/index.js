@@ -107,12 +107,7 @@ const Signin = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        backgroundColor="black"
-        barStyle="light-content"
-        hidden={false}
-        translucent={true}
-      />
+
       <View style={styles.logoContainer}>
         <ImageBackground source={Images.foodgive} style={styles.logo} />
       </View>

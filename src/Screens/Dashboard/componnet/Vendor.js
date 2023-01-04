@@ -150,12 +150,7 @@ const Vendor = ({navigation}) => {
 
   return (
     <ScrollView contentContainerStyle={{paddingBottom: spaceVertical.normal}}>
-      <StatusBar
-        backgroundColor={colors.HARD_WHITE}
-        barStyle="dark-content"
-        hidden={false}
-        translucent={true}
-      />
+  
       {user ? (
         <View
           style={theme == 'light' ? styles.headerview : styles.headerview_dark}

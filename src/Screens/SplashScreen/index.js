@@ -5,9 +5,7 @@ import { colors } from '../../styles/variables';
 import {styles} from './styles';
 
 const Splash = ({navigation}) => {
-<StatusBar 
-hidden={true}
-barStyle="light-content" />
+
   useEffect(() => {
     setTimeout(() => {
       navigation.navigate('intro_screen'); //Navigate to your destination screen
@@ -20,18 +18,7 @@ barStyle="light-content" />
 
   return (
     <View style={styles.container}>
-           <StatusBar  
-                    backgroundColor = "#f2f2f2"  
-                    barStyle = "dark-content"   
-                    hidden = {false}    
-                    translucent = {true}  
-                />  
-      <StatusBar  
-                    backgroundColor ={colors.black}  
-                    barStyle = "light-content"    
-                    hidden = {false}    
-                    translucent = {true}  
-                /> 
+        
       <Image
         style={styles.logo}
         source={require('../../Assests/Images/logo.png')}

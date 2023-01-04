@@ -44,12 +44,7 @@ const Dashboard = ({navigation}) => {
     <View style={theme=="light"? styles.container:styles.container_dark}>
       
       <View style={theme=="light"?styles.header:styles.header_dark}>
-      <StatusBar
-        backgroundColor={colors.black}
-        // barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
-        hidden={false}
-        translucent={false}
-      />
+
         <TouchableOpacity
           onPress={() => navigation.navigate('Signin_screen')}
           activeOpacity={0.5}>
