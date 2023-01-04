@@ -11,12 +11,7 @@ const Page3 = ({navigation}) => {
         <>
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
                 
-            <StatusBar  
-                    backgroundColor = "#f2f2f2"  
-                    barStyle = "dark-content"   
-                    hidden = {false}    
-                    translucent = {true}  
-                />  
+           
                 <View>
                     <Image source={require('../../../Assests/Images/location.png')} style={[styles.img,{overflow: 'visible'}]} resizeMode='cover'></Image>
                 </View>

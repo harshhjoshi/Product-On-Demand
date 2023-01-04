@@ -27,12 +27,7 @@ const Tabs = ({navigation}) => {
   console.log('theme',theme)
   return (
     <View style={{flex:1}}>
-     <StatusBar
-        backgroundColor={colors.black}
-        barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
-        hidden={false}
-        translucent={true}
-      />
+ 
     <Tab.Navigator screenOptions={  screenOptions}>
         
       <Tab.Screen

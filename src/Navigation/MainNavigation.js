@@ -9,6 +9,7 @@ const MainNavigation = () => {
 
   return ( 
     <NavigationContainer> 
+       <StatusBar translucent={false} backgroundColor={theme === "light" ? "white":"black"} barStyle={theme === "light" ?"dark-content":'light-content'} />
        
          {<HomeNavigation />}
     </NavigationContainer>
