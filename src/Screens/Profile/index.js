@@ -1,11 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
-import {colors, responsiveWidth} from '../../styles/variables';
+
+import {ThemeContext} from '../../ThemeContext';
+import {
+  colors,
+  fontFamily,
+  fontSize,
+  responsiveWidth,
+} from '../../styles/variables';
 
 const data = [
   {
@@ -48,6 +55,15 @@ const data = [
 const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
+  const {theme, setTheme} = useContext(ThemeContext); 
+
+  const handleThemeChange = () => {
+    console.log('thmese is sos ', theme);
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+  useEffect(() => {
+    console.log('thmese is sos ', theme);
+  });
 
   const getData = async () => {
     await setUser(auth().currentUser);
@@ -90,19 +106,27 @@ const Profile = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.userInfoStyle}>
-      <Text style={styles.ml}>{item.label}</Text>
+      <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
+        {item.label}
+      </Text>
       <IonIcon
         name="caret-forward-outline"
         size={25}
-        color={colors.black}
+        color={theme == 'light' ? colors.black : colors.HARD_WHITE}
       ></IonIcon>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.profilealign}>Profile</Text>
+    <View style={theme == 'light' ? styles.container : styles.container_dark}>
+      <View style={theme == 'light' ? styles.header : styles.header_dark}>
+        <Text
+          style={
+            theme == 'light' ? styles.profilealign : styles.profilealign_dark
+          }
+        >
+          Profile
+        </Text>
         {user ? (
           <TouchableOpacity
             style={{left: responsiveWidth(25)}}
@@ -126,7 +150,11 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={styles.mainContainer}>
+      <View
+        style={
+          theme == 'light' ? styles.mainContainer : styles.mainContainer_dark
+        }
+      >
         <View style={styles.row}>
           <Image
             source={{
@@ -137,24 +165,69 @@ const Profile = ({navigation}) => {
             style={styles.logo}
           />
           <View style={styles.usernameInfo}>
-            <Text style={styles.title}>
+            <Text style={theme == 'light' ? styles.title : styles.title_dark}>
               {user ? Firedata.userName : <Text> guest</Text>}
             </Text>
           </View>
         </View>
         {user && (
           <View style={styles.userEmailStyle}>
-            <IonIcon name="mail" size={25} color="black"></IonIcon>
-            <Text style={styles.emailTitle}>{Firedata.email}</Text>
+            <IonIcon name="mail" size={25} color={theme=='light'?colors.black:colors.white}></IonIcon>
+            <Text
+              style={
+                theme == 'light' ? styles.emailTitle : styles.emailTitle_dark
+              }
+            >
+              {Firedata.email}
+            </Text>
           </View>
         )}
-        <View style={styles.userRenderStyle}>
+        <View
+          style={
+            theme == 'light'
+              ? styles.userRenderStyle
+              : styles.userRenderStyle_dark
+          }
+        >
           <FlatList
             data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
         </View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => handleThemeChange()}
+          style={{
+            backgroundColor: colors.white,
+            width: responsiveWidth(30),
+            alignItems: 'center',
+            alignSelf: 'center',
+            bottom: 20,
+          }}
+        >
+          {theme == 'light' ? (
+            <Text
+              style={{
+                color: colors.black,
+                fontFamily: fontFamily.semiBold,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Dark Mode
+            </Text>
+          ) : (
+            <Text
+              style={{
+                color: colors.black,
+                fontFamily: fontFamily.semiBold,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Light Mode
+            </Text>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );

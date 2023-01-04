@@ -8,15 +8,15 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   colors,
   fontSize,
   responsiveHeight,
   responsiveWidth,
 } from '../../../styles/variables';
-
-import {spaceVertical,fontFamily} from '../../../styles/variables';
+import {ThemeContext} from '../../../ThemeContext';
+import {spaceVertical, fontFamily} from '../../../styles/variables';
 import TextInputs from '../../../Components/TextInputs';
 import Button from '../../../Components/Button';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -38,6 +38,8 @@ const Vendor = ({navigation}) => {
   const [productfiled, setProductFiled] = useState('');
   const [user, setUser] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const {theme, setTheme} = useContext(ThemeContext);
+
   const OPENPICKER = () => {
     var options = {
       title: 'Select Avatar',
@@ -63,7 +65,6 @@ const Vendor = ({navigation}) => {
       var snapVal = snapshot.val();
       setProductFiled(snapVal);
       if (!snapVal) {
-    
         set(ref(db, 'categoryLists/'), {
           grocery: '',
           clothes: '',
@@ -82,66 +83,69 @@ const Vendor = ({navigation}) => {
   };
 
   const sellerSubmite = category => {
-
     const obj = {
       productName: productName,
       details: details,
-      price: price,   
+      price: price,
       avatar: galleryphoto,
       email: user.email,
-      fav:false,
-      qty:1,
-      productid:Math.floor(Math.random() * 100)
+      fav: false,
+      qty: 1,
+      productid: Math.floor(Math.random() * 100),
     };
 
-    if(!obj.productName || !obj.details || !obj.price || obj.avatar==dummyUri || !category){
+    if (
+      !obj.productName ||
+      !obj.details ||
+      !obj.price ||
+      obj.avatar == dummyUri ||
+      !category
+    ) {
       Snackbar.show({
         text: 'Please Fill All The Fields',
         duration: Snackbar.LENGTH_SHORT,
         textColor: colors.white,
         backgroundColor: colors.red,
         fontFamily: fontFamily.medium,
-
       });
-    }
-   else{
-    switch (category) {
-      case 'grocery':
-        if (productfiled.grocery) {
-          productfiled.grocery.push(obj);
-          update(ref(db, 'categoryLists'), {
-            grocery: productfiled.grocery,
-          });
-        } else {
-          productGroceryList.push(obj);
-          update(ref(db, 'categoryLists'), {
-            grocery: productGroceryList,
-          });
-        }
-        break;
+    } else {
+      switch (category) {
+        case 'grocery':
+          if (productfiled.grocery) {
+            productfiled.grocery.push(obj);
+            update(ref(db, 'categoryLists'), {
+              grocery: productfiled.grocery,
+            });
+          } else {
+            productGroceryList.push(obj);
+            update(ref(db, 'categoryLists'), {
+              grocery: productGroceryList,
+            });
+          }
+          break;
 
-      case 'clothes':
-        if (productfiled.clothes) {
-          productfiled.clothes.push(obj);
-          update(ref(db, 'categoryLists'), {
-            clothes: productfiled.clothes,
-          });
-        } else {
-          productClothesList.push(obj);
-          update(ref(db, 'categoryLists'), {
-            clothes: productClothesList,
-          });
-        }
-        break;
-      default:
-        break;
+        case 'clothes':
+          if (productfiled.clothes) {
+            productfiled.clothes.push(obj);
+            update(ref(db, 'categoryLists'), {
+              clothes: productfiled.clothes,
+            });
+          } else {
+            productClothesList.push(obj);
+            update(ref(db, 'categoryLists'), {
+              clothes: productClothesList,
+            });
+          }
+          break;
+        default:
+          break;
+      }
+      closemodal();
+      setUploadImage('');
+      setPrice('');
+      setProductName('');
+      setdetails('');
     }
-    closemodal();
-    setUploadImage('');
-    setPrice('');
-    setProductName('');
-    setdetails('');
-   }
   };
 
   return (
@@ -152,73 +156,97 @@ const Vendor = ({navigation}) => {
         hidden={false}
         translucent={true}
       />
-      {user ?      <View style={styles.headerview}>
-        <Text style={styles.headertext}>Upload Image</Text>
-        <TouchableOpacity
-          onPress={() => OPENPICKER()}
-          style={styles.imgselection}
+      {user ? (
+        <View
+          style={theme == 'light' ? styles.headerview : styles.headerview_dark}
         >
-          <Image style={styles.img} source={{uri: galleryphoto}} />
-        </TouchableOpacity>          
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
+          <Text style={styles.headertext}>Upload Image</Text>
+          <TouchableOpacity
+            onPress={() => OPENPICKER()}
+            style={styles.imgselection}
+          >
+            <Image style={styles.img} source={{uri: galleryphoto}} />
+          </TouchableOpacity>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
+              <View style={styles.modalView}>
+                <Image
+                  style={{
+                    height: responsiveHeight(10),
+                    width: responsiveWidth(20),
+                  }}
+                  source={require('../../../Assests/Images/check.png')}
+                />
+                <Text style={styles.modalText}>Product Added</Text>
+              </View>
+            </View>
+          </Modal>
+          <TextInputs
+            label={'Add Product Name'}
+            value={productName}
+            onChangeText={e => setProductName(e)}
+            style={styles.TextInputs}
+          />
+          <TextInputs
+            label={'Add Product Details'}
+            value={details}
+            onChangeText={e => setdetails(e)}
+            style={styles.TextInputs}
+          />
+
+          <TextInputs
+            label={' Add Price'}
+            value={price}
+            onChangeText={e => setPrice(e)}
+            keyboardType="Numeric"
+            style={styles.TextInputs}
+          />
+          <View>
+            <Picker
+              style={{
+                color: theme == 'light' ? colors.black : colors.white,
+                borderWidth: 1,
+                borderColor: theme == 'light' ? colors.black : colors.white,
+              }}
+              selectedValue={category}
+              dropdownIconColor={theme == 'light' ? colors.black : colors.white}
+              onValueChange={itemValue => setCategory(itemValue)}
+            >
+              <Picker.Item label="Choose category" value="category" />
+              <Picker.Item label="grocery" value="grocery" />
+              <Picker.Item label="clothes" value="clothes" />
+            </Picker>
+          </View>
+
+          <Button
+            name={'Submit'}
+            onPress={() => sellerSubmite(category)}
+            color={colors.projectgreen}
+            marginTop={spaceVertical.semiSmall}
+          ></Button>
+        </View>
+      ) : (
+        <Text
+          style={{
+            alignSelf: 'center',
+            fontFamily: fontFamily.semiBold,
+            fontSize: fontSize.Xlarge,
+            color: colors.projectgreen,
+            top: spaceVertical.normal,
           }}
         >
-          <View style={{flex:1,backgroundColor:'#f2f2f2'}}>
-          <View style={styles.modalView}>
-            <Image
-              style={{height: responsiveHeight(10), width: responsiveWidth(20)}}
-              source={require('../../../Assests/Images/check.png')}
-            />
-            <Text style={styles.modalText}>Product Added</Text>
-          </View>
-
-          </View>
-        </Modal>
-        <TextInputs
-          label={'Add Product Name'}
-          value={productName}
-          onChangeText={e => setProductName(e)}
-          style={styles.TextInputs}
-        />
-        <TextInputs
-          label={'Add Product Details'}
-          value={details}
-          onChangeText={e => setdetails(e)}
-          style={styles.TextInputs}
-        />
-
-        <TextInputs
-          label={' Add Price'}
-          value={price}
-          onChangeText={e => setPrice(e)}
-          keyboardType="Numeric"
-          style={styles.TextInputs}
-        />
-        <View>
-          <Picker
-            selectedValue={category}
-            onValueChange={itemValue => setCategory(itemValue)}
-          >
-            <Picker.Item label="Choose category" value="category" />
-            <Picker.Item label="grocery" value="grocery" />
-            <Picker.Item label="clothes" value="clothes" />
-          </Picker>
-        </View>
-
-        <Button
-          name={'Submit'}
-          onPress={() => sellerSubmite(category)}
-          color={colors.projectgreen}
-          marginTop={spaceVertical.semiSmall}
-        ></Button>
-      </View>:<Text style={{alignSelf:'center',fontFamily:fontFamily.semiBold,fontSize:fontSize.Xlarge,color:colors.projectgreen,top:spaceVertical.normal}}> please login </Text>}
- 
+          {' '}
+          please login{' '}
+        </Text>
+      )}
     </ScrollView>
   );
 };

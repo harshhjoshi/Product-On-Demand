@@ -3,7 +3,7 @@ import MainNavigation from './src/Navigation/MainNavigation';
 import SplashScreen from 'react-native-splash-screen';
 import {mystore} from'./src/Redux/MyStore'
 import { Provider, useDispatch } from 'react-redux';
-
+import {ThemeProvider} from './src/ThemeContext';
 const App = () => {
    useEffect(() => {
       setTimeout(() => {
@@ -12,9 +12,9 @@ const App = () => {
     },[]);
 
    return (
-   <Provider store={mystore}>
+    <ThemeProvider>
    <MainNavigation/>
-   </Provider>)
+   </ThemeProvider>)
 }
 
 export default App;

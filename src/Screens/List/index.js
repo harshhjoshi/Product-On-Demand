@@ -1,9 +1,11 @@
 import { View, Text,FlatList,Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
 import { styles } from './styles';
+import {ThemeContext} from '../../ThemeContext';
+
 import {
   borderRadius,
   colors,
@@ -17,6 +19,7 @@ import {
 const List = ({navigation}) => {
     const [productList, setProductList] = useState([]);
     const [user,setUser]=useState("");
+    const {theme, setTheme} = useContext(ThemeContext); 
 
     const getData = async () => {
       setUser(auth().currentUser)
@@ -55,37 +58,36 @@ const List = ({navigation}) => {
   }, [user]);
 
   const renderItem = ({item}) => (
-    <View style={styles.productlistview}>
+    <View style={theme=="light"?styles.productlistview:styles.productlistview_dark}>
     
       <Image style={styles.productimg} source={{uri: `${item.avatar}`?`${item.avatar}`:null}} />
       <View style={{marginLeft: marginHorizontal.normal}}>
         <Text style={styles.productname}>{item.productName}</Text>
         <Text
           style={{
-            color: colors.HARD_BLACK,
+            color:colors.HARD_BLACK,
             fontFamily: fontFamily.semiBold,
             width: responsiveWidth(50),
           }}
         >
           {item.details}
         </Text>
-        <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
+        <Text style={{color: colors.green ,fontFamily: fontFamily.medium}}>
           {item.price} $
         </Text>
       </View>
     </View>
 
   );
-  console.log("user..",user);
-  console.log("productList",productList);
+
   return (
     <View style={{backgroundColor:colors.white,flex:1}}>
-    <View style={styles.container}>
+    <View style={theme=='light'?styles.container:styles.container_dark}>
      {productList.length == 0 ? (
               <Text
-                style={styles.titleStyle}
+                style={theme=='light'?styles.titleStyle:styles.titleStyle_dark}
               >
-                No products available
+               No Products Available
               </Text>
             ) : (
               <View>
@@ -94,7 +96,7 @@ const List = ({navigation}) => {
                   alignSelf: 'center',
                   fontFamily: fontFamily.bold,
                   fontSize: fontSize.Xlarge,
-                  color: colors.projectgreen,
+                  color:theme=='light'? colors.projectgreen:colors.HARD_WHITE,
                   top: spaceVertical.semiSmall,
                 }}
               >

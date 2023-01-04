@@ -1,39 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
-  useWindowDimensions,
+  useWindowDimensions,StatusBar
 } from 'react-native';
 import Buyer from './componnet/Buyer';
 import Vendor from './componnet/Vendor';
 import {styles} from './styles';
-import {ref, onValue} from '@firebase/database';
-import {db} from '../../Firebase/config';
-import auth from '@react-native-firebase/auth';
+
 import {TabView,SceneMap} from 'react-native-tab-view';
+import {ThemeContext} from '../../ThemeContext';
+import { colors } from '../../styles/variables';
 
 const Dashboard = ({navigation}) => {
   const layout = useWindowDimensions();
-  // const [ouradddlist, setAdddList] = useState('');
-  // const [user, setUser] = useState('');
+  const {theme,setTheme} = useContext(ThemeContext);
+
   const [index, setIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     setUser(auth().currentUser);
-  //     await onValue(ref(db, 'addLists/' + user.uid),snapshot => {
-  //       if (snapshot.val()) {
-  //         const add_list_fb = snapshot.val().addList;
-  //         setAdddList(add_list_fb);
-  //       }else{
-  //           console.log("error")
-  //       }
-  //     });
-  //   };
-  //   getData();
-  // }, [user]);
+
   
   const [routes] = useState([
     {key: 'first', title: 'Products'},
@@ -53,10 +40,16 @@ const Dashboard = ({navigation}) => {
     second: SecondRoute,
   });
 
-
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={theme=="light"? styles.container:styles.container_dark}>
+      
+      <View style={theme=="light"?styles.header:styles.header_dark}>
+      <StatusBar
+        backgroundColor={colors.black}
+        // barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
+        hidden={false}
+        translucent={false}
+      />
         <TouchableOpacity
           onPress={() => navigation.navigate('Signin_screen')}
           activeOpacity={0.5}>
@@ -65,7 +58,7 @@ const Dashboard = ({navigation}) => {
             source={require('../../Assests/Images/login.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.headertext}></Text>
+        <Text style={styles.headertext}>Dashboard</Text>
 
         <TouchableOpacity 
         onPress={() => navigation.navigate('Cart')}
@@ -74,7 +67,7 @@ const Dashboard = ({navigation}) => {
             style={styles.img}
             source={require('../../Assests/Images/cartt.png')}
           />
-           {/* <View style={styles.pill}><Text style={styles.textpill}>{ouradddlist.length}</Text></View> */}
+        
         </TouchableOpacity>
       </View>
 
@@ -83,6 +76,7 @@ const Dashboard = ({navigation}) => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
+        
       />
     </View>
   );

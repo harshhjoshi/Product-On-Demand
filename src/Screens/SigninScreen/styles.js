@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     marginTop: spaceVertical.tiny,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.normal,
+    color:colors.blue
   },
   subTitleRight: {
     fontFamily: fontFamily.bold,
@@ -62,8 +63,7 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: fontSize.small,
     fontFamily: fontFamily.semiBold,
-
-    color: colors.graytext,
+    color: colors.black,
   },
   textinput: {
     width: responsiveWidth(90),

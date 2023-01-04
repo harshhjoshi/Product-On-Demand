@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     textAlign: 'center',
-    fontFamily:fontFamily.medium
+    fontFamily:fontFamily.medium,color: colors.black,
   },
   checkStyle: {
     flexDirection: 'row',
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: spaceVertical.extraSmall,
     fontFamily: fontFamily.medium,
+    color:colors.projectgreen
   },
   subTitleRight: {
     fontFamily: fontFamily.bold,

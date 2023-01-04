@@ -35,6 +35,13 @@ const styles = StyleSheet.create({
     borderRadius:borderRadius.XLarge,
     alignItems: 'center',
   },
+  listview_dark: {
+    backgroundColor: colors.black,
+    borderTopLeftRadius: borderRadius.XLarge,
+    borderTopRightRadius: borderRadius.XLarge,
+    borderRadius:borderRadius.XLarge,
+    alignItems: 'center',
+  },
   modalView: {
     height: responsiveHeight(30),
     width: responsiveWidth(70),
@@ -54,6 +61,11 @@ const styles = StyleSheet.create({
   buyercontainer: {
     flex: 1,
     backgroundColor: colors.white,
+    marginTop: spaceVertical.semiSmall,
+  },
+  buyercontainer_dark: {
+    flex: 1,
+    backgroundColor: colors.black,
     marginTop: spaceVertical.semiSmall,
   },
   pricetext: {color: colors.green, fontFamily: fontFamily.medium},
@@ -80,6 +92,20 @@ const styles = StyleSheet.create({
     width: responsiveWidth(90),
     // height: responsiveHeight(20),
     backgroundColor: colors.white,
+    borderWidth:2,borderColor:colors.white,
+    padding: 20,
+    alignSelf: 'center',
+    borderRadius: borderRadius.medium,
+    elevation: 2,
+    marginTop: spaceVertical.semiSmall,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  productlistview_dark: {
+    width: responsiveWidth(90),
+    // height: responsiveHeight(20),
+    backgroundColor: colors.black,
+    borderWidth:2,borderColor:colors.white,
     padding: 20,
     alignSelf: 'center',
     borderRadius: borderRadius.medium,
@@ -115,6 +141,17 @@ const styles = StyleSheet.create({
     marginTop: spaceVertical.semiSmall,
     paddingBottom: spaceVertical.semiSmall,
   },
+  headerview_dark:{
+    backgroundColor: colors.black,
+    elevation: 5,
+    borderRadius: borderRadius.medium,
+    borderColor:colors.HARD_WHITE,
+    borderWidth:2,
+    width: responsiveWidth(90),
+    alignSelf: 'center',
+    marginTop: spaceVertical.semiSmall,
+    paddingBottom: spaceVertical.semiSmall,
+  },
   headertext: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.medium,
@@ -145,6 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: spaceVertical.small,
     borderRadius: borderRadius.large,
+    backgroundColor:colors.white
   },
 
 });
