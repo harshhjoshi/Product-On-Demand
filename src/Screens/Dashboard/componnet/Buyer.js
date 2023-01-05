@@ -262,7 +262,7 @@ const Buyer = ({navigation, parentToChild}) => {
               fontSize: fontSize.large,
               color: colors.projectgreen,
             }}>
-            No products available
+            {t('No Products Available')}
           </Text>
         ) : (
           <View>

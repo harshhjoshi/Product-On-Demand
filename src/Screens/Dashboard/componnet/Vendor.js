@@ -183,7 +183,7 @@ const Vendor = ({navigation}) => {
                   }}
                   source={require('../../../Assests/Images/check.png')}
                 />
-                <Text style={styles.modalText}>Product Added</Text>
+                <Text style={styles.modalText}>{t("Product Added")}</Text>
               </View>
             </View>
           </Modal>

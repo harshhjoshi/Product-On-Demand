@@ -106,7 +106,7 @@ const List = ({navigation}) => {
             <FlatList
               data={productList}
               renderItem={renderItem}
-              keyExtractor={item => item.id}
+              keyExtractor={(item, index) => index.toString()}
               on
               contentContainerStyle={{
                 paddingBottom: spaceVertical.extraLarge,

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Share, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
@@ -59,7 +59,7 @@ const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
   const {theme, setTheme} = useContext(ThemeContext);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('');
   const {t, i18n} = useTranslation();
 
   const handleThemeChange = () => {
@@ -99,6 +99,24 @@ const Profile = ({navigation}) => {
       });
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+       title: 'App link',
+  message: 'Please install this app and Enjoy , AppLink :Product On Demand', 
+  url: ''
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+        }
+      } else if (result.action === Share.dismissedAction) {
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   // const renderItem = ({item}) => (
   //   <TouchableOpacity style={styles.userInfoStyle}>
   //     <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
@@ -114,6 +132,8 @@ const Profile = ({navigation}) => {
   const languageData = [
     {label: 'English', value: 'en'},
     {label: 'Italian', value: 'it'},
+    {label: 'French', value: 'fr'},
+    {label: 'Gujarati', value:'gu'},
   ];
 
   return (
@@ -189,12 +209,7 @@ const Profile = ({navigation}) => {
           placeholderStyle={styles.langStyle}
           // searchPlaceholder={t('search')}
           value={i18n.language === 'en' ? language : language}
-          onChange={item => {
-            if (item.value === 'en') {
-              i18n.changeLanguage('en');
-            } else {
-              i18n.changeLanguage('it');
-            }
+          onChange={item => {i18n.changeLanguage(item.value);
             setLanguage(item.value);
           }}
         />

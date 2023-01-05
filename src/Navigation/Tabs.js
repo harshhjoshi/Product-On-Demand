@@ -7,10 +7,13 @@ import List from '../Screens/List';
 import Favorites from '../Screens/FavoriteScreen';
 import { colors } from '../styles/variables';
 import { ThemeContext } from '../ThemeContext';
-import { t } from 'i18next';
+import {useTranslation} from 'react-i18next';
+
 const Tab = createBottomTabNavigator();
+
 const Tabs = ({navigation}) => {
   const {theme,setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   const screenOptions = {
     headerShown: false,

@@ -4,8 +4,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import HomeNavigation from './HomeNavigation';
 import { ThemeContext } from '../ThemeContext';
 import { colors } from '../styles/variables';
+import {useTranslation} from 'react-i18next';
+
+
 const MainNavigation = () => {
   const {theme,setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   return ( 
     <NavigationContainer> 
