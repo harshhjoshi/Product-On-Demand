@@ -1,3 +1,26 @@
 {
-  "Welcome to React": "welocome itali lan"
+  "Welcome to React": "welocome itali lan",
+  "Guest":"ospite",
+  "Profile":"Profilo",
+  "No Products Available":"nessun prodotto disponibile",
+  "Dashboard":"Pannello",
+  "Products":"Prodotti",
+  "Add Products":"Aggiungi Prodotti",
+  "Search Here":"Cerca qui",
+  "Cart":"Carrello",
+  "Please Login":"Accedete, per favore",
+  "Welcome back!":"Ben tornato!",
+  "Sign in to your account":"Accedi al tuo account",
+
+  "Name":"Nome",
+  "Email":"E-mail",
+  "Password":"Parola d'ordine",
+  "Conform Password":"conformarsi Parola d'ordine ",
+
+  "Don't have an account":"Non hai un account",
+  "Signup":"Iscriviti",
+  "Create Account":"Crea un account",
+  "Quickly":"Velocemente",
+  "Already have an account":"Hai già un account",
+  "Signin":"Registrazione"
 }

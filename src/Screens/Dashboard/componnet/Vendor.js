@@ -27,6 +27,8 @@ import {styles} from './styles';
 import auth from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 
+import {useTranslation} from 'react-i18next';
+
 const Vendor = ({navigation}) => {
   const dummyUri =
     'http://knttraining.co.uk/wp-content/uploads/2018/11/how-to-add-a-png-to-a-photo.png';
@@ -39,7 +41,8 @@ const Vendor = ({navigation}) => {
   const [user, setUser] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const {theme, setTheme} = useContext(ThemeContext);
-
+  const {t, i18n} = useTranslation()
+  
   const OPENPICKER = () => {
     var options = {
       title: 'Select Avatar',
@@ -238,8 +241,7 @@ const Vendor = ({navigation}) => {
             top: spaceVertical.normal,
           }}
         >
-          {' '}
-          please login{' '}
+         {t('Please Login')}
         </Text>
       )}
     </ScrollView>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useContext} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Image,
@@ -13,6 +13,7 @@ import {db} from '../../../Firebase/config';
 import auth from '@react-native-firebase/auth';
 import {ref, onValue, set, update} from '@firebase/database';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import {useTranslation} from 'react-i18next';
 import {
   borderRadius,
   colors,
@@ -36,7 +37,8 @@ const Buyer = ({navigation, parentToChild}) => {
   const [grocerylist, setGroceryList] = useState('');
   const [user, setUser] = useState('');
   const [ouradddlist, setAdddList] = useState('');
-  const {theme,setTheme} = useContext(ThemeContext);
+  const {theme, setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     setUser(auth().currentUser);
@@ -52,12 +54,10 @@ const Buyer = ({navigation, parentToChild}) => {
         });
         await setClothesList(records[0].data);
         await setGroceryList(records[1].data);
-        console.log('user', user);
+
         if (user) {
-          console.log('hello_user');
           await onValue(ref(db, 'addLists/' + user.uid), async snapshot => {
             if (snapshot.val()) {
-              console.log('hello');
               await setAdddList(snapshot.val().addList);
             }
           });
@@ -92,7 +92,7 @@ const Buyer = ({navigation, parentToChild}) => {
 
   useEffect(() => {
     {
-      parentToChild == 0 ? data() : console.log('hello..');
+      parentToChild == 0 ? data() : null;
     }
   }, [user]);
 
@@ -111,9 +111,7 @@ const Buyer = ({navigation, parentToChild}) => {
 
   const addProduct = async item => {
     if (user) {
-      console.log('ouradddlist>>>>>>>', ouradddlist);
       if (ouradddlist) {
-        console.log('inside  allready one product');
         const updateAddList = ouradddlist.map(e => {
           return e.productid === item.productid ? {...e, qty: e.qty + 1} : e;
         });
@@ -125,12 +123,10 @@ const Buyer = ({navigation, parentToChild}) => {
           updateAddList.push(item);
         }
 
-        console.log('inside update');
         update(ref(db, 'addLists/' + user.uid), {
           addList: updateAddList,
         });
       } else {
-        console.log('first time');
         const addItemList = [];
         addItemList.push(item);
         set(ref(db, 'addLists/' + user.uid), {
@@ -154,24 +150,28 @@ const Buyer = ({navigation, parentToChild}) => {
 
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity style={theme=='light'?styles.productlistview:styles.productlistview_dark}>
+      <TouchableOpacity
+        style={
+          theme == 'light'
+            ? styles.productlistview
+            : styles.productlistview_dark
+        }>
         <Image
           style={styles.productimg}
           source={{
             uri: !`${item.avatar}`
               ? `${item.avatar}`
               : 'https://www.freepnglogos.com/uploads/fruits-png/fruits-png-image-fruits-png-image-download-39.png',
-          }}        
+          }}
         />
         <View style={{marginLeft: marginHorizontal.normal}}>
           <Text style={styles.productname}>{item.productName}</Text>
           <Text
             style={{
-              color:theme=='light'? colors.HARD_BLACK:colors.white,
+              color: theme == 'light' ? colors.HARD_BLACK : colors.white,
               fontFamily: fontFamily.semiBold,
               width: responsiveWidth(50),
-            }}
-          >
+            }}>
             {item.details}
           </Text>
           <Text style={{color: colors.green, fontFamily: fontFamily.medium}}>
@@ -180,18 +180,16 @@ const Buyer = ({navigation, parentToChild}) => {
           <View style={styles.row}>
             <TouchableOpacity
               onPress={() => addProduct(item)}
-              style={styles.buyeradd}
-            >
+              style={styles.buyeradd}>
               <Text style={styles.buyerbtntext}>Add</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => favPress(item)}>
               <IonIcon
-                color={item.fav ?  colors.red : colors.white}
+                color={item.fav ? colors.red : colors.white}
                 name="heart-circle-outline"
                 size={30}
-                style={{left: 15}}
-              ></IonIcon>
+                style={{left: 15}}></IonIcon>
             </TouchableOpacity>
           </View>
         </View>
@@ -204,24 +202,25 @@ const Buyer = ({navigation, parentToChild}) => {
   );
 
   return (
-    <View style={theme=="light"?styles.buyercontainer:styles.buyercontainer_dark}>
-      <View style={theme=="light"?styles.listview:styles.listview_dark}>
+    <View
+      style={
+        theme == 'light' ? styles.buyercontainer : styles.buyercontainer_dark
+      }>
+      <View style={theme == 'light' ? styles.listview : styles.listview_dark}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={styles.searchbarview}>
             <TextInput
               style={styles.searchinput}
-              placeholder="Search Here"
+              placeholder={t('Search Here')}
               placeholderTextColor={'gray'}
               onChangeText={term => {
                 setFilter(term);
-              }}
-            ></TextInput>
+              }}></TextInput>
             <TouchableOpacity>
               <Image
                 resizeMode="contain"
                 style={styles.searchicon}
-                source={require('../../../Assests/Images/search.png')}
-              ></Image>
+                source={require('../../../Assests/Images/search.png')}></Image>
             </TouchableOpacity>
           </View>
           <View
@@ -233,9 +232,9 @@ const Buyer = ({navigation, parentToChild}) => {
               justifyContent: 'center',
               height: responsiveHeight(6),
               top: 9,
-              marginLeft: marginHorizontal.semiSmall,backgroundColor:colors.white
-            }}
-          >
+              marginLeft: marginHorizontal.semiSmall,
+              backgroundColor: colors.white,
+            }}>
             <Picker
               style={{
                 width: responsiveWidth(30),
@@ -244,14 +243,11 @@ const Buyer = ({navigation, parentToChild}) => {
                 alignSelf: 'center',
                 justifyContent: 'center',
                 borderColor: colors.grayline,
-                color:colors.black,
-                
+                color: colors.black,
               }}
               selectedValue={categoryFilter}
-            dropdownIconColor={colors.black}
-
-              onValueChange={itemValue => setCategory(itemValue)}
-            >
+              dropdownIconColor={colors.black}
+              onValueChange={itemValue => setCategory(itemValue)}>
               <Picker.Item label="All" value="all" />
               <Picker.Item label="Grocery" value="grocery" />
               <Picker.Item label="Clothes" value="clothes" />
@@ -264,9 +260,8 @@ const Buyer = ({navigation, parentToChild}) => {
               fontFamily: fontFamily.bold,
               marginTop: spaceVertical.normal,
               fontSize: fontSize.large,
-              color:colors.projectgreen
-            }}
-          >
+              color: colors.projectgreen,
+            }}>
             No products available
           </Text>
         ) : (

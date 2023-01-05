@@ -1,11 +1,11 @@
-import {View, Text, FlatList, Image,StatusBar} from 'react-native';
-import React, {useEffect, useState,useContext} from 'react';
+import {View, Text, FlatList, Image, StatusBar} from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
 import {styles} from '../List/styles';
 import {ThemeContext} from '../../ThemeContext';
-
+import {useTranslation} from 'react-i18next';
 import {
   colors,
   fontFamily,
@@ -17,17 +17,20 @@ import {
 const Favorites = ({navigation}) => {
   const [favMyList, setFavList] = useState('');
   const [user, setUser] = useState('');
-  const {theme, setTheme} = useContext(ThemeContext); 
+  const {theme, setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   const getData = async () => {
     setUser(auth().currentUser);
-    await onValue(ref(db, 'FavouritesLists/' + user.uid), snapshot => {
-      if (snapshot.val()) {
-        const list = snapshot.val().favList;
-        const result = list.filter(i => i.fav == true);
-        setFavList(result);
-      }
-    });
+    if (user) {
+      await onValue(ref(db, 'FavouritesLists/' + user.uid), snapshot => {
+        if (snapshot.val()) {
+          const list = snapshot.val().favList;
+          const result = list.filter(i => i.fav == true);
+          setFavList(result);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -37,8 +40,6 @@ const Favorites = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData();
-
-      //Your refresh code gets here
     });
     return () => {
       unsubscribe();
@@ -60,10 +61,14 @@ const Favorites = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: colors.white, flex: 1}}>
-         
-      <View style={theme=='light'?styles.container:styles.container_dark}>
+      <View style={theme == 'light' ? styles.container : styles.container_dark}>
         {favMyList.length == 0 ? (
-          <Text style={theme=='light'?styles.titleStyle:styles.titleStyle_dark}>No Favourite Product available</Text>
+          <Text
+            style={
+              theme == 'light' ? styles.titleStyle : styles.titleStyle_dark
+            }>
+            {t('No Products Available')}
+          </Text>
         ) : (
           <View>
             <Text
@@ -71,10 +76,9 @@ const Favorites = ({navigation}) => {
                 alignSelf: 'center',
                 fontFamily: fontFamily.bold,
                 fontSize: fontSize.extraLarge,
-                color:theme=='light'? colors.projectgreen:colors.white,
+                color: theme == 'light' ? colors.projectgreen : colors.white,
                 top: spaceVertical.semiSmall,
-              }}
-            >
+              }}>
               Favourite Products ❤️
             </Text>
             <FlatList

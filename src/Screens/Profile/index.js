@@ -5,8 +5,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
 import {db} from '../../Firebase/config';
 import auth from '@react-native-firebase/auth';
-import { Dropdown } from 'react-native-element-dropdown';
-import { useTranslation } from 'react-i18next';
+import {Dropdown} from 'react-native-element-dropdown';
+import {useTranslation} from 'react-i18next';
 
 import {ThemeContext} from '../../ThemeContext';
 import {
@@ -54,25 +54,21 @@ import {
 //     flag: false,
 //   },
 // ];
+
 const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
   const [user, setUser] = useState('');
-  const {theme, setTheme} = useContext(ThemeContext); 
-  const [language, setLanguage] = useState('');
-  const { t, i18n } = useTranslation();
+  const {theme, setTheme} = useContext(ThemeContext);
+  const [language, setLanguage] = useState('en');
+  const {t, i18n} = useTranslation();
 
   const handleThemeChange = () => {
-    console.log('thmese is sos ', theme);
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-  useEffect(() => {
-    console.log('thmese is sos ', theme);
-  });
 
   const getData = async () => {
     await setUser(auth().currentUser);
     if (user) {
-      console.log('user come');
       await onValue(ref(db, 'users/' + user.uid), snapshot => {
         if (snapshot.val()) {
           setFiredata(snapshot.val());
@@ -82,18 +78,13 @@ const Profile = ({navigation}) => {
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('Refreshed Data');
       getData();
-
-      //Your refresh code gets here
     });
     return () => {
       unsubscribe();
     };
   }, [navigation]);
   useEffect(() => {
-    console.log('frist useefect');
-
     getData();
   }, [user]);
 
@@ -108,23 +99,22 @@ const Profile = ({navigation}) => {
       });
   };
 
-  const renderItem = ({item}) => (
-    <TouchableOpacity style={styles.userInfoStyle}>
-      <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
-        {item.label}
-      </Text>
-      <IonIcon
-        name="caret-forward-outline"
-        size={25}
-        color={theme == 'light' ? colors.black : colors.HARD_WHITE}
-      ></IonIcon>
-    </TouchableOpacity>
-  );
+  // const renderItem = ({item}) => (
+  //   <TouchableOpacity style={styles.userInfoStyle}>
+  //     <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
+  //       {item.label}
+  //     </Text>
+  //     <IonIcon
+  //       name="caret-forward-outline"
+  //       size={25}
+  //       color={theme == 'light' ? colors.black : colors.HARD_WHITE}
+  //     ></IonIcon>
+  //   </TouchableOpacity>
+  // );
   const languageData = [
-    { label: 'English', value: 'en' },
-    { label: 'Italian', value: 'it' },
+    {label: 'English', value: 'en'},
+    {label: 'Italian', value: 'it'},
   ];
-
 
   return (
     <View style={theme == 'light' ? styles.container : styles.container_dark}>
@@ -132,15 +122,13 @@ const Profile = ({navigation}) => {
         <Text
           style={
             theme == 'light' ? styles.profilealign : styles.profilealign_dark
-          }
-        >
-          Profile
+          }>
+          {t('Profile')}
         </Text>
         {user ? (
           <TouchableOpacity
             style={{left: responsiveWidth(25)}}
-            onPress={() => UsersignOut()}
-          >
+            onPress={() => UsersignOut()}>
             <Image
               style={styles.img}
               source={require('../../Assests/Images/power-off.png')}
@@ -150,8 +138,7 @@ const Profile = ({navigation}) => {
           <TouchableOpacity
             style={{left: responsiveWidth(30)}}
             onPress={() => navigation.navigate('Signin_screen')}
-            activeOpacity={0.5}
-          >
+            activeOpacity={0.5}>
             <Image
               style={styles.img}
               source={require('../../Assests/Images/loginuser.png')}
@@ -162,8 +149,7 @@ const Profile = ({navigation}) => {
       <View
         style={
           theme == 'light' ? styles.mainContainer : styles.mainContainer_dark
-        }
-      >
+        }>
         <View style={styles.row}>
           <Image
             source={{
@@ -175,45 +161,43 @@ const Profile = ({navigation}) => {
           />
           <View style={styles.usernameInfo}>
             <Text style={theme == 'light' ? styles.title : styles.title_dark}>
-              {user ? Firedata.userName : <Text> guest</Text>}
+              {user ? Firedata.userName : <Text>{t('Guest')}</Text>}
             </Text>
           </View>
         </View>
         {user && (
           <View style={styles.userEmailStyle}>
-            <IonIcon name="mail" size={25} color={theme=='light'?colors.black:colors.white}></IonIcon>
+            <IonIcon
+              name="mail"
+              size={25}
+              color={theme == 'light' ? colors.black : colors.white}></IonIcon>
             <Text
               style={
                 theme == 'light' ? styles.emailTitle : styles.emailTitle_dark
-              }
-            >
+              }>
               {Firedata.email}
             </Text>
           </View>
         )}
-             <Dropdown
-           
-           dropdownPosition="bottom"
-            data={languageData}
-         
-           maxHeight={300}
-           labelField="label"
-           valueField="value"
-           placeholder="Select item"
-           placeholderStyle={styles.langStyle}
-           // searchPlaceholder={t('search')}
-           value={i18n.language === "en" ? language : language}
-           onChange={item => {
-             if (item.value === 'en') {
-               i18n.changeLanguage('en');
-             } else {
-               i18n.changeLanguage('it');
-             }
-             setLanguage(item.value);
-           }}
-            
-         />
-          <Text style={styles.text}>{t("Welcome to React")}</Text>
+        <Dropdown
+          dropdownPosition="bottom"
+          data={languageData}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Language"
+          placeholderStyle={styles.langStyle}
+          // searchPlaceholder={t('search')}
+          value={i18n.language === 'en' ? language : language}
+          onChange={item => {
+            if (item.value === 'en') {
+              i18n.changeLanguage('en');
+            } else {
+              i18n.changeLanguage('it');
+            }
+            setLanguage(item.value);
+          }}
+        />
         {/* <View
           style={
             theme == 'light'
@@ -236,16 +220,15 @@ const Profile = ({navigation}) => {
             alignItems: 'center',
             alignSelf: 'center',
             bottom: 20,
-          }}
-        >
+          }}>
           {theme == 'light' ? (
             <Text
               style={{
                 color: colors.black,
                 fontFamily: fontFamily.semiBold,
                 fontSize: fontSize.medium,
-              }}
-            >
+                marginTop: 150,
+              }}>
               Dark Mode
             </Text>
           ) : (
@@ -254,8 +237,7 @@ const Profile = ({navigation}) => {
                 color: colors.black,
                 fontFamily: fontFamily.semiBold,
                 fontSize: fontSize.medium,
-              }}
-            >
+              }}>
               Light Mode
             </Text>
           )}
