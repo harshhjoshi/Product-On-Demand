@@ -10,10 +10,13 @@ import List from '../Screens/List';
 import Favorite from '../Screens/FavoriteScreen';
 import Cart from '../Screens/Cart';
 import { ThemeContext } from '../ThemeContext';
+import {useTranslation} from 'react-i18next';
+
 const Stack = createNativeStackNavigator();
 
 const HomeNavigation = () => {
   const {theme,setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   const options = {
     headerShown: false,
