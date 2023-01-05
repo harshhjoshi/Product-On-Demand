@@ -94,8 +94,8 @@ const Cart = ({navigation}) => {
       <View
         style={{
           flexDirection: 'row',
-          marginTop: spaceVertical.normal,
-          width: responsiveWidth(100),
+          // marginTop: spaceVertical.normal,
+          // width: responsiveWidth(100),
         }}>
         <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
           <IonIcon

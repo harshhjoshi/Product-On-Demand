@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
   container_dark: {flex: 1, backgroundColor: colors.black},
 
   header: {
-    marginTop: spaceVertical.normal,
+    // marginTop: spaceVertical.normal,
     backgroundColor: colors.white,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
   header_dark: {
-    marginTop: spaceVertical.normal,
+    // marginTop: spaceVertical.normal,
     backgroundColor: colors.black,
     flexDirection: 'row',
     justifyContent: 'space-around',

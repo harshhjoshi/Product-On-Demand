@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginTop: spaceVertical.tiny,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.normal,
-    color:colors.blue
+    color:colors.projectgreen
   },
   subTitleRight: {
     fontFamily: fontFamily.bold,
