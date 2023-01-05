@@ -7,6 +7,7 @@ import List from '../Screens/List';
 import Favorites from '../Screens/FavoriteScreen';
 import { colors } from '../styles/variables';
 import { ThemeContext } from '../ThemeContext';
+import { t } from 'i18next';
 const Tab = createBottomTabNavigator();
 const Tabs = ({navigation}) => {
   const {theme,setTheme} = useContext(ThemeContext);
@@ -31,7 +32,7 @@ const Tabs = ({navigation}) => {
     <Tab.Navigator screenOptions={  screenOptions}>
         
       <Tab.Screen
-        name="Home" 
+        name={t("Home")} 
         component={Dashboard}
         options={{
           tabBarIcon: ({focused}) => (
@@ -44,7 +45,7 @@ const Tabs = ({navigation}) => {
         }}
       />
       <Tab.Screen
-        name="Favourites"
+        name={t("Favourites")}
         component={Favorites}
         options={{
           tabBarIcon: ({focused}) => (
@@ -56,7 +57,7 @@ const Tabs = ({navigation}) => {
         }}
       />
       <Tab.Screen
-        name="List"
+        name={t("List")}
         component={List}
         options={{
           tabBarBadge: 2,
@@ -70,7 +71,7 @@ const Tabs = ({navigation}) => {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name={t("Profile")}
         component={Profile}
         options={{
           tabBarIcon: ({focused}) => (

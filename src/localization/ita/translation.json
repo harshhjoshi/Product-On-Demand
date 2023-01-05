@@ -1,7 +1,9 @@
 {
-  "Welcome to React": "welocome itali lan",
-  "Guest":"ospite",
+  "Home":"Casa",
+  "Favourites":"Preferite",
+  "List":"Elenco",
   "Profile":"Profilo",
+  "Guest":"ospite",
   "No Products Available":"nessun prodotto disponibile",
   "Dashboard":"Pannello",
   "Products":"Prodotti",
@@ -11,16 +13,26 @@
   "Please Login":"Accedete, per favore",
   "Welcome back!":"Ben tornato!",
   "Sign in to your account":"Accedi al tuo account",
-
   "Name":"Nome",
   "Email":"E-mail",
   "Password":"Parola d'ordine",
   "Conform Password":"conformarsi Parola d'ordine ",
-
   "Don't have an account":"Non hai un account",
   "Signup":"Iscriviti",
   "Create Account":"Crea un account",
   "Quickly":"Velocemente",
   "Already have an account":"Hai già un account",
-  "Signin":"Registrazione"
+  "Signin":"Registrazione",
+  "Add":"Aggiunge",
+  "All":"Tutte",
+  "Grocery":"Drogheria",
+  "Clothes":"Vestiti",
+  "Upload Image":"Carica immagine",
+  "Submit":"Invia",
+  "Add Price":"Aggiungi prezzo",
+  "Add Product Details":"Aggiungi dettagli prodotto",
+  "Add Product Name":"Aggiungi dettagli Nome",
+  "Choose category":"Scegli la categoria",
+  "Favourite Products":"Prodotti preferiti",
+  "Own Products":"Prodotti propri"
 }

@@ -156,7 +156,7 @@ const Signin = ({navigation}) => {
           }) => (
             <View>
               <TextInputs
-                label="Email"
+              label={(t("Email"))}
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={() => setFieldTouched('email')}
@@ -194,11 +194,11 @@ const Signin = ({navigation}) => {
 
         {/*  */}
         <View style={styles.bottomstyles}>
-          <Text style={styles.subTitleBottom}>{t("Don't have an account")}?</Text>
+          <Text style={styles.subTitleBottom}>{t("Don't have an account")} ?</Text>
           <TouchableOpacity
             style={{marginTop: spaceVertical.tiny1 + 3}}
             onPress={() => navigation.navigate('signup_screen')}>
-            <Text style={styles.subTitleRight}>{t("Signup")}</Text>
+            <Text style={styles.subTitleRight}> {t("Signup")}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.bottomstylesicon}>

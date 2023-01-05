@@ -1,7 +1,9 @@
 {
- "Welcome to React": "welcome our page ",
- "Guest":"Guest",
- "Profile":"Profile",
+"Home":"Home",
+"Favourites":"Favourites",
+"List":"List",
+"Profile":"Profile",
+"Guest":"Guest",
  "No Products Available":"No Products Available",
  "Dashboard":"Dashboard",
  "Products":"Products",
@@ -11,17 +13,26 @@
  "Please Login":"Please Login",
  "Welcome back!":"Welcome back!",
  "Sign in to your account":"Sign in to your account",
-
  "Name":"Name",
  "Email":"Email",
  "Password":"Password",
  "Conform Password":"Conform Password",
-
  "Don't have an account":"Don't have an account",
  "Signup":"Signup",
  "Create Account":"Create Account",
  "Quickly":"Quickly",
  "Already have an account":"Already have an account",
- "Signin":"Signin"
- 
+ "Signin":"Signin",
+ "Add":"Add",
+ "All":"All",
+ "Grocery":"Grocery",
+ "Clothes":"Clothes",
+ "Upload Image":"Upload Image",
+ "Submit":"Submit",
+ "Add Price":"Add Price",
+ "Add Product Details":"Add Product Details",
+ "Add Product Name":"Add Product Name",
+ "Choose category":"Choose category",
+ "Favourite Products":"Favourite Products",
+ "Own Products":"Own Products"
 }
