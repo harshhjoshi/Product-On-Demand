@@ -181,7 +181,7 @@ const Buyer = ({navigation, parentToChild}) => {
             <TouchableOpacity
               onPress={() => addProduct(item)}
               style={styles.buyeradd}>
-              <Text style={styles.buyerbtntext}>Add</Text>
+              <Text style={styles.buyerbtntext}>{t("Add")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => favPress(item)}>
@@ -248,9 +248,9 @@ const Buyer = ({navigation, parentToChild}) => {
               selectedValue={categoryFilter}
               dropdownIconColor={colors.black}
               onValueChange={itemValue => setCategory(itemValue)}>
-              <Picker.Item label="All" value="all" />
-              <Picker.Item label="Grocery" value="grocery" />
-              <Picker.Item label="Clothes" value="clothes" />
+              <Picker.Item label={t("All")} value="all" />
+              <Picker.Item label={t("Grocery")} value="grocery" />
+              <Picker.Item label={t("Clothes")} value="clothes" />
             </Picker>
           </View>
         </View>

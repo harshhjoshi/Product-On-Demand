@@ -101,7 +101,7 @@ const List = ({navigation}) => {
                   theme == 'light' ? colors.projectgreen : colors.HARD_WHITE,
                 top: spaceVertical.semiSmall,
               }}>
-              Own Products
+              {t("Own Products")}
             </Text>
             <FlatList
               data={productList}

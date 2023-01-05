@@ -158,7 +158,7 @@ const Vendor = ({navigation}) => {
         <View
           style={theme == 'light' ? styles.headerview : styles.headerview_dark}
         >
-          <Text style={styles.headertext}>Upload Image</Text>
+          <Text style={styles.headertext}>{t("Upload Image")}</Text>
           <TouchableOpacity
             onPress={() => OPENPICKER()}
             style={styles.imgselection}
@@ -188,20 +188,20 @@ const Vendor = ({navigation}) => {
             </View>
           </Modal>
           <TextInputs
-            label={'Add Product Name'}
+            label={t('Add Product Name')}
             value={productName}
             onChangeText={e => setProductName(e)}
             style={styles.TextInputs}
           />
           <TextInputs
-            label={'Add Product Details'}
+            label={t('Add Product Details')}
             value={details}
             onChangeText={e => setdetails(e)}
             style={styles.TextInputs}
           />
 
           <TextInputs
-            label={' Add Price'}
+            label={t('Add Price')}
             value={price}
             onChangeText={e => setPrice(e)}
             keyboardType="Numeric"
@@ -218,14 +218,14 @@ const Vendor = ({navigation}) => {
               dropdownIconColor={theme == 'light' ? colors.black : colors.white}
               onValueChange={itemValue => setCategory(itemValue)}
             >
-              <Picker.Item label="Choose category" value="category" />
-              <Picker.Item label="grocery" value="grocery" />
-              <Picker.Item label="clothes" value="clothes" />
+              <Picker.Item label={t("Choose category")} value="category" />
+              <Picker.Item label={t("Grocery")} value="grocery" />
+              <Picker.Item label={t("Clothes")} value="clothes" />
             </Picker>
           </View>
 
           <Button
-            name={'Submit'}
+            name={t('Submit')}
             onPress={() => sellerSubmite(category)}
             color={colors.projectgreen}
             marginTop={spaceVertical.semiSmall}

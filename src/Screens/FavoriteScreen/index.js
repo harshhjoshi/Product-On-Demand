@@ -79,7 +79,7 @@ const Favorites = ({navigation}) => {
                 color: theme == 'light' ? colors.projectgreen : colors.white,
                 top: spaceVertical.semiSmall,
               }}>
-              Favourite Products ❤️
+             {t("Favourite Products")} ❤️
             </Text>
             <FlatList
               data={favMyList}

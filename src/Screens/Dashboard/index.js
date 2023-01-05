@@ -20,8 +20,8 @@ const Dashboard = ({navigation}) => {
   const {t, i18n} = useTranslation();
 
   const [routes] = useState([
-    {key: 'first', title: 'Products'},
-    {key: 'second', title: 'Add Products'},
+    {key: 'first', title:`${t("Products")}`},
+    {key: 'second', title:`${t("Add Products")}`},
   ]);
 
   const FirstRoute = () => <Buyer parentToChild={index} />;
