@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, Image, Share, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Share, TouchableOpacity,FlatList} from 'react-native';
 import styles from './styles';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
@@ -16,44 +16,33 @@ import {
   responsiveWidth,
 } from '../../styles/variables';
 
-// const data = [
-//   {
-//     id: 1,
-//     label: 'Your Favorites',
-//     icon: 'heart',
-//     flag: false,
-//   },
-//   {
-//     id: 2,
-//     label: 'Location',
-//     icon: 'navigate',
-//     flag: false,
-//   },
-//   {
-//     id: 3,
-//     label: 'Language',
-//     icon: 'globe',
-//     flag: false,
-//   },
-//   {
-//     id: 4,
-//     label: 'Tell your Friend',
-//     icon: 'people',
-//     flag: false,
-//   },
-//   {
-//     id: 5,
-//     label: 'About US',
-//     icon: 'information-circle',
-//     flag: false,
-//   },
-//   {
-//     id: 6,
-//     label: 'Terms and Policies',
-//     icon: 'document',
-//     flag: false,
-//   },
-// ];
+const data = [
+
+  {
+    id: 2,
+    label: 'Location',
+    icon: 'navigate',
+    flag: false,
+  },
+  {
+    id: 3,
+    label: 'Tell your Friend',
+    icon: 'people',
+    flag: false,
+  },
+  {
+    id: 4,
+    label: 'About US',
+    icon: 'information-circle',
+    flag: false,
+  },
+  {
+    id: 5,
+    label: 'Terms and Policies',
+    icon: 'document',
+    flag: false,
+  },
+];
 
 const Profile = ({navigation}) => {
   const [Firedata, setFiredata] = useState(' ');
@@ -117,18 +106,25 @@ const Profile = ({navigation}) => {
     }
   }
 
-  // const renderItem = ({item}) => (
-  //   <TouchableOpacity style={styles.userInfoStyle}>
-  //     <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
-  //       {item.label}
-  //     </Text>
-  //     <IonIcon
-  //       name="caret-forward-outline"
-  //       size={25}
-  //       color={theme == 'light' ? colors.black : colors.HARD_WHITE}
-  //     ></IonIcon>
-  //   </TouchableOpacity>
-  // );
+  const listPress =(index)=>{
+    if(index == 1){
+      onShare()
+    }
+  }
+
+  const renderItem = ({item,index}) => (
+    <TouchableOpacity style={styles.userInfoStyle} onPress={()=>listPress(index)}>
+      <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
+        {item.label}
+      </Text>
+      <IonIcon
+        name="caret-forward-outline"
+        size={25}
+        color={theme == 'light' ? colors.black : colors.HARD_WHITE}
+      ></IonIcon>
+    </TouchableOpacity>
+  );
+
   const languageData = [
     {label: 'English', value: 'en'},
     {label: 'Italian', value: 'it'},
@@ -199,33 +195,40 @@ const Profile = ({navigation}) => {
             </Text>
           </View>
         )}
-        <Dropdown
-          dropdownPosition="bottom"
-          data={languageData}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Language"
-          placeholderStyle={styles.langStyle}
-          // searchPlaceholder={t('search')}
-          value={i18n.language === 'en' ? language : language}
-          onChange={item => {i18n.changeLanguage(item.value);
-            setLanguage(item.value);
-          }}
-        />
-        {/* <View
+
+       
+
+        <View
           style={
             theme == 'light'
               ? styles.userRenderStyle
               : styles.userRenderStyle_dark
           }
         >
+      <Dropdown
+        style={styles.dropdown}
+        containerStyle={styles.containerStyle}
+          data={languageData}
+          labelField="label"
+          valueField="value"
+          placeholder="Language"
+          placeholderStyle={styles.langStyle}
+          value={i18n.language === 'en' ? language : language}
+          onChange={item => {i18n.changeLanguage(item.value);
+            setLanguage(item.value);
+          }}
+          renderRightIcon={() => (
+            <IonIcon name="caret-down-outline" 
+            size={25}
+            color={theme == 'light' ? colors.black : colors.HARD_WHITE} ></IonIcon>
+          )}
+        />
           <FlatList
             data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
-        </View> */}
+        </View>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => handleThemeChange()}
@@ -242,7 +245,6 @@ const Profile = ({navigation}) => {
                 color: colors.black,
                 fontFamily: fontFamily.semiBold,
                 fontSize: fontSize.medium,
-                marginTop: 150,
               }}>
               Dark Mode
             </Text>

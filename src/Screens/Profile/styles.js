@@ -101,6 +101,7 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     marginLeft: marginHorizontal.extraSmall,
     fontFamily: fontFamily.medium,
     color: colors.black,
+    fontSize:fontSize.medium-1,
   },
   ml_dark: {
     marginLeft: marginHorizontal.extraSmall,
@@ -133,8 +134,23 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     justifyContent: 'space-between',
     paddingVertical: spaceVertical.small,
     marginBottom: spaceVertical.extraSmall,
-    elevation:2,
   },
+  dropdown:{
+     marginTop:spaceVertical.normal,
+     paddingVertical: spaceVertical.small,
+     marginBottom: spaceVertical.extraSmall,
+  },
+  containerStyle:{
+  fontFamily: fontFamily.medium,
+
+  },
+  langStyle:{
+    marginLeft: marginHorizontal.extraSmall,
+    fontFamily: fontFamily.medium,
+    color: colors.black,
+    fontSize:fontSize.medium-1,
+  },
+ 
 
 });
 export default styles;
