@@ -1,3 +1,27 @@
 {
- "Welcome to React": "welcome our page "
+ "Welcome to React": "welcome our page ",
+ "Guest":"Guest",
+ "Profile":"Profile",
+ "No Products Available":"No Products Available",
+ "Dashboard":"Dashboard",
+ "Products":"Products",
+ "Add Products":"Add Products",
+ "Search Here":"Search Here",
+ "Cart":"Cart",
+ "Please Login":"Please Login",
+ "Welcome back!":"Welcome back!",
+ "Sign in to your account":"Sign in to your account",
+
+ "Name":"Name",
+ "Email":"Email",
+ "Password":"Password",
+ "Conform Password":"Conform Password",
+
+ "Don't have an account":"Don't have an account",
+ "Signup":"Signup",
+ "Create Account":"Create Account",
+ "Quickly":"Quickly",
+ "Already have an account":"Already have an account",
+ "Signin":"Signin"
+ 
 }

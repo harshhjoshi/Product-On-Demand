@@ -21,9 +21,13 @@ import {db} from '../../Firebase/config';
 import {ref, set} from '@firebase/database';
 import * as yup from 'yup';
 import {Formik} from 'formik';
+import {useTranslation} from 'react-i18next';
 
 const Signin = ({navigation}) => {
   const [errorfb,setErrorFB]=useState("");
+  const {t, i18n} = useTranslation();
+
+
   const signIn = async (email, password) => {
     try {
       const userCredential = await auth().signInWithEmailAndPassword(
@@ -51,12 +55,12 @@ const Signin = ({navigation}) => {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     const user_sign_in = auth().signInWithCredential(googleCredential);
+
     user_sign_in
       .then(user => {
         if (user) {
           storeData(user);
         }
-        console.log('ugogle', user.user);
       })
       .catch(err => {
         console.log("err messgae",err.message);
@@ -70,7 +74,6 @@ const Signin = ({navigation}) => {
       photoURL: user.user.photoURL,
     })
       .then(() => {
-        console.log('data update');
         navigation.navigate('Tabs')
       })
       .catch(error => {
@@ -79,7 +82,6 @@ const Signin = ({navigation}) => {
   };
 
   async function onFacebookButtonPress() {
-    // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
       'email',
@@ -114,8 +116,8 @@ const Signin = ({navigation}) => {
 
       <ScrollView contentContainerStyle={styles.textContainer}>
         <View style={{marginLeft: marginHorizontal.small}}>
-          <Text style={styles.title}>Welcome back!</Text>
-          <Text style={styles.txt}>Sign in to your account.</Text>
+          <Text style={styles.title}>{t("Welcome back!")}</Text>
+          <Text style={styles.txt}>{t("Sign in to your account")}.</Text>
         </View>
         {/*  */}
 
@@ -125,7 +127,6 @@ const Signin = ({navigation}) => {
             password: '',
           }}
           onSubmit={values => {
-            console.log('values', values);
             signIn(values.email,values.password)
           }}
           validationSchema={yup.object().shape({
@@ -166,7 +167,7 @@ const Signin = ({navigation}) => {
                 </Text>
               )}
               <TextInputs
-                label="Password"
+                label={t("Password")}
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')}
@@ -180,7 +181,7 @@ const Signin = ({navigation}) => {
 
               {errorfb &&<Text style={styles.inputvalidStyle}>{errorfb}</Text>}
               <Button
-                name="Login"
+                name={t("Signin")}
                 color={isValid && dirty ? colors.projectgreen : colors.shadowgreen}
                 marginTop={spaceVertical.small}
                 disableTrue={!(isValid && dirty) }
@@ -193,11 +194,11 @@ const Signin = ({navigation}) => {
 
         {/*  */}
         <View style={styles.bottomstyles}>
-          <Text style={styles.subTitleBottom}>Don't have an account?</Text>
+          <Text style={styles.subTitleBottom}>{t("Don't have an account")}?</Text>
           <TouchableOpacity
             style={{marginTop: spaceVertical.tiny1 + 3}}
             onPress={() => navigation.navigate('signup_screen')}>
-            <Text style={styles.subTitleRight}> Signup</Text>
+            <Text style={styles.subTitleRight}>{t("Signup")}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.bottomstylesicon}>

@@ -21,22 +21,27 @@ import {
 } from '../../styles/variables';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ThemeContext} from '../../ThemeContext';
+import {useTranslation} from 'react-i18next';
+
 const Cart = ({navigation}) => {
   const [ouradddlist, setAdddList] = useState('');
   const [user, setUser] = useState('');
   const {theme, setTheme} = useContext(ThemeContext);
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     const getData = async () => {
       setUser(auth().currentUser);
-      await onValue(ref(db, 'addLists/' + user.uid), snapshot => {
-        if (snapshot.val()) {
-          const add_list_fb = snapshot.val().addList;
-          setAdddList(add_list_fb);
-        } else {
-          setAdddList([]);
-        }
-      });
+      if (user) {
+        await onValue(ref(db, 'addLists/' + user.uid), snapshot => {
+          if (snapshot.val()) {
+            const add_list_fb = snapshot.val().addList;
+            setAdddList(add_list_fb);
+          } else {
+            setAdddList([]);
+          }
+        });
+      }
     };
     getData();
   }, [user]);
@@ -65,15 +70,13 @@ const Cart = ({navigation}) => {
           <IonIcon
             name="remove-outline"
             color={colors.HARD_BLACK}
-            size={30}
-          ></IonIcon>
+            size={30}></IonIcon>
           <Text style={styles.productprice}>{item.qty}</Text>
           <IonIcon
             name="add-outline"
             color={colors.HARD_BLACK}
             size={30}
-            style={{left: 10}}
-          ></IonIcon>
+            style={{left: 10}}></IonIcon>
         </View>
       </View>
 
@@ -87,32 +90,24 @@ const Cart = ({navigation}) => {
   );
 
   return (
-    <View style={theme=="light"?styles.container:styles.container_dark}>
-      {/* <StatusBar
-        backgroundColor={theme == 'light' ? colors.white : colors.black}
-        barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
-        hidden={false}
-        translucent={true}
-      /> */}
+    <View style={theme == 'light' ? styles.container : styles.container_dark}>
       <View
         style={{
           flexDirection: 'row',
           marginTop: spaceVertical.normal,
           width: responsiveWidth(100),
-        }}
-      >
+        }}>
         <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
           <IonIcon
             name="arrow-back-outline"
-            color={theme=='light'?colors.black:colors.white}
-            size={35}
-          ></IonIcon>
+            color={theme == 'light' ? colors.black : colors.white}
+            size={35}></IonIcon>
         </TouchableOpacity>
-        <Text style={styles.headertext}>My cart</Text>
+        <Text style={styles.headertext}>{t('Cart')}</Text>
       </View>
 
       {ouradddlist.length == 0 ? (
-        <Text style={styles.titleStyle}>No Product Added </Text>
+        <Text style={styles.titleStyle}>{t('No Products Available')} </Text>
       ) : (
         <View
           style={{
@@ -120,8 +115,7 @@ const Cart = ({navigation}) => {
             backgroundColor:
               theme == 'light' ? colors.lightgreen : colors.black,
             borderRadius: borderRadius.bigboxradius,
-          }}
-        >
+          }}>
           <FlatList
             data={ouradddlist}
             renderItem={renderItem}

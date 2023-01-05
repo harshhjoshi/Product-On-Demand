@@ -11,12 +11,13 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {colors, responsiveWidth, spaceVertical} from '../../styles/variables';
 import * as yup from 'yup';
 import {Formik} from 'formik';
+import { useTranslation } from 'react-i18next';
 
 const Signup = ({navigation}) => {
   const dummyUri =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/768px-Circle-icons-profile.svg.png';
   const [galleryphoto, setUploadImage] = useState(dummyUri);
-
+  const { t, i18n } = useTranslation();
   const OPENPICKER = () => {
     console.log('ndbvjkbhdfvj');
     var options = {
@@ -73,8 +74,8 @@ const Signup = ({navigation}) => {
         />
 
         <View>
-          <Text style={styles.title}>Create Account!</Text>
-          <Text style={styles.subtitle}>Quickly create an account.</Text>
+          <Text style={styles.title}>{t("Create Account")}!</Text>
+          <Text style={styles.subtitle}>{t("Quickly")} {t("Create Account")}.</Text>
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -120,7 +121,7 @@ const Signup = ({navigation}) => {
           }) => (
             <View>
               <TextInputs
-                label="Name"
+                label={(t("Name"))}
                 value={values.name}
                 onChangeText={handleChange('name')}
                 onBlur={() => setFieldTouched('name')}
@@ -131,7 +132,7 @@ const Signup = ({navigation}) => {
                 </Text>
               )}
               <TextInputs
-                label="Email"
+                label={(t("Email"))}
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={() => setFieldTouched('email')}
@@ -142,7 +143,7 @@ const Signup = ({navigation}) => {
                 </Text>
               )}
               <TextInputs
-                label="Password"
+                label={t("Password")}
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')}
@@ -154,7 +155,7 @@ const Signup = ({navigation}) => {
                 </Text>
               )}
               <TextInputs
-                label="Conform Password"
+                label={t("Conform Password")}
                 value={values.confrompassword}
                 onChangeText={handleChange('confrompassword')}
                 onBlur={() => setFieldTouched('confrompassword')}
@@ -167,7 +168,7 @@ const Signup = ({navigation}) => {
               )}
 
               <Button
-                name="Signup"
+                name={t("Signup")}
                 color={isValid && dirty  ? colors.projectgreen : colors.shadowgreen}
                 marginTop={spaceVertical.small}
                 disableTrue={!(isValid && dirty) }
@@ -178,9 +179,9 @@ const Signup = ({navigation}) => {
           )}
         </Formik>
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <Text style={styles.subTitleBottom}>Already have an account?</Text>
+          <Text style={styles.subTitleBottom}>{t("Already have an account")} ?</Text>
           <Pressable onPress={() => navigation.navigate('Signin_screen')}>
-            <Text style={[styles.subTitleRight, {marginTop: 5}]}> Signin</Text>
+            <Text style={[styles.subTitleRight, {marginTop: 5}]}> {t("Signin")}</Text>
           </Pressable>
         </View>
       </ScrollView>
