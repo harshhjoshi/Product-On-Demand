@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   backgroundColor:colors.white,
 
     
-  marginTop:spaceVertical.normal
+  // marginTop:spaceVertical.normal 
   },
   header_dark: {
     flexDirection: 'row',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   backgroundColor:colors.black,
 
     
-  marginTop:spaceVertical.normal
+  // marginTop:spaceVertical.normal
   },
   mainContainer: {
     flex: 1,
