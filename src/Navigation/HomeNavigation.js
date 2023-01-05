@@ -11,6 +11,7 @@ import Favorite from '../Screens/FavoriteScreen';
 import Cart from '../Screens/Cart';
 import { ThemeContext } from '../ThemeContext';
 import {useTranslation} from 'react-i18next';
+import Terms from '../Screens/Terms';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const HomeNavigation = () => {
       <Stack.Screen name="List" component={List} />
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Terms" component={Terms} />
       <Stack.Screen name="Signin_screen" component={Signin} />
       <Stack.Screen name="signup_screen" component={Signup} />
     </Stack.Navigator>

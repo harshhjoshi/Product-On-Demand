@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   },
     row: {
     flexDirection: 'row',
+    marginBottom:spaceVertical.small
   },
  
   profilealign: {
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   },
   userEmailStyle: {
     flexDirection: 'row',
-    marginVertical: spaceVertical.small,
+marginBottom: spaceVertical.small,
   },
   logo: {
     height: responsiveHeight(10),
@@ -136,20 +137,14 @@ height:responsiveHeight(5),width:responsiveWidth(10),
     marginBottom: spaceVertical.extraSmall,
   },
   dropdown:{
-     marginTop:spaceVertical.normal,
-     paddingVertical: spaceVertical.small,
+   
      marginBottom: spaceVertical.extraSmall,
   },
   containerStyle:{
   fontFamily: fontFamily.medium,
 
   },
-  langStyle:{
-    marginLeft: marginHorizontal.extraSmall,
-    fontFamily: fontFamily.medium,
-    color: colors.black,
-    fontSize:fontSize.medium-1,
-  },
+  
  
 
 });
