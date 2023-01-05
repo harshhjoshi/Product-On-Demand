@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, Image, Share, TouchableOpacity,FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Share,
+  TouchableOpacity,
+  FlatList,
+  Linking,
+} from 'react-native';
 import styles from './styles';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {ref, onValue} from '@firebase/database';
@@ -14,10 +22,11 @@ import {
   fontFamily,
   fontSize,
   responsiveWidth,
+  spaceVertical,
 } from '../../styles/variables';
+import {Switch} from 'react-native-paper';
 
 const data = [
-
   {
     id: 2,
     label: 'Location',
@@ -50,8 +59,10 @@ const Profile = ({navigation}) => {
   const {theme, setTheme} = useContext(ThemeContext);
   const [language, setLanguage] = useState('');
   const {t, i18n} = useTranslation();
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
   const handleThemeChange = () => {
+    setIsSwitchOn(!isSwitchOn)
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
@@ -91,9 +102,10 @@ const Profile = ({navigation}) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-       title: 'App link',
-  message: 'Please install this app and Enjoy , AppLink :Product On Demand', 
-  url: ''
+        title: 'App link',
+        message:
+          'Please install this app and Enjoy , AppLink :Product On Demand',
+        url: '',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -104,16 +116,23 @@ const Profile = ({navigation}) => {
     } catch (error) {
       alert(error.message);
     }
-  }
+  };
 
-  const listPress =(index)=>{
-    if(index == 1){
-      onShare()
+  const listPress = index => {
+    if (index == 1) {
+      onShare();
+    } else if (index == 2) {
+      Linking.openURL('https://archesoftronix.com/');
+    } else if (index == 3) {
+      navigation.navigate('Terms');
     }
-  }
+  };
 
-  const renderItem = ({item,index}) => (
-    <TouchableOpacity style={styles.userInfoStyle} onPress={()=>listPress(index)}>
+  const renderItem = ({item, index}) => (
+    <TouchableOpacity
+      style={styles.userInfoStyle}
+      onPress={() => listPress(index)}
+    >
       <Text style={theme == 'light' ? styles.ml : styles.ml_dark}>
         {item.label}
       </Text>
@@ -129,7 +148,7 @@ const Profile = ({navigation}) => {
     {label: 'English', value: 'en'},
     {label: 'Italian', value: 'it'},
     {label: 'French', value: 'fr'},
-    {label: 'Gujarati', value:'gu'},
+    {label: 'Gujarati', value: 'gu'},
   ];
 
   return (
@@ -138,26 +157,29 @@ const Profile = ({navigation}) => {
         <Text
           style={
             theme == 'light' ? styles.profilealign : styles.profilealign_dark
-          }>
+          }
+        >
           {t('Profile')}
         </Text>
         {user ? (
           <TouchableOpacity
             style={{left: responsiveWidth(25)}}
-            onPress={() => UsersignOut()}>
+            onPress={() => UsersignOut()}
+          >
             <Image
               style={styles.img}
-              source={require('../../Assests/Images/power-off.png')}
+              source={require('../../Assests/Images/logout.png')}
             />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={{left: responsiveWidth(30)}}
             onPress={() => navigation.navigate('Signin_screen')}
-            activeOpacity={0.5}>
+            activeOpacity={0.5}
+          >
             <Image
               style={styles.img}
-              source={require('../../Assests/Images/loginuser.png')}
+              source={require('../../Assests/Images/login.png')}
             />
           </TouchableOpacity>
         )}
@@ -165,7 +187,8 @@ const Profile = ({navigation}) => {
       <View
         style={
           theme == 'light' ? styles.mainContainer : styles.mainContainer_dark
-        }>
+        }
+      >
         <View style={styles.row}>
           <Image
             source={{
@@ -186,17 +209,17 @@ const Profile = ({navigation}) => {
             <IonIcon
               name="mail"
               size={25}
-              color={theme == 'light' ? colors.black : colors.white}></IonIcon>
+              color={theme == 'light' ? colors.black : colors.white}
+            ></IonIcon>
             <Text
               style={
                 theme == 'light' ? styles.emailTitle : styles.emailTitle_dark
-              }>
+              }
+            >
               {Firedata.email}
             </Text>
           </View>
         )}
-
-       
 
         <View
           style={
@@ -205,60 +228,46 @@ const Profile = ({navigation}) => {
               : styles.userRenderStyle_dark
           }
         >
-      <Dropdown
-        style={styles.dropdown}
-        containerStyle={styles.containerStyle}
-          data={languageData}
-          labelField="label"
-          valueField="value"
-          placeholder="Language"
-          placeholderStyle={styles.langStyle}
-          value={i18n.language === 'en' ? language : language}
-          onChange={item => {i18n.changeLanguage(item.value);
-            setLanguage(item.value);
-          }}
-          renderRightIcon={() => (
-            <IonIcon name="caret-down-outline" 
-            size={25}
-            color={theme == 'light' ? colors.black : colors.HARD_WHITE} ></IonIcon>
-          )}
-        />
+          <Dropdown
+            style={styles.dropdown}
+            containerStyle={styles.containerStyle}
+            data={languageData}
+            labelField="label"
+            valueField="value"
+            placeholder="Language"
+            placeholderStyle={theme=="light"?styles.ml:styles.ml_dark}
+            value={i18n.language === 'en' ? language : language}
+            onChange={item => {
+              i18n.changeLanguage(item.value);
+              setLanguage(item.value);
+            }}
+            renderRightIcon={() => (
+              <IonIcon
+                name="caret-forward-outline"
+                size={25}
+                color={theme == 'light' ? colors.black : colors.HARD_WHITE}
+              ></IonIcon>
+            )}
+          />
           <FlatList
             data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
         </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => handleThemeChange()}
+        <View
           style={{
-            backgroundColor: colors.white,
-            width: responsiveWidth(30),
-            alignItems: 'center',
-            alignSelf: 'center',
-            bottom: 20,
-          }}>
-          {theme == 'light' ? (
-            <Text
-              style={{
-                color: colors.black,
-                fontFamily: fontFamily.semiBold,
-                fontSize: fontSize.medium,
-              }}>
-              Dark Mode
-            </Text>
-          ) : (
-            <Text
-              style={{
-                color: colors.black,
-                fontFamily: fontFamily.semiBold,
-                fontSize: fontSize.medium,
-              }}>
-              Light Mode
-            </Text>
-          )}
-        </TouchableOpacity>
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: spaceVertical.tiny,
+          }}
+        >
+          
+            <Text style={theme=='light'?styles.ml:styles.ml_dark}>Dark Mode</Text>
+          
+
+          <Switch value={isSwitchOn} onValueChange={handleThemeChange}  />
+        </View>
       </View>
     </View>
   );

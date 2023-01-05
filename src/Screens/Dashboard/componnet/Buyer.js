@@ -5,7 +5,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  TextInput,
+  TextInput,ActivityIndicator
 } from 'react-native';
 import {styles} from './styles';
 import {marginHorizontal} from '../../../styles/variables';
@@ -186,7 +186,7 @@ const Buyer = ({navigation, parentToChild}) => {
 
             <TouchableOpacity onPress={() => favPress(item)}>
               <IonIcon
-                color={item.fav ? colors.red : colors.white}
+                color={item.fav ? colors.red : colors.purple}
                 name="heart-circle-outline"
                 size={30}
                 style={{left: 15}}></IonIcon>
@@ -255,15 +255,7 @@ const Buyer = ({navigation, parentToChild}) => {
           </View>
         </View>
         {productList.length == 0 ? (
-          <Text
-            style={{
-              fontFamily: fontFamily.bold,
-              marginTop: spaceVertical.normal,
-              fontSize: fontSize.large,
-              color: colors.projectgreen,
-            }}>
-            {t('No Products Available')}
-          </Text>
+       <ActivityIndicator size="large" color={colors.projectgreen} style={{top:200}} />
         ) : (
           <View>
             <FlatList

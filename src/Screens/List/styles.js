@@ -17,21 +17,17 @@ const styles = StyleSheet.create({
     marginTop: spaceVertical.large,
     backgroundColor:colors.lightgreen,
     elevation:2,
-    borderRadius:borderRadius.bigboxradius
+    borderTopLeftRadius:borderRadius.bigboxradius,
+    borderTopRightRadius:borderRadius.bigboxradius
   },
-  container_dark: {
-    flex: 1,
-    marginTop: spaceVertical.large,
-    backgroundColor:colors.lightgreen,
-    elevation:2,
-    borderRadius:borderRadius.bigboxradius
-  },
+
   container_dark: {
     flex: 1,
     marginTop: spaceVertical.large,
     backgroundColor:colors.black,
     elevation:2,
-    borderRadius:borderRadius.bigboxradius
+    borderTopLeftRadius:borderRadius.bigboxradius,
+    borderTopRightRadius:borderRadius.bigboxradius
   },
   productprice:{
 fontSize:fontSize.normal,color:colors.green,fontFamily:fontFamily.medium
